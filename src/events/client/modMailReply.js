@@ -1,4 +1,4 @@
-const Database = require('../../util/easy-json-database');
+const Database = require('sync-json-database');
 const ModMailDB = new Database('./databases/anonymous-modmail-db.json');
 const CommandUtility = require("../../util/utility.js");
 

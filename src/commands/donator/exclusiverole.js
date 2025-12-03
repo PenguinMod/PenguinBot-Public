@@ -1,4 +1,4 @@
-const Database = require('../../util/easy-json-database');
+const Database = require('sync-json-database');
 const DonatorRoleDB = new Database('./databases/donator-roles.json');
 
 const { Message, MessageEmbed, GuildEmoji } = require('discord.js');

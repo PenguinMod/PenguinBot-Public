@@ -1,4 +1,4 @@
-const Database = require('../util/easy-json-database');
+const Database = require('sync-json-database');
 const SpoonfeederPingDB = new Database('./databases/spoonfeeder-pings.json');
 const OptionType = require('../util/optiontype');
 

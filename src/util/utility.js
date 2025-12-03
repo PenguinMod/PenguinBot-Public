@@ -1,4 +1,4 @@
-const Database = require('./easy-json-database');
+const Database = require('sync-json-database');
 const DisabledInteractionsDB = new Database('./databases/disabled-interactions.json');
 
 const tryCatch = require('./try-catch');

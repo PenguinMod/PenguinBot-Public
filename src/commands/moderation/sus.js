@@ -1,5 +1,5 @@
 const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
-const Database = require('../../util/easy-json-database');
+const Database = require('sync-json-database');
 const SusDB = new Database('./databases/suspicious-users.json');
 
 class Command {
@@ -33,8 +33,7 @@ class Command {
 
     async sendSusList(message) {
         // Fetch the suspects list from the JSON DB
-        const dbData = SusDB.all();
-        const suspectIds = dbData.map(v => v.key); // use key, data is the sus reason
+        const suspectIds = SusDB.array("keys"); // use key, data is the sus reason
 
         const userNamePromises = suspectIds.map(id => this.fetchUserName(id));
         const userNames = await Promise.all(userNamePromises);

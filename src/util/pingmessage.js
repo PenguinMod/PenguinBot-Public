@@ -1,4 +1,4 @@
-const Database = require('./easy-json-database');
+const Database = require('sync-json-database');
 const PingResponseDB = new Database('./databases/ping-responses.json');
 const PingResponseChannelsDB = new Database('./databases/ping-res-channels.json');
 

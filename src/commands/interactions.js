@@ -1,4 +1,4 @@
-const Database = require('../util/easy-json-database');
+const Database = require('sync-json-database');
 const DisabledInteractionsDB = new Database('./databases/disabled-interactions.json');
 const OptionType = require('../util/optiontype');
 

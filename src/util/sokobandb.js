@@ -1,4 +1,4 @@
-const Database = require('./easy-json-database');
+const Database = require('sync-json-database');
 const SokobanDB = new Database('./databases/sokoban-db-mubi.json');
 
 // the only reason this file exists is to just make using this db thing easier
