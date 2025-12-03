@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 const OptionType = require('../../util/optiontype');
-const jimp = require('jimp');
+const { Jimp: jimp, JimpMime } = require('jimp');
 
 const listedToppings = [ // visual only for listings, validToppings includes actually usable toppings
     'pepperoni',
@@ -261,7 +261,7 @@ class Command {
         // create the pizza
         // create our base image
         /**
-         * @type {jimp}
+         * @type {import("jimp").JimpInstance}
          */
         const baseImage = pizzaTextures.crust.clone();
         if (validArguments[0] !== 'air') {
@@ -282,15 +282,15 @@ class Command {
             const amountToPlace = alreadyAddedToppings.includes(topping) ? 2 : toppingCounts[topping] || 2;
             for (let i = 0; i < amountToPlace; i++) {
                 /**
-                 * @type {jimp}
+                 * @type {import("jimp").JimpInstance}
                  */
                 const texture = toppingTextures[topping].clone();
                 texture.rotate(randomInt(360));
                 const mag = randomInt(Math.round(192));
                 const dir = randomInt(360);
                 
-                const x = (mag*Math.cos(dir)) - Math.round(texture.getWidth() / 2 - baseImage.getWidth() / 2);
-                const y = (mag*Math.sin(dir)) - Math.round(texture.getHeight() / 2 - baseImage.getHeight() / 2);
+                const x = (mag*Math.cos(dir)) - Math.round(texture.width / 2 - baseImage.width / 2);
+                const y = (mag*Math.sin(dir)) - Math.round(texture.height / 2 - baseImage.height / 2);
                 baseImage.composite(texture, x, y);
             }
             if (!alreadyAddedToppings.includes(topping)) {
@@ -300,7 +300,7 @@ class Command {
         }
 
         // output
-        const buffer = await baseImage.getBufferAsync(jimp.MIME_PNG);
+        const buffer = await baseImage.getBuffer(JimpMime.png);
         const attachment = new discord.MessageAttachment(buffer, 'pizza.png');
         await wait(randomInt(1100) + 500);
         respondedMessage.edit({

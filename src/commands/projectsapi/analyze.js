@@ -3,7 +3,7 @@ const JSZip = require('jszip');
 const ProjectApi = require('../../util/project-api');
 const OptionType = require('../../util/optiontype');
 const { createCanvas, loadImage, registerFont } = require('canvas'); // best when dealing with text & shapes
-const jimp = require('jimp'); // best for adding effects to images & dealing with transparency
+const { Jimp: jimp, JimpMime } = require('jimp'); // best for adding effects to images & dealing with transparency
 
 registerFont('./assets/fonts/helvetica-neue/HelveticaNeue-Medium.otf', { family: 'HelveticaNeue', weight: "regular" });
 registerFont('./assets/fonts/helvetica-neue/HelveticaNeueBold.ttf', { family: 'HelveticaNeueBold', weight: "regular" });
@@ -286,10 +286,10 @@ class Command {
         const projectImageUrl = `https://projects.penguinmod.com/api/pmWrapper/iconUrl?id=${projectId}&widescreen=true`;
         const backgroundImage = await jimp.read(projectImageUrl);
         backgroundImage.opaque();
-        backgroundImage.resize(640, 360); // we need more space
+        backgroundImage.resize({ w: 640, h: 360 }); // we need more space
         backgroundImage.blur(24); // just looks better :idk_man:
         backgroundImage.brightness(-0.5); // so we can use white text
-        const finalizedBackground = await backgroundImage.getBufferAsync(jimp.MIME_PNG);
+        const finalizedBackground = await backgroundImage.getBuffer(JimpMime.png);
 
         const background = await loadImage(finalizedBackground)
         const card = createCanvas(640 * imageScale, 360 * imageScale);

@@ -1,7 +1,7 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
 const { createCanvas, loadImage, registerFont } = require('canvas');
 const OptionType = require('../../util/optiontype');
-const jimp = require('jimp');
+const { Jimp: jimp, JimpMime } = require('jimp');
 
 class Command {
     constructor() {
@@ -34,9 +34,9 @@ class Command {
             : message.author.displayAvatarURL({ format: 'png', size: 128 });
         // grayscale the image
         const jimpImage = await jimp.read(avatarURL ?? './assets/pink_default.jpg');
-        jimpImage.grayscale();
+        jimpImage.color([{ apply: "greyscale" }]);
         jimpImage.circle();
-        const buffer = await jimpImage.getBufferAsync(jimp.MIME_PNG);
+        const buffer = await jimpImage.getBuffer(JimpMime.png);
         const avatar = await loadImage(buffer);
 
         // Desenhe a imagem do usuário no centro

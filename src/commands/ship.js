@@ -1,4 +1,4 @@
-const jimp = require('jimp');
+const { Jimp: jimp, JimpMime } = require('jimp');
 const discord = require("discord.js");
 
 const OptionType = require('../util/optiontype');
@@ -94,20 +94,6 @@ const config = {
             compatibility: 100
         }
     ]
-};
-
-/**
- * @returns {Promise<jimp>}
- */
-const createImage = (...args) => {
-    return new Promise((resolve, reject) => {
-        new jimp(...args, (err, image) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(image);
-        });
-    });
 };
 
 const mixNames = (user1, user2) => {
@@ -306,20 +292,20 @@ class Command {
         });
 
         // generate image
-        const jimpImage = await createImage(292, 128);
+        const jimpImage = new jimp({ width: 292, height: 128 });
         const userImage1Url = getUserAvatar(u1) ?? './assets/pink_default.jpg';
         const userImage2Url = getUserAvatar(u2) ?? './assets/pink_default.jpg';
         const userImage1 = await jimp.read(userImage1Url);
         const userImage2 = await jimp.read(userImage2Url);
         const maskImage = await jimp.read('./assets/mask_ship.png');
         const ratingImage = await jimp.read(shipDetails.ratingImage);
-        userImage1.resize(128, 128);
-        userImage2.resize(128, 128);
+        userImage1.resize({ w: 128, h: 128 });
+        userImage2.resize({ w: 128, h: 128 });
         jimpImage.composite(userImage1, 0, 0);
         jimpImage.composite(userImage2, 292 - 128, 0);
         jimpImage.mask(maskImage, 0, 0);
-        jimpImage.composite(ratingImage, 146 - (ratingImage.getWidth() / 2), 64 - (ratingImage.getHeight() / 2));
-        const buffer = await jimpImage.getBufferAsync(jimp.MIME_PNG);
+        jimpImage.composite(ratingImage, 146 - (ratingImage.width / 2), 64 - (ratingImage.height / 2));
+        const buffer = await jimpImage.getBuffer(JimpMime.png);
 
         // add to embed
         // note: i think MessageAttachment has to be used here so that setImage gets the same file name as the buffer

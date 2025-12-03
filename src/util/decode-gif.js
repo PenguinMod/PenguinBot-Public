@@ -1,4 +1,4 @@
-const Jimp = require('jimp');
+const { Jimp: jimp, JimpMime } = require('jimp');
 const OmgGif = require("omggif");
 const GifReader = OmgGif.GifReader;
 const { loadImage } = require('canvas');
@@ -8,7 +8,7 @@ const decodeGif = async (buffer, exportType) => {
     const numFrames = gifReader.numFrames();
     const gifFrames = [];
 
-    let mainImage = new Jimp(gifReader.width, gifReader.height);
+    let mainImage = new jimp({ width: gifReader.width, height: gifReader.height });
 
     for (let i = 0; i < numFrames; i++) {
         const framePixels = [];
@@ -29,9 +29,9 @@ const decodeGif = async (buffer, exportType) => {
         }
 
         if (exportType === "buffer") {
-            gifFrames.push(await mainImage.getBufferAsync(Jimp.MIME_PNG));
+            gifFrames.push(await mainImage.getBuffer(JimpMime.png));
         } else if (exportType === "canvas") {
-            const buffer = await mainImage.getBufferAsync(Jimp.MIME_PNG);
+            const buffer = await mainImage.getBuffer(JimpMime.png);
             gifFrames.push(await loadImage(buffer));
         } else {
             gifFrames.push(mainImage.clone());
@@ -40,7 +40,7 @@ const decodeGif = async (buffer, exportType) => {
         // Handle disposal method
         switch (disposal) {
             case 2: // "Return to background", blank out the current frame
-                mainImage = new Jimp(gifReader.width, gifReader.height);
+                mainImage = new jimp({ width: gifReader.width, height: gifReader.height });
                 break;
             default:
                 // we dont implement method 3, see below for info

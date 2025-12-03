@@ -23,7 +23,7 @@ Note that **fonts are not included** in this download.
 For the most part, you need a good understanding of JavaScript and JSON to make commands or do anything meaningful with the code of this bot.
 
 # License
-The code found in this repository is licensed under the GNU General Public License v3.0 as required by some of the modules we use.
+The code found in this repository is licensed under the MIT license.
 Please let us know if this is incorrect or invalid.
 
 The `assets` folder is **NOT** under this license. Content in there may be licensed under, literally anything.
