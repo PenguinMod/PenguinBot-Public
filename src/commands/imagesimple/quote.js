@@ -29,15 +29,18 @@ class Command {
 
         if (message.reference) {
             referencedMessage = await message.channel.messages.fetch(message.reference.messageId);
-            quoteText = referencedMessage.content;
+            let overrideText = (env.get("OWNER") == message.author.id && args.length > 2)
+            quoteText = overrideText ? args.join(' ').trim() : referencedMessage.content;
             user = referencedMessage.author;
 
             if (message.author.id !== env.get("OWNER") && message.author.id !== user.id && util.interactionsBlocked(user.id)) {
                 return message.reply('The user you mentioned has interactions disabled.');
             }
 
-            if (args.includes("bold" || args.includes("b"))) options.bold = true
-            if (args.includes("italic") || args.includes("italics") || args.includes("i")) options.italic = true
+            if (!overrideText) {
+                if (args.includes("bold" || args.includes("b"))) options.bold = true
+                if (args.includes("italic") || args.includes("italics") || args.includes("i")) options.italic = true
+            }
         } else {
             quoteText = args.join(' ').trim();
             user = message.author;

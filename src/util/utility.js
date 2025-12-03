@@ -21,6 +21,7 @@ class CommandUtility {
     }
 
     static getPermissionLevel(message) {
+        if (message.member.id === env.get('OWNER')) return 3; // owner
         if (message.member._roles.some(v => configuration.permissions.permission3.includes(v))) return 3; // developers
         if (message.member._roles.some(v => configuration.permissions.permission2.includes(v))) return 2; // mods
         if (message.member._roles.some(v => configuration.permissions.permission1.includes(v))) return 1; // bot dev
@@ -231,7 +232,7 @@ class CommandUtility {
                 return true;
             }
         }
-        if (Array.isArray(command.attributes.lockedToChannels)) {
+        if (Array.isArray(command.attributes.lockedToChannels) && this.getPermissionLevel(message) < 3) {
             // check which channel we are in
             const lockedChannels = command.attributes.lockedToChannels;
             const canBeUsed = lockedChannels.includes(message.channel.id);
