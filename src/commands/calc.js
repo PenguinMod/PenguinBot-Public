@@ -6,8 +6,8 @@ class Command {
         this.name = "calc";
         this.description = "Evaluate a mathematical expression.";
         this.attributes = {
-            unlisted: false,
-            admin: false,
+            unlisted: true,
+            admin: true,
             lockedToCommands: true,
         };
         this.slash = {

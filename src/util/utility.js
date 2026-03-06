@@ -89,7 +89,7 @@ class CommandUtility {
             if ((usingGif && !isDonator) || (!supportedTypes.includes(endingType))) {
                 if (allowBlocking) {
                     if (allowGif) {
-                        message.reply(`${supportedFileTypeMessage}\nOnly Donators can use \`.gif\` images with this command.`);
+                        message.reply(`${supportedFileTypeMessage}\nOnly Supporters can use \`.gif\` images with this command.`);
                     } else {
                         message.reply(supportedFileTypeMessage);
                     }
@@ -100,7 +100,7 @@ class CommandUtility {
 
             if (!isDonator && attachment.size > 512000) {
                 if (allowBlocking) {
-                    message.reply("Non-donators or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
+                    message.reply("Non-supporters or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
                     return [false];
                 }
                 return [];
@@ -228,7 +228,7 @@ class CommandUtility {
                 canBeUsed = canBeUsed || this._inclusiveAllowsUser(message.author.id, message.member._roles, command.attributes.exclusiveInclusive);
             }
             if (!canBeUsed) {
-                this._commandBlockReject(command, message, split, "Only donators & server boosters can run this command.");
+                this._commandBlockReject(command, message, split, "Only supporters & server boosters can run this command.");
                 return true;
             }
         }

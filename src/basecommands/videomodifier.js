@@ -77,16 +77,16 @@ class Command {
 
                 if (!supportedTypes.includes(endingType)) {
                     if (supportedTypes.includes("gif")) {
-                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nDonators can use `.gif` images with this command.');
+                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nSupporters can use `.gif` images with this command.');
                     } else {
                         return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.');
                     }
                 } else if (usingGif && !isDonator) {
-                    return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nDonators can use `.gif` images with this command.');
+                    return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nSupporters can use `.gif` images with this command.');
                 }
 
                 if (!isDonator && attachment.size > 512000) {
-                    return message.reply("Non-donators or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
+                    return message.reply("Non-supporters or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
                 }
 
                 if (isDonator && !usingGif && attachment.size > 1e+6) {
