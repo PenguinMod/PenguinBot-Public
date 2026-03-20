@@ -12,6 +12,7 @@ class Command {
     async invoke(message, args, util) {
         const reply = await util.getReply(message);
         if (!reply) return message.reply('You need to reply to a message to pin it.');
+        if (reply.channel.id !== message.channel.id) return;
         if (args[0] === 'remove') {
             reply.unpin(`Requested by space owner ${message.member.displayName ?? ""}`);
         } else {

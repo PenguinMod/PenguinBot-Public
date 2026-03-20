@@ -8,7 +8,7 @@ const fetch = require("node-fetch");
 class Command {
     constructor() {
         this.name = "exclusiverole";
-        this.description = "Manage your custom role for donating or boosting the server.";
+        this.description = "Manage your custom role for supporting PenguinMod or boosting the server.";
         this.attributes = {
             unlisted: false,
             exclusive: true,

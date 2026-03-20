@@ -40,7 +40,7 @@ class Command {
         this.attributes = {
             unlisted: false,
             admin: false,
-            lockedToCommands: true,
+            lockedToCommands: false,
             unlockedChannels: [
                 "1090809014343974972", // help channel
                 "1181103736685350983", // tutorials

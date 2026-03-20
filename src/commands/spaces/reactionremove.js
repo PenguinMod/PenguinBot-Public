@@ -1,7 +1,9 @@
+const resolveEmoji = require("../../util/resolve-emoji");
+
 class Command {
     constructor() {
-        this.name = "delete";
-        this.description = "Deletes a message in your <#1181097377730400287>.";
+        this.name = "reactionremove";
+        this.description = "Removes all reactions from a message sent in any of your <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
             admin: false,
@@ -11,9 +13,9 @@ class Command {
 
     async invoke(message, args, util) {
         const reply = await util.getReply(message);
-        if (!reply) return message.reply('You need to reply to a message to delete it.');
+        if (!reply) return message.reply('You need to reply to a message to remove reactions from.');
         if (reply.channel.id !== message.channel.id) return;
-        reply.delete();
+        await reply.reactions.removeAll();
     }
 }
 

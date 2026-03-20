@@ -22,7 +22,7 @@ class RankupCommand extends QuickReplyCommand {
         super();
         this.name = "rankup";
         this.description = "Rankup Quick Reply";
-        this.message = "The rank requirement is essential to making the website easier to moderate for us. We've seen custom extensions be exploited by new users very easily, so we want to slow that down. **To rank up, upload 3 projects or more and wait 5 days since you first logged in**, or skip those and earn a badge like getting your project featured, having a lot of likes on your project, or donating.";
+        this.message = "The rank requirement is essential to making the website easier to moderate for us. We've seen custom extensions be exploited by new users very easily, so we want to slow that down. **To rank up, upload 3 projects or more and wait 5 days since you first logged in**, or skip those and earn a badge like getting your project featured, having a lot of likes on your project, or supporting PenguinMod.";
     }
 }
 class LoadSB3Command extends QuickReplyCommand {

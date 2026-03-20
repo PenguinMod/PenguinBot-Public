@@ -241,7 +241,7 @@ class CommandUtility {
                 return true;
             }
         }
-        if (command.attributes.lockedToCommands === true) {
+        if (command.attributes.lockedToCommands === true && this.getPermissionLevel(message) < 3) {
             // check which channel we are in
             let canBeUsed = true;
             if (message.guild && (message.guild.id === env.get("SERVER_ID")

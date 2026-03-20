@@ -6,9 +6,9 @@ const isChannel = /^<#\d+>$/
 class Command {
     constructor() {
         this.name = "pingresponse";
-        this.description = "Set a message when users ping you.";
+        this.description = "Set a message when users ping you, exclusive to supporters.";
         this.attributes = {
-            unlisted: true,
+            unlisted: false,
             exclusive: true,
             exclusiveInclusive: [
                 '1038234739708006481',
