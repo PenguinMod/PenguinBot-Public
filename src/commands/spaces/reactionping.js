@@ -46,7 +46,7 @@ class Command {
             });
             
             // edit after to show the message link
-            const messageLink = `https://discord.com/channels/${reply.guildId}/${reply.channelId}/${reply.id}`;
+            const messageLink = util.makeMessageLink(reply);
             await sentMessage.edit(`Subscribers, see ${messageLink} [(or the replied message)](${messageLink})`
                 + "\n" + `-# *(${chunk.length} users pinged for **${keyword}**)*`);
         }

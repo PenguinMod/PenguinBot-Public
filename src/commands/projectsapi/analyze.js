@@ -1,9 +1,10 @@
-const axios = require('axios');
-const JSZip = require('jszip');
-const ProjectApi = require('../../util/project-api');
-const OptionType = require('../../util/optiontype');
 const { createCanvas, loadImage, registerFont } = require('canvas'); // best when dealing with text & shapes
 const { Jimp: jimp, JimpMime } = require('jimp'); // best for adding effects to images & dealing with transparency
+const axios = require('axios');
+const JSZip = require('jszip');
+
+const PenguinModClient = require("../../util/penguinmod-client");
+const OptionType = require('../../util/optiontype');
 
 registerFont('./assets/fonts/helvetica-neue/HelveticaNeue-Medium.otf', { family: 'HelveticaNeue', weight: "regular" });
 registerFont('./assets/fonts/helvetica-neue/HelveticaNeueBold.ttf', { family: 'HelveticaNeueBold', weight: "regular" });
@@ -165,8 +166,8 @@ const statsCache = {};
 const collectProjectInfo = async id => {
     let project, projectJson
     try {
-        project = await ProjectApi.getProjectMeta(id);
-        const save = await ProjectApi.getProjectFile(id)
+        project = await PenguinModClient.projects.getProjectMeta(id);
+        const save = await PenguinModClient.projects.getProjectFile(id, false, false);
         try {
             const zip = await JSZip.loadAsync(save)
             const file = zip.file('project.json')
@@ -181,10 +182,10 @@ const collectProjectInfo = async id => {
         return;
     }
 
-    console.log('fetched', id, project.name);
+    console.log('fetched', id, project.title);
     return {
-        name: project.name,
-        owner: project.owner,
+        title: project.title,
+        author: project.author.username,
         projectJson
     }
 }
@@ -230,10 +231,10 @@ class Command {
             if (!info.projectJson) return message.reply('No project was found. Please check the ID again.');
             // resend typing just incase discord canceled it from wating to long
             if (isMessage) message.channel.sendTyping();
-            const extensionIds = [...CoreExtensionOrder, ...info.projectJson.extensions]
+            const extensionIds = [...CoreExtensionOrder, ...(info.projectJson.extensions || [])]
             stats = {
-                name: info.name,
-                owner: info.owner,
+                title: info.title,
+                author: info.author,
                 blocks: 0,
                 sprites: info.projectJson.targets.length,
                 broadcasts: 0,
@@ -243,7 +244,7 @@ class Command {
                 variables: 0,
                 comments: 0,
                 fonts: info.projectJson.customFonts?.length ?? 0,
-                extensions: info.projectJson.extensions.length,
+                extensions: (info.projectJson.extensions || []).length,
                 extensionBlockCount: 0,
                 extensionUses: {},
                 extensionOrder: extensionIds
@@ -283,12 +284,12 @@ class Command {
         // render the joe mama card
         // this is stupidly innefiecent but theres no other way i can see since 
         // ctx.filter just doesnt fucking work at all here for somereason
-        const projectImageUrl = `https://projects.penguinmod.com/api/pmWrapper/iconUrl?id=${projectId}&widescreen=true`;
+        const projectImageUrl = `${PenguinModClient.apiUrl}/v1/projects/getproject?projectID=${encodeURIComponent(projectId)}&requestType=thumbnail`;
         const backgroundImage = await jimp.read(projectImageUrl);
         backgroundImage.opaque();
         backgroundImage.resize({ w: 640, h: 360 }); // we need more space
         backgroundImage.blur(24); // just looks better :idk_man:
-        backgroundImage.brightness(-0.5); // so we can use white text
+        backgroundImage.brightness(0.5); // so we can use white text
         const finalizedBackground = await backgroundImage.getBuffer(JimpMime.png);
 
         const background = await loadImage(finalizedBackground)
@@ -308,7 +309,7 @@ class Command {
         ctx.textAlign = 'center'
         ctx.font = '24px "HelveticaNeueBold"';
         ctx.fillStyle = 'white'
-        ctx.fillText(stats.name, 320, 45, 600)
+        ctx.fillText(stats.title, 320, 45, 600)
         ctx.font = '20px "HelveticaNeueBold"';
         ctx.textBaseline = "middle";
         ctx.fillText('Blocks Used', 320, 345, 600)
@@ -399,7 +400,7 @@ class Command {
         }
 
         message.reply({
-            content: `Here is my analysis of "${stats.name}" by ${stats.owner}:`,
+            content: `Here is my analysis of "${stats.title}" by ${stats.author}:`,
             files: [card.toBuffer("image/png")],
             allowedMentions: {
                 parse: [],

@@ -17,9 +17,7 @@ const client = new discord.Client({
     ],
     partials: [
         "REACTION",
-        "CHANNEL",
-        "MESSAGE",
-        "USER"
+        "CHANNEL"
     ]
 });
 

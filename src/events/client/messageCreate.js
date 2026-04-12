@@ -99,7 +99,7 @@ class BotEvent {
                         },
                         {
                             name: "Jump to Message",
-                            value: `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`,
+                            value: CommandUtility.makeMessageLink(message),
                         }
                     ]);
                     embed.setColor(0xff9900);

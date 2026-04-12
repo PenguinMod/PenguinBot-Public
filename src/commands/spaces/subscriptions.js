@@ -14,9 +14,9 @@ class Command {
         };
     }
 
-    makeLink(spaceId) {
+    makeLink(spaceId, messageId) {
         const serverId = env.get("SERVER_ID");
-        return `https://discord.com/channels/${serverId}/${spaceId}`;
+        return `https://discord.com/channels/${serverId}/${spaceId}${messageId ? `/${messageId}` : ""}`;
     }
     async invoke(message, args, util) {
         const activeRoles = [];
@@ -28,14 +28,15 @@ class Command {
                 if (users.includes(message.author.id)) {
                     activeRoles.push({
                         role,
-                        spaceId
+                        spaceId,
+                        messageId: ReactionMessageUtil.getMessageIdForRole(spaceId, role),
                     });
                 }
             }
         }
 
         const spacesOnly = [...new Set(activeRoles.map(role => role.spaceId))];
-        const fullDetail = `Currently subscribed to ${activeRoles.map(role => `**${role.role}** (${this.makeLink(role.spaceId)})`).join(", ")}`;
+        const fullDetail = `Currently subscribed to ${activeRoles.map(role => `**${role.role}** (${this.makeLink(role.spaceId, role.messageId)})`).join(", ")}`;
         const spaceDetail = `Currently subscribed to ${spacesOnly.map(spaceId => `${this.makeLink(spaceId)}`).join(", ")}`;
         if (activeRoles.length <= 0) {
             return message.reply("You aren't subscribed to any roles in any <#1181097377730400287>.");

@@ -40,7 +40,7 @@ class Command {
         if (invalidCreation) return message.reply(invalidCreation);
         ReactionMessageUtil.createRole(reply, emoji, keyword);
 
-        // add the reaction
+        // add the reaction & listen for reactions
         try {
             await reply.react(emoji);
         } catch {
@@ -49,9 +49,12 @@ class Command {
             return message.reply("Unexpected error; Failed to add the reaction to your message. Your role has been deleted to prevent potential issues.");
         }
         
+        const spaceId = reply.channelId;
+        ReactionMessageUtil.createCollector(reply, spaceId);
+        
         // finish by telling them how to ping
         const prefix = util.request("prefix");
-        const messageLink = `https://discord.com/channels/${reply.guildId}/${reply.channelId}/${reply.id}`;
+        const messageLink = util.makeMessageLink(reply);
         const emojiMention = resolvedEmoji.type === "unicode" ? emoji : `the emoji`;
         message.reply({
             content: `Role **${keyword}** created (accessible by [reacting to the message](${messageLink}) with ${emojiMention}). You can manage this role with other commands.`

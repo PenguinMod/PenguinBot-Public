@@ -32,6 +32,16 @@ class CommandUtility {
         return isExclusive;
     }
 
+    /** @param {import("discord.js").Message} message  */
+    static makeMessageLink(message) {
+        return `https://discord.com/channels/${message.guildId}/${message.channelId}/${message.id}`;
+    }
+    /** @param {import("discord.js").TextChannel} channel  */
+    static makeChannelLink(channel) {
+        return `https://discord.com/channels/${channel.guildId}/${channel.id}`;
+    }
+
+    /** @returns {Promise<import("discord.js").Message?>} */
     static getReply(message) {
         return new Promise((resolve) => {
             if (!(message.reference && message.reference.messageId)) {
@@ -122,6 +132,26 @@ class CommandUtility {
             }
 
             return [attachment.url, usingGif];
+        }
+    }
+
+    /** @param {import("discord.js").MessageReaction} reaction  */
+    static async getReactingUsers(reaction) {
+        const maxLimit = 100;
+
+        let allUsers = [];
+        let lastId = null;
+        if (reaction.partial) await reaction.fetch();
+        while (true) {
+            const users = await reaction.users.fetch({ limit: maxLimit, after: lastId });
+            if (users.size === 0) return allUsers;
+
+            const lastUser = users.last();
+            allUsers.push(...Array.from(users.values())); // NOTE: this is kinda stinky i dont like it
+            lastId = lastUser.id;
+
+            if (users.size < maxLimit)
+                return allUsers;
         }
     }
 
