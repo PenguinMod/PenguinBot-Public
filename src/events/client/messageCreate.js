@@ -7,9 +7,6 @@ const handleBotAutoResponse = require('../../resources/responses/index.js');
 const configuration = require("../../config");
 const env = require("../../util/env-util");
 
-const isInTestMode = process.argv[2] === 'test';
-const prefix = isInTestMode ? env.get("PREFIX_TEST") : env.get("PREFIX");
-
 class BotEvent {
     constructor(client) {
         this.listener = "messageCreate";
@@ -31,6 +28,9 @@ class BotEvent {
         if (message.author.system) return;
         if (message.system) return;
 
+        const prefix = state.prefix;
+
+        const isInTestMode = state.isInTestMode;
         const isTestingInPublic = isInTestMode && !(env.getBool("CHECK_FOR_DEFAULT_TEST_SERVERS") && message.guildId === "746156168560508950")
 
         // ignore #spam

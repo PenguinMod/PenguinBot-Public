@@ -1,12 +1,12 @@
 const fs = require("fs");
 const path = require("path");
 
-const createEventsWithArgs = (client, isInTestMode, filePaths, folder, ...eventArgs) => {
-    for (const file of filePaths) {
+const createEventsWithArgs = (client, state, folder, eventFiles, ...eventArgs) => {
+    for (const file of eventFiles) {
         const baseEvent = require(`./events/${folder}/${file}`);
         const event = new baseEvent(client);
 
-        if (event.productionOnly && isInTestMode) continue;
+        if (event.productionOnly && state.isInTestMode) continue;
 
         if (event.once) {
             client.once(event.listener, (...args) => event.invoke(...eventArgs, ...args));
@@ -15,7 +15,7 @@ const createEventsWithArgs = (client, isInTestMode, filePaths, folder, ...eventA
         }
     }
 };
-const handleEvents = (client, botstate, isInTestMode) => {
+const handleEvents = (client, state) => {
     // each folder in the events folder will have different args passed to the event files within
     const eventFolder = fs.readdirSync(path.join(__dirname, `./events`));
     for (const folder of eventFolder) {
@@ -24,11 +24,11 @@ const handleEvents = (client, botstate, isInTestMode) => {
         
         // this is where the event files in each folder are given their args
         switch (folder) {
-            case "client":
-                createEventsWithArgs(client, isInTestMode, eventFiles, folder, client, botstate);
-                break;
-            case "guilds":
-                createEventsWithArgs(client, isInTestMode, eventFiles, folder, client);
+            default: // client & guilds
+                createEventsWithArgs(
+                    client, state, folder, eventFiles,
+                    client, state, // event args
+                );
                 break;
         }
     }

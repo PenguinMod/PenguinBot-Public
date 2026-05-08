@@ -52,4 +52,4 @@ client.login(token).catch((e) => {
     throw e; // we really only console.error to say where the error was
 });
 
-BaseEventHandler.handleEvents(client, state, isInTestMode);
+BaseEventHandler.handleEvents(client, state);

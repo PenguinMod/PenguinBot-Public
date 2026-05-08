@@ -110,14 +110,14 @@ class BotEvent {
 
         // extra tasks
         // spaces reaction messages
-        // if (!isInTestMode) {
+        if (!isInTestMode) {
             try {
                 await ReactionMessageUtil.handleStartup(client);
             } catch (err) {
                 mainChannel.send(`Failed to handle ReactionMessageUtil.handleStartup(). Listing spaces that failed.\n\n${err}`.substring(0, 2000));
                 console.warn(err);
             }
-        // }
+        }
     }
 }
 
