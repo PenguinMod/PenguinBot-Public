@@ -1,3 +1,4 @@
+const discord = require("discord.js");
 const Database = require('sync-json-database');
 const DisabledInteractionsDB = new Database('./databases/disabled-interactions.json');
 
@@ -14,6 +15,7 @@ const automodKeywords = tryCatch(() => require('../resources/basic_automod')) ||
  */
 class CommandUtility {
     static state = {};
+    static client = null;
 
     // used as a cleaner way to access values in the main bot process
     static request(value) {

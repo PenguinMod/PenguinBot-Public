@@ -45,8 +45,6 @@ class BotEvent {
         })) {
             handleInviteBlock(message, client, CommandUtility);
         }
-
-        CommandUtility.state = state;
     
         // handle the case where they are not using a cmd but we can still do stuff
         if (!message.content.startsWith(prefix)) {
