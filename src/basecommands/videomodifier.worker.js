@@ -4,14 +4,16 @@ const path = require('path');
 const Canvas = require('canvas');
 
 const processFrames = async (data) => {
-    const { workerSrc, commandSrc, tempDir, imageUrl, frameCount, frameRate, width, height, args, serializableData } = data;
+    const { workerSrc, commandSrc, tempDir, imagePath, frameCount, frameRate, width, height, args, serializableData } = data;
     
     const commandModule = require(commandSrc);
     const commandClass = new commandModule();
 
     let image = null;
-    if (imageUrl) {
-        image = await Canvas.loadImage(imageUrl);
+    if (imagePath) {
+        // NOTE: we dont pass the path in because we dont want to infer file type by file name
+        const buffer = await fs.readFileSync(imagePath);
+        image = await Canvas.loadImage(buffer);
     }
     const canvas = Canvas.createCanvas(width, height);
     const ctx = canvas.getContext('2d');

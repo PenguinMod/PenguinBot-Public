@@ -14,30 +14,8 @@ class Command {
     }
 
     async invoke(message, _, util) {
-        // Default values
-        let userAvatarURL = message.author.displayAvatarURL({ format: 'png', size: 512 });
-
-        // Check if a user is mentioned in the args
-        const mention = message.mentions.users.first();
-        if (util.interactionsBlocked(mention)) {
-            if (mention.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-        }
-        if (mention) {
-            userAvatarURL = mention.displayAvatarURL({ format: 'png', size: 512 });
-        }
-        if ((message.attachments && message.attachments.size > 0)) {
-            const attachment = message.attachments.at(0);
-            try {
-                const endingType = attachment.contentType.split(';')[0].split('/')[1];
-                if (endingType !== 'png') {
-                    throw new Error('invalid type');
-                }
-            } catch {
-                return message.reply('Please use a valid image in `.png` format.');
-            }
-            const imageUrl = attachment.url;
-            userAvatarURL = imageUrl;
-        }
+        const [imageBuffer] = await util.getInputImagesForCommand(message);
+        if (!imageBuffer) return;
 
         // Load second image
         const secondImage = await loadImage('./assets/pm_transparent_dropshadow.png');
@@ -47,7 +25,7 @@ class Command {
         const ctx = canvas.getContext('2d');
 
         // Set the background color or draw user's avatar as the background
-        const userAvatar = await loadImage(userAvatarURL);
+        const userAvatar = await loadImage(imageBuffer);
         ctx.drawImage(userAvatar, 0, 0, 512, 512);
 
         // Draw the second image on top

@@ -22,34 +22,12 @@ class Command {
     }
 
     async invoke(message, _, util) {
-        let userAvatarURL = message.author.displayAvatarURL({ format: 'png', size: 256 });
-
-        // Check if a user is mentioned in the args
-        const mention = message.mentions.users.first();
-        if (util.interactionsBlocked(mention)) {
-            if (mention.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-        }
-        if (mention) {
-            userAvatarURL = mention.displayAvatarURL({ format: 'png', size: 256 });
-        }
-        // check for attachment
-        if ((message.attachments && message.attachments.size > 0)) {
-            const attachment = message.attachments.at(0);
-            try {
-                const endingType = attachment.contentType.split(';')[0].split('/')[1];
-                if (endingType !== 'png') {
-                    throw new Error('invalid type');
-                }
-            } catch {
-                return message.reply('Please use a valid image in `.png` format.');
-            }
-            const imageUrl = attachment.url;
-            userAvatarURL = imageUrl;
-        }
+        const [imageBuffer] = await util.getInputImagesForCommand(message);
+        if (!imageBuffer) return;
 
         // add some whitespace around the image
         const padding = 2;
-        const avatarImage = await loadImage(userAvatarURL);
+        const avatarImage = await loadImage(imageBuffer);
         const paddingCanvas = createCanvas(avatarImage.width + (padding * 2), avatarImage.height + (padding * 2));
         const paddingCtx = paddingCanvas.getContext("2d");
         paddingCtx.drawImage(avatarImage, padding, padding);

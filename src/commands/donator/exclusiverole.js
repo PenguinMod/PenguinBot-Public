@@ -66,16 +66,9 @@ class Command {
                 if (!role) {
                     return message.reply("You don't have an exclusive role!");
                 }
-                if (!(message.attachments && message.attachments.size > 0)) {
-                    return message.reply('You need to add an image to your message!');
-                }
-                const attachment = message.attachments.at(0);
-                if (attachment.contentType !== 'image/png' && attachment.contentType !== 'image/jpeg') {
-                    return message.reply('Your image must be a PNG or JPEG image!');
-                }
-                const webResp = await fetch(attachment.url);
-                const arrayBuffer = await webResp.arrayBuffer();
-                const buffer = Buffer.from(arrayBuffer);
+
+                const [buffer] = await util.getInputImagesForCommand(message);
+                if (!buffer) return;
                 await role.setIcon(buffer, 'Updating exclusive role icon');
                 message.reply("Your role icon has been updated!");
                 break;
@@ -113,14 +106,15 @@ class Command {
             case 'fix': {
                 const roleID = DonatorRoleDB.get(String(message.member.id));
                 if (!roleID) {
-                    return message.reply("You don't have an exclusive role!");
+                    return message.reply("You don't have an exclusive role! This option is meant to re-add your role if it exists but it's not attached to you anymore.");
                 }
                 const role = await message.guild.roles.fetch(roleID);
                 if (!role) {
-                    return message.reply("You don't have an exclusive role!");
+                    return message.reply("Your role was deleted by an admin, you'll need to use `delete` and recreate the role to fix it.");
                 }
+
                 await message.member.roles.add(role);
-                message.reply("Your role has been added to you again!");
+                message.reply("Your role has been added to you again! (If you already had it, then this did nothing.)");
                 break;
             }
             case 'get': {

@@ -6,19 +6,19 @@ const GIFEncoder = require('gifencoder');
 const decodeGif = require("../util/decode-gif");
 
 const processGif = async (data) => {
-    const { workerSrc, commandSrc, tempDir, imageUrl, usingGif, width, height, args, serializableData } = data;
+    const { workerSrc, commandSrc, tempDir, imagePath, usingGif, width, height, args, serializableData } = data;
     
     const commandModule = require(commandSrc);
     const commandClass = new commandModule();
 
     let image = null;
-    if (imageUrl) {
+    if (imagePath) {
+        const buffer = await fs.readFileSync(imagePath);
         if (usingGif) {
-            const res = await fetch(imageUrl);
-            const arrayBuffer = await res.arrayBuffer();
-            image = await decodeGif(arrayBuffer, "canvas");
+            image = await decodeGif(buffer, "canvas");
         } else {
-            image = await Canvas.loadImage(imageUrl);
+            // NOTE: we dont pass the path in because we dont want to infer file type by file name
+            image = await Canvas.loadImage(buffer);
         }
     }
     const canvas = Canvas.createCanvas(width, height);

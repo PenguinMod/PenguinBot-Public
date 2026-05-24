@@ -6,6 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { uuid } = require('uuidv4');
+const isGif = require('../util/is-gif');
 const runNewThread = require('../util/multi-thread');
 
 const Canvas = require('canvas');
@@ -24,6 +25,7 @@ const getVideoProperties = (video) => {
                 return reject('No video stream found');
             }
 
+            // TODO: surely this is unsafe and there's a better way? did i even do this myself or did i use ai?
             const frameRate = eval(stream.r_frame_rate); // Convert "30/1" to 30, "25/1" to 25, etc.
             const frameCount = stream.nb_frames;
             const { width, height } = stream;
@@ -47,65 +49,29 @@ class Command {
     doRejectCommand(message, args, util) {
         return false;
     }
-    createSerializableData(message, args, util, imageUrl, video, width, height, frameRate, frameCount) {
+    createSerializableData(message, args, util, imageBuffer, video, width, height, frameRate, frameCount) {
         return {};
     }
 
     async invoke(message, args, util) {
         if (this.doRejectCommand(message, args, util)) return;
 
-        let imageUrl = null;
+        let imageBuffer = null;
         if (this.requiresImage) {
-            const supportedTypes = ['png', 'jpeg', 'jpg'];
-            const isDonator = util.isFromExclusive(message);
-
-            if (message.attachments.size <= 0) {
-                imageUrl = message.author.displayAvatarURL({ format: 'png', size: 256 });
-        
-                // Check if a user is mentioned in the args
-                const mention = message.mentions.users.first();
-                if (util.interactionsBlocked(mention)) {
-                    if (mention.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-                }
-                if (mention) {
-                    imageUrl = mention.displayAvatarURL({ format: 'png', size: 256 });
-                }
-            } else {
-                const attachment = message.attachments.first();
-                const endingType = util.getAttachmentType(attachment);
-                const usingGif = endingType === "gif";
-
-                if (!supportedTypes.includes(endingType)) {
-                    if (supportedTypes.includes("gif")) {
-                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nSupporters can use `.gif` images with this command.');
-                    } else {
-                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.');
-                    }
-                } else if (usingGif && !isDonator) {
-                    return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nSupporters can use `.gif` images with this command.');
-                }
-
-                if (!isDonator && attachment.size > 512000) {
-                    return message.reply("Non-supporters or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
-                }
-
-                if (isDonator && !usingGif && attachment.size > 1e+6) {
-                    return message.reply("Images must be below 1 MB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
-                }
-                if (isDonator && usingGif && attachment.size > 2e+6) {
-                    return message.reply("GIFs must be below 2 MB.\nTry [resizing your gif](<https://ezgif.com/resize>) or [optimizing it.](<https://ezgif.com/optimize>)");
-                }
-
-                imageUrl = attachment.url;
-            }
+            const [inputImage] = await util.getInputImagesForCommand(message, 1, this.supportsGif);
+            if (!inputImage) return;
+            imageBuffer = inputImage;
         }
 
         const loadingMessage = await message.reply({ content: "Editing video... <a:loading:1243400787980456006>" });
         const requestId = uuid();
-        const tempDir = path.join(__dirname, `../../cache/${requestId}/`);
+        const tempDir = path.join(__dirname, `../../temp/${requestId}/`);
         if (!fs.existsSync(tempDir)) {
             fs.mkdirSync(tempDir, { recursive: true });
         }
+
+        const imagePath = imageBuffer ? path.join(tempDir, `image.dat`) : null;
+        if (imageBuffer) fs.writeFileSync(imagePath, imageBuffer);
 
         try {
             const videoPath = path.join(tempDir, 'output.mp4');
@@ -113,7 +79,7 @@ class Command {
 
             const video = ffmpeg(inputVideoPath);
             const { width, height, frameRate, frameCount } = await getVideoProperties(video);
-            const serializableData = this.createSerializableData(message, args, util, imageUrl, video, width, height, frameRate, frameCount);
+            const serializableData = this.createSerializableData(message, args, util, imageBuffer, video, width, height, frameRate, frameCount);
             
             // This only works well because ffmpeg wants filenames for inputs & we cant just give it a bunch of buffers or something
             await runNewThread(
@@ -121,7 +87,7 @@ class Command {
                 this.commandScript,
                 {
                     tempDir,
-                    imageUrl,
+                    imagePath,
                     frameCount,
                     frameRate,
                     width,

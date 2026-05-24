@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { uuid } = require('uuidv4');
+const isGif = require('../util/is-gif');
 const runNewThread = require('../util/multi-thread');
 
 class Command {
@@ -21,74 +22,38 @@ class Command {
     doRejectCommand(message, args, util) {
         return false;
     }
-    getGIFWidthHeight(message, args, util, imageUrl) {
+    getGIFWidthHeight(message, args, util, imageBuffer) {
         return [256, 256];
     }
-    createSerializableData(message, args, util, imageUrl) {
+    createSerializableData(message, args, util, imageBuffer) {
         return {};
     }
 
     async invoke(message, args, util) {
         if (this.doRejectCommand(message, args, util)) return;
 
-        let imageUrl = null;
+        let imageBuffer = null;
         let usingGif = false;
         if (this.requiresImage) {
-            const supportedTypes = ['png', 'jpeg', 'jpg'];
-            if (this.supportsGif) {
-                supportedTypes.push('gif');
-            }
-
-            const isDonator = util.isFromExclusive(message);
-            if (message.attachments.size <= 0) {
-                imageUrl = message.author.displayAvatarURL({ format: 'png', size: 256 });
-
-                // Check if a user is mentioned in the args
-                const mention = message.mentions.users.first();
-                if (util.interactionsBlocked(mention)) {
-                    if (mention.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-                }
-                if (mention) {
-                    imageUrl = mention.displayAvatarURL({ format: 'png', size: 256 });
-                }
-            } else {
-                const attachment = message.attachments.first();
-                const endingType = util.getAttachmentType(attachment);
-                usingGif = endingType === "gif";
-                
-                if ((usingGif && !isDonator) || (!supportedTypes.includes(endingType))) {
-                    if (this.supportsGif) {
-                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.\nSupporters can use `.gif` images with this command.');
-                    } else {
-                        return message.reply('Please use a valid image in `.png` or `.jpeg`/`.jpg` format.');
-                    }
-                }
-
-                if (!isDonator && attachment.size > 512000) {
-                    return message.reply("Non-supporters or server boosters must use images below 512 KB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
-                }
-
-                if (isDonator && !usingGif && attachment.size > 1e+6) {
-                    return message.reply("Images must be below 1 MB.\nTry [resizing your image.](<https://ezgif.com/resize>)");
-                }
-                if (isDonator && usingGif && attachment.size > 2e+6) {
-                    return message.reply("GIFs must be below 2 MB.\nTry [resizing your gif](<https://ezgif.com/resize>) or [optimizing it.](<https://ezgif.com/optimize>)");
-                }
-
-                imageUrl = attachment.url;
-            }
+            const [inputImage] = await util.getInputImagesForCommand(message, 1, this.supportsGif);
+            if (!inputImage) return;
+            imageBuffer = inputImage;
+            usingGif = isGif(imageBuffer);
         }
 
-        const [width, height] = this.getGIFWidthHeight(message, args, util, imageUrl);
-        const serializableData = this.createSerializableData(message, args, util, imageUrl);
+        const [width, height] = this.getGIFWidthHeight(message, args, util, imageBuffer);
+        const serializableData = this.createSerializableData(message, args, util, imageBuffer);
 
         // start
         const loadingMessage = await message.reply('Creating GIF... <a:loading:1243400787980456006>');
         const requestId = uuid();
-        const tempDir = path.join(__dirname, `../../cache/${requestId}/`);
+        const tempDir = path.join(__dirname, `../../temp/${requestId}/`);
         if (!fs.existsSync(tempDir)) {
             fs.mkdirSync(tempDir, { recursive: true });
         }
+
+        const imagePath = imageBuffer ? path.join(tempDir, `image.dat`) : null;
+        if (imageBuffer) fs.writeFileSync(imagePath, imageBuffer);
 
         try {
             await runNewThread(
@@ -96,7 +61,7 @@ class Command {
                 this.commandScript,
                 {
                     tempDir,
-                    imageUrl,
+                    imagePath,
                     usingGif,
                     width,
                     height,

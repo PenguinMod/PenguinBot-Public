@@ -14,10 +14,10 @@ class SigmaCommand {
     }
 
     async invoke(message, args, util) {
-        const [imageUrl] = await util.getInputImageForCommand(message, true);
-        if (!imageUrl) return;
+        const [imageBuffer] = await util.getInputImagesForCommand(message);
+        if (!imageBuffer) return;
 
-        const userImage = await loadImage(imageUrl);
+        const userImage = await loadImage(imageBuffer);
         const sigmaTemplate = await loadImage('assets/feelsosigma.png');
 
         // Create a canvas
