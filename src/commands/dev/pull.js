@@ -1,5 +1,7 @@
 const childProcess = require("child_process");
 
+const env = require("../../util/env-util");
+
 class Command {
     constructor() {
         this.name = "pull";
@@ -12,11 +14,8 @@ class Command {
     }
 
     async invoke(message, args, util) {
-        const shouldntAllow = util.request('preventRuntimeChanges');
-        if (shouldntAllow) {
-            message.reply('Variable `PREVENT_UPDATES` is set to true on this host.');
-            return;
-        }
+        if (util.request('preventRuntimeChanges')) return message.reply('Variable `PREVENT_UPDATES` is set to true on this host.');
+        if (env.getBool("DISABLE_GIT")) return message.reply('Variable `DISABLE_GIT` is set to true on this host.');
 
         const repliedMessage = await message.reply('Pulling changes from the GitHub, please wait... <:juice:1158872031211831377>');
         childProcess.execSync("git pull origin main");

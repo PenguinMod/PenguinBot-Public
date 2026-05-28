@@ -73,7 +73,7 @@ const configuration = {
         ],
 
         // User IDs that can always use donator commands:
-        exclusiveUsers: [env.get("OWNER"), "462098932571308033"],
+        exclusiveUsers: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
 
         // Role IDs considered "exclusive", so Server booster & Donator
         exclusiveRoles: [
@@ -95,19 +95,19 @@ const configuration = {
         ],
 
         // On top of the permission check, who can use pm!eval (run custom code)
-        eval: [env.get("OWNER"), "462098932571308033"],
+        eval: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
 
         // On top of the permission check, who can use pm!echo
-        echo: [env.get("OWNER"), "462098932571308033"],
+        echo: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
 
         // On top of the permission check, who can use pm!delmsg
-        delmsg: [env.get("OWNER"), "462098932571308033"],
+        delmsg: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
 
         // On top of the permission check, who can use pm!penguinbotupload
-        penguinbotupload: [env.get("OWNER"), "462098932571308033"],
+        penguinbotupload: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
 
         // Who can use "force" options in pm!exclusiverole
-        exclusiveroleForce: [env.get("OWNER"), "462098932571308033"],
+        exclusiveroleForce: [env.get("OWNER"), "462098932571308033", "567307285324496897"],
     },
 };
 
