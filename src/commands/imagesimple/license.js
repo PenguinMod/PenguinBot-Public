@@ -1,4 +1,4 @@
-const { createCanvas, loadImage, registerFont } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 const Discord = require("discord.js");
 
 class LicenseCommand {
@@ -23,9 +23,6 @@ class LicenseCommand {
         const canvas = createCanvas(licenseTemplate.width, licenseTemplate.height);
         const ctx = canvas.getContext('2d');
 
-        // Register custom font
-        registerFont('assets/fonts/HelveticaNeue-Medium.otf', { family: 'Helvetica Neue Medium' });
-
         // Draw the license template
         ctx.drawImage(licenseTemplate, 0, 0, canvas.width, canvas.height);
 
@@ -38,33 +35,34 @@ class LicenseCommand {
         }
 
         const licenseText = args.join(" ").replace(/\n/g, ' ');
-        ctx.font = 'bold 30px Helvetica Neue Medium'; // Set font size, type, and weight
+        ctx.font = 'bold 30px Arial'; // Set font size, type, and weight
         ctx.fillStyle = '#000000'; // Set text color
         ctx.textAlign = 'center'; // Center the text horizontally
         ctx.fillText(licenseText, canvas.width / 2, 45, 475); // Draw the text at y-coordinate 35
 
         // Add additional text lines manually
-        ctx.font = 'bold 20px Helvetica Neue Medium'; // Set font size, type, and weight for additional text
+        ctx.font = 'bold 20px Arial'; // Set font size, type, and weight for additional text
+        ctx.textAlign = "left";
         ctx.fillStyle = '#000000'; // Set text color for additional text
 
         // Text Line 1
-        ctx.fillText(message.author.username, 335, 140);
+        ctx.fillText(message.author.username, 275, 140);
 
         // Text Line 2
         const formattedDate = new Date().toLocaleDateString('en-US');
-        ctx.fillText(formattedDate, 335, 210);
+        ctx.fillText(formattedDate, 275, 210);
 
         // Text Line 3
         const formattedRandomDate = new Date(Date.now() + Math.random() * (100 * 365 * 24 * 60 * 60 * 1000)).toLocaleDateString('en-US');
-        ctx.fillText(formattedRandomDate, 335, 275);
+        ctx.fillText(formattedRandomDate, 275, 275);
 
         const sequence = "ID: " + Array.from({ length: 10 }, () => getRandomChar()).join('');
         ctx.font = 'bold 18px Arial';
         ctx.fillStyle = 'rgba(0, 0, 0, 60%)'; // Black color with 60% opacity
-        ctx.fillText(sequence, 100, 330);
+        ctx.fillText(sequence, 50, 330);
         
         // Convert the canvas to a Discord attachment
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'license.png');
+        const attachment = new Discord.MessageAttachment(canvas.toBuffer("image/png"), 'license.png');
 
         // Send the license image as a reply
         message.reply({ files: [attachment] });

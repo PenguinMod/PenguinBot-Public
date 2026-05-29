@@ -32,7 +32,7 @@ class Command {
         ctx.drawImage(secondImage, 0, 0, 512, 512);
 
         // Convert the canvas to a Discord attachment
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'you_pm.png');
+        const attachment = new Discord.MessageAttachment(canvas.toBuffer("image/png"), 'you_pm.png');
 
         // Send the image as a reply
         message.reply({ files: [attachment] });

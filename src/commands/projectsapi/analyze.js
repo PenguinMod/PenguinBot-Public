@@ -1,13 +1,10 @@
-const { createCanvas, loadImage, registerFont } = require('canvas'); // best when dealing with text & shapes
+const { createCanvas, loadImage } = require('canvas'); // best when dealing with text & shapes
 const { Jimp: jimp, JimpMime } = require('jimp'); // best for adding effects to images & dealing with transparency
 const axios = require('axios');
 const JSZip = require('jszip');
 
 const PenguinModClient = require("../../util/penguinmod-client");
 const OptionType = require('../../util/optiontype');
-
-registerFont('./assets/fonts/helvetica-neue/HelveticaNeue-Medium.otf', { family: 'HelveticaNeue', weight: "regular" });
-registerFont('./assets/fonts/helvetica-neue/HelveticaNeueBold.ttf', { family: 'HelveticaNeueBold', weight: "regular" });
 
 const imageScale = 2 // 200% (double orignal)
 const graphWidth = 500

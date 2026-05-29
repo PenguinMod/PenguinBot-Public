@@ -81,7 +81,7 @@ class Command {
         addText();
 
         // note: i think MessageAttachment has to be used here so that setImage gets the same file name as the buffer
-        const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'standoff.png');
+        const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'standoff.png');
         embed.setImage(`attachment://standoff.png`);
 
         const messageOptions = {
@@ -93,7 +93,7 @@ class Command {
 
         const updateMessage = () => {
             if (isDrawingDirty) {
-                const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'standoff.png');
+                const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'standoff.png');
                 messageOptions.files = [attachment];
                 isDrawingDirty = false;
             }

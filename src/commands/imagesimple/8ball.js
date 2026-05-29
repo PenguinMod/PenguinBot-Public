@@ -49,7 +49,7 @@ class Command {
         
         ctx.fillText(randomResponse, 250, 250);
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'magic8ball.png');
+        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'magic8ball.png');
 
         // Create a MessageEmbed
         const embed = new MessageEmbed()

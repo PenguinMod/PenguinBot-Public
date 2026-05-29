@@ -1,8 +1,7 @@
 const discord = require("discord.js");
 const canvas = require('canvas');
-const jsdom = require("jsdom");
+const { JSDOM } = require("jsdom");
 const OptionType = require('../util/optiontype');
-const { JSDOM } = jsdom;
 let scratchblocks;
 
 (async () => {

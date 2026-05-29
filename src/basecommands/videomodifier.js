@@ -5,7 +5,7 @@ const OptionType = require('../util/optiontype');
 const fs = require('fs');
 const path = require('path');
 
-const { uuid } = require('uuidv4');
+const uuid = require('uuid');
 const isGif = require('../util/is-gif');
 const runNewThread = require('../util/multi-thread');
 
@@ -64,7 +64,7 @@ class Command {
         }
 
         const loadingMessage = await message.reply({ content: "Editing video... <a:loading:1243400787980456006>" });
-        const requestId = uuid();
+        const requestId = uuid.v4();
         const tempDir = path.join(__dirname, `../../temp/${requestId}/`);
         if (!fs.existsSync(tempDir)) {
             fs.mkdirSync(tempDir, { recursive: true });

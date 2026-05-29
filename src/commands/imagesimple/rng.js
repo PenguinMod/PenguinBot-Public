@@ -143,7 +143,7 @@ class Command {
         let authorText = `@${message.author.username}`
         ctx.fillText(authorText, 708, 228)
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'quote.png')
+        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'quote.png')
 
         message.reply({ files: [attachment] })
     }

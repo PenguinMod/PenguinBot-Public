@@ -154,7 +154,7 @@ class Command {
         if (referencedMessage.author.nickname !== undefined) authorText = `(${referencedMessage.author.nickname}) ` + authorText
         ctx.fillText(authorText, 1920 - 20, 1080 - 20)
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'quote.png');
+        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'quote.png');
 
         message.reply({ files: [attachment] });
     }

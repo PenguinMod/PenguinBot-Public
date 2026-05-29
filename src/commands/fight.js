@@ -164,7 +164,7 @@ class Command {
         
         // handle slash command updating
         let _board = message.reply({
-            files: [canvas.toBuffer()],
+            files: [canvas.toBuffer("image/png")],
             embeds: [embed]
         });
         if (!isSlash) {
@@ -227,7 +227,7 @@ class Command {
             if (battleState === 'win') {
                 // only edit files if we actually changed the canvas
                 board.edit({
-                    files: [canvas.toBuffer()],
+                    files: [canvas.toBuffer("image/png")],
                     embeds: [embed]
                 });
             } else {

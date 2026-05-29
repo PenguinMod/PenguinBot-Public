@@ -42,7 +42,7 @@ class Command {
         ctx.textAlign = 'left';
         ctx.fillText(minionText, textPosition[0], textPosition[1] + 28, textPosition[2]);
         
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer(), 'minion.png');
+        const attachment = new Discord.MessageAttachment(canvas.toBuffer("image/png"), 'minion.png');
         message.reply({ files: [attachment] });
     }
 }

@@ -1,5 +1,5 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage, registerFont } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 const OptionType = require('../../util/optiontype');
 
 class Command {
@@ -44,7 +44,7 @@ class Command {
             ctx.fillText(capitalize(message.author.username), canvas.width / 2, 300);
         }
 
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'wanted-poster.png');
+        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'wanted-poster.png');
 
         const title = userMention ? `${userMention.username}'s Wanted Poster` : "Your Wanted Poster";
 

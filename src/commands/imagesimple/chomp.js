@@ -31,7 +31,7 @@ class Command {
         const paddingCanvas = createCanvas(avatarImage.width + (padding * 2), avatarImage.height + (padding * 2));
         const paddingCtx = paddingCanvas.getContext("2d");
         paddingCtx.drawImage(avatarImage, padding, padding);
-        const paddingBuffer = paddingCanvas.toBuffer();
+        const paddingBuffer = paddingCanvas.toBuffer("image/png");
         const paddingImage = await loadImage(paddingBuffer);
 
         // add chomp images
@@ -46,7 +46,7 @@ class Command {
         ctx.drawImage(chompImages.top, 0, 0);
         ctx.drawImage(chompImages.bottom, 0, finalHeight - chompImages.bottom.height);
         ctx.drawImage(chompImages.mid, 0, chompImages.top.height, chompImages.mid.width, finalHeight - (chompImages.top.height + chompImages.bottom.height));
-        const buffer = canvas.toBuffer();
+        const buffer = canvas.toBuffer("image/png");
 
         // Convert the canvas to a Discord attachment
         const attachment = new Discord.MessageAttachment(buffer, 'chomp.png');

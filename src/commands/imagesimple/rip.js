@@ -1,5 +1,5 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage, registerFont } = require('canvas');
+const { createCanvas, loadImage } = require('canvas');
 const OptionType = require('../../util/optiontype');
 const { Jimp: jimp, JimpMime } = require('jimp');
 
@@ -54,7 +54,7 @@ class Command {
         }
 
         // Salve o pôster como um anexo
-        const attachment = new MessageAttachment(canvas.toBuffer(), 'tombstone.png');
+        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'tombstone.png');
 
         const title = userMention ? `${userMention.username}'s Tombstone` : "Your Tombstone";
 

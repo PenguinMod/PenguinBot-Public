@@ -71,7 +71,7 @@ class WheelCommand {
         ctx.textBaseline = "bottom";
         ctx.fillStyle = 'white';
         ctx.fillText(`Requested by ${message.author.tag} | ${percentage.toFixed(2)}%`, 4, 256, 256 - 4);
-        const attachment = new discord.MessageAttachment(canvas.toBuffer(), 'wheel_result.png');
+        const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'wheel_result.png');
 
         setTimeout(() => {
             wheelMessage.edit({
