@@ -1,5 +1,5 @@
 const { MessageAttachment, Message } = require('discord.js');
-const Canvas = require('canvas');
+const Canvas = require('@napi-rs/canvas')
 const OptionType = require('../../util/optiontype');
 
 const rarities = [

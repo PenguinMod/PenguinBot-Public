@@ -1,5 +1,5 @@
 const { MessageEmbed } = require("discord.js");
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const crypto = require("crypto");
 const OptionType = require('../util/optiontype');
 

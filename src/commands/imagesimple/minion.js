@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 
 const templateText = [
     [7, 16, 260],

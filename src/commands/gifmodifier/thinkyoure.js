@@ -104,7 +104,7 @@ class Command extends GifModifierCommand {
         encoder.setRepeat(0); // 0 means "to repeat"
         encoder.setDelay(Math.round(1000 / 24)); // 24 FPS?
 
-        ctx.textAlign = "top";
+        ctx.textBaseline = "top";
         ctx.textDrawingMode = "glyph";
         ctx.strokeStyle = "#223";
 

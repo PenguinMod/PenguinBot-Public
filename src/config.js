@@ -32,13 +32,13 @@ const configuration = {
     // Used to link to channels within the server. These IDs are the ones we use in PenguinMod.
     channels: {
         // A channel for PenguinBot testing and occasional logging.
-        botTestingChannel: "1139749855913316474",
+        botTestingChannel: "1400186269367271585",
 
         // A channel dedicated to bot commands.
-        commands: "1038251459843723274",
+        commands: "1400186269367271585",
 
         // A channel dedicated to bot commands for developers.
-        commandsDev: "1174359501688803358",
+        commandsDev: "1400186269367271585",
 
         // The channel where blocked automod alerts are sent. PenguinBot will send automod bypass alerts here too, if the basic_automod file is added.
         // See src/util/utility.js to see where basic_automod is used.

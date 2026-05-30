@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const OptionType = require('../../util/optiontype');
 const Discord = require('discord.js');
 

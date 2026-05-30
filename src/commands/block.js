@@ -1,32 +1,18 @@
-const discord = require("discord.js");
-const canvas = require('canvas');
-const { JSDOM } = require("jsdom");
+const { Resvg } = require('@resvg/resvg-js');
+const { GlobalFonts } = require('@napi-rs/canvas');
+const { parseHTML } = require('linkedom');
+const path = require('path');
 const OptionType = require('../util/optiontype');
-let scratchblocks;
 
+GlobalFonts.registerFromPath(path.join(__dirname, '../../assets/fonts/HelveticaNeue-Medium.otf'), 'Helvetica Neue'); // we need this bcs @resvg/resvg-js doesnt like fonts pls dont remove
+
+let scratchblocks;
 (async () => {
     scratchblocks = await import("../modules/scratchblocks/index.js");
     scratchblocks = scratchblocks.default;
 })();
 
-const xmlEscape = function (unsafe) {
-    return unsafe.replace(/[<>&'"]/g, c => {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\'': return '&apos;';
-            case '"': return '&quot;';
-        }
-    });
-};
-const wait = (ms) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, ms);
-    });
-};
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 class Command {
     constructor(_, state) {
@@ -41,11 +27,11 @@ class Command {
             admin: false,
             lockedToCommands: false,
             unlockedChannels: [
-                "1090809014343974972", // help channel
-                "1181103736685350983", // tutorials
-                "1038248289830711406", // bug reports
-                "1038249236552237167", // suggestions
-                "1181097377730400287", // spaces
+                "1090809014343974972",
+                "1181103736685350983",
+                "1038248289830711406",
+                "1038249236552237167",
+                "1181097377730400287",
             ],
         };
         this.slash = {
@@ -66,17 +52,21 @@ class Command {
     async invoke(message, args) {
         if (!scratchblocks) await wait(500);
         if (!args[0]) return message.reply('Please provide blocks written in [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax).');
-        const window = new JSDOM(`<pre class='blocks'>${xmlEscape(args.join(' '))}</pre>`);
-        const scratchBlocksInstance = scratchblocks(window.window);
-        scratchBlocksInstance.appendStyles();
-        scratchBlocksInstance.renderMatching("pre.blocks", {
+
+        const { window } = parseHTML(`<!DOCTYPE html><html><head></head><body></body></html>`);
+
+        const sb = scratchblocks(window);
+
+        const doc = sb.parse(args.join(' '), {
             style: "scratch3",
             languages: ["en"]
         });
-        const scratchBlocksDiv = window.window.document.querySelector("div.scratchblocks");
-        const svgElement = scratchBlocksDiv.getElementsByTagName('svg').item(0);
-        let newWidth = Math.ceil(Number(svgElement.getAttribute('width')) * 2);
-        let newHeight = Math.ceil(Number(svgElement.getAttribute('height')) * 2);
+        const view = sb.newView(doc, { style: "scratch3", scale: 1 });
+        const svgEl = view.render();
+
+        let newWidth = view.width;
+        let newHeight = view.height;
+
         if (newWidth < 1 || newHeight < 1) {
             return message.reply('The resulting image is blank.\nPlease provide blocks written in [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax).');
         }
@@ -90,33 +80,29 @@ class Command {
             newWidth = Math.ceil(newWidth / divisor);
             newHeight = Math.ceil(newHeight / divisor);
         }
-        svgElement.setAttribute('width', String(newWidth));
-        svgElement.setAttribute('height', String(newHeight));
-        svgElement.setAttribute('viewbox', `0 0 ${newWidth} ${newHeight}`);
-        // add extra style tags & stuff
-        const styleTag1 = svgElement.appendChild(window.window.document.createElement('style'));
-        styleTag1.innerHTML = `.sb3-comment-label {
-    fill: black !important;
-}
-* {
-    font: 500 12pt "Helvetica Neue", "Helvetica 65 Medium", Helvetica Neue, Helvetica, sans-serif;
-}`;
-        const styleTag2 = svgElement.appendChild(window.window.document.createElement('style'));
-        styleTag2.innerHTML = window.window.document.head.innerHTML;
-        const styleTag3 = svgElement.appendChild(window.window.document.createElement('style'));
-        styleTag3.innerHTML = scratchBlocksInstance.scratch3.stylee.cssContent;
-        // get svg data
-        const svgData = scratchBlocksDiv.innerHTML;
-        const uri = 'data:image/svg+xml;base64,' + Buffer.from(svgData, 'utf8').toString('base64url');
-        const image = await canvas.loadImage(uri);
-        const drawingCanvas = canvas.createCanvas(image.width, image.height);
-        const ctx = drawingCanvas.getContext('2d');
-        ctx.drawImage(image, 0, 0, image.width, image.height);
-        message.reply({
-            files: [drawingCanvas.toBuffer("image/png")]
+
+        const styleEl = sb.scratch3.makeStyle();
+        view.defs.appendChild(styleEl);
+        let svgData = svgEl.outerHTML;
+        view.defs.removeChild(styleEl);
+
+        if (!svgData.includes('xmlns=')) {
+            svgData = svgData.replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" ');
+        }
+
+        // console.log(svgData)
+
+        const resvg = new Resvg(svgData, {
+            fitTo: { mode: 'width', value: newWidth * 2 },
+            font: {
+                fontFiles: [path.join(__dirname, '../../assets/fonts/HelveticaNeue-Medium.otf')],
+                loadSystemFonts: false,
+            },
         });
+        const pngBuffer = resvg.render().asPng();
+
+        message.reply({ files: [pngBuffer] });
     }
 }
 
-// needs to do new Command() in index.js because typing static every time STINKS!
 module.exports = Command;

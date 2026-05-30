@@ -9,7 +9,7 @@ const uuid = require('uuid');
 const isGif = require('../util/is-gif');
 const runNewThread = require('../util/multi-thread');
 
-const Canvas = require('canvas');
+const Canvas = require('@napi-rs/canvas')
 const ffmpeg = require('fluent-ffmpeg');
 const ffmpegInstaller = require('@ffmpeg-installer/ffmpeg');
 
