@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 
 class SigmaCommand {
     constructor() {

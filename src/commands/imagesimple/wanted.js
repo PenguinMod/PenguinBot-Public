@@ -1,5 +1,5 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const OptionType = require('../../util/optiontype');
 
 class Command {
@@ -46,15 +46,7 @@ class Command {
 
         const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'wanted-poster.png');
 
-        const title = userMention ? `${userMention.username}'s Wanted Poster` : "Your Wanted Poster";
-
-        const embed = new MessageEmbed()
-            .setTitle(title)
-            .setImage('attachment://wanted-poster.png');
-
-
         const messageOptions = {
-            embeds: [embed],
             files: [attachment]
         };
 

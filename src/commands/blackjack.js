@@ -1,5 +1,5 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const axios = require('axios');
 const fetch = require('node-fetch');
 

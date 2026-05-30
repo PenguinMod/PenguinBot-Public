@@ -1,5 +1,5 @@
 const { MessageAttachment, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const OptionType = require('../../util/optiontype');
 const { Jimp: jimp, JimpMime } = require('jimp');
 
