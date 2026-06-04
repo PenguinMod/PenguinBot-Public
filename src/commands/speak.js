@@ -13,7 +13,7 @@ class Command {
         this.description = "Read out what you say or reply to someone to make it say what someone else says in the Scratch TTS voice.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [

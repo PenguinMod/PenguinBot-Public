@@ -6,7 +6,7 @@ class Command {
         this.description = "View creation credits for the bot.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.slash = {

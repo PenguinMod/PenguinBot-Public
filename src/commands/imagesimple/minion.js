@@ -21,7 +21,7 @@ class Command {
         this.description = "Uses a random minion meme with your own text.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

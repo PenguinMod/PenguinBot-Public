@@ -48,7 +48,7 @@ class Command extends GifModifierCommand {
         this.description = "Adds the text and image into the \"I think you're nuts.\" scene in the SMMV.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

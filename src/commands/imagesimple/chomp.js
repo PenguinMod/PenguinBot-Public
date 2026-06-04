@@ -16,7 +16,7 @@ class Command {
         this.description = "block eats you";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

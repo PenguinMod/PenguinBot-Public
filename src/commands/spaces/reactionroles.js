@@ -9,7 +9,7 @@ class Command {
         this.description = "See all of the roles available in any <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 

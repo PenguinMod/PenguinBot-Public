@@ -26,7 +26,7 @@ class Command {
         this.description = "Gets a random PenguinMod project.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.slash = {

@@ -299,13 +299,9 @@ class CommandUtility {
 
     // Generic "cannot use this command" handler for use by text + slash commands. Returns true on blocked message.
     static handleCommandBlock(command, message, split) {
-        let permission = command.attributes.permission;
-        if (permission === undefined) {
-            permission = 0;
-            if (command.attributes.admin === true) permission = 3;
-        }
+        let permission = command.attributes.permission || 0;
         if (this.getPermissionLevel(message) < permission) {
-            if (command.attributes.adminInclusive && this._inclusiveAllowsUser(message.author.id, message.member._roles, command.attributes.adminInclusive)) return;
+            if (command.attributes.permissionInclusive && this._inclusiveAllowsUser(message.author.id, message.member._roles, command.attributes.permissionInclusive)) return;
             this._commandBlockReject(command, message, split, `You need a permission level of ${permission} to run this command, yours is currently ${this.getPermissionLevel(message)}.`);
             return true;
         }

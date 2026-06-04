@@ -122,7 +122,7 @@ class Command {
         this.description = "Make a pizza with toppings.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [

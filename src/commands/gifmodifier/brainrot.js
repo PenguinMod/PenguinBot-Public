@@ -59,7 +59,7 @@ class Command extends GifModifierCommand {
         this.description = "Adds a subway surfers gif to the side of an image, or yourself.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

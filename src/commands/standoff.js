@@ -30,7 +30,7 @@ class Command {
         this.description = "Challenge another user. One user must shoot the other before the other one can.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [

@@ -7,7 +7,7 @@ class Command {
         this.description = "Get discord id";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 

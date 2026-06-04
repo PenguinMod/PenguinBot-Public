@@ -35,7 +35,7 @@ class Command {
         this.description = "Fights another user.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [

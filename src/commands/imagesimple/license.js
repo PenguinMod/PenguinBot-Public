@@ -7,7 +7,7 @@ class LicenseCommand {
         this.description = "Generates a license with user's avatar.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: false,
         };
     }

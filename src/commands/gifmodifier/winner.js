@@ -176,7 +176,7 @@ class Command extends GifModifierCommand {
         this.description = "Adds an image onto a Reddit Gold Slot Machine.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

@@ -8,7 +8,7 @@ class Command {
         this.description = 'Play Sokoban game';
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.alias = ["skb"];

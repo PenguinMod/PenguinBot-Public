@@ -9,7 +9,7 @@ class Command {
         this.description = "How long the bot has been online for.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

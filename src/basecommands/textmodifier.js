@@ -7,7 +7,7 @@ class TextModifierCommand {
         this.textDescription = "Text to modify.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
         this.example = [
             { text: `${state.prefix}textmodifier (replying to a message)` },

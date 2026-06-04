@@ -9,7 +9,7 @@ class Command {
         this.description = "Make a tombstone of a user.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

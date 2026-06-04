@@ -9,7 +9,7 @@ class Command {
         this.description = "Allows you to create reaction roles in <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             spaceOwner: true,
         };
         this.example = [

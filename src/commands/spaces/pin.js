@@ -4,7 +4,7 @@ class Command {
         this.description = "Pins a message in your <#1181097377730400287>. Use \"remove\" as a parameter to remove a pin.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             spaceOwner: true,
         };
     }

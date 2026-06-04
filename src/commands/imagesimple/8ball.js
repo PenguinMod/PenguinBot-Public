@@ -8,7 +8,7 @@ class Command {
         this.description = "Ask the magic 8-ball a question!";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.slash = {

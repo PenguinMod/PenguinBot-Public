@@ -3,10 +3,10 @@ const path = require('path');
 const axios = require('axios')
 
 const { MessageEmbed, MessageAttachment } = require("discord.js");
-const OptionType = require('../util/optiontype');
-const configuration = require("../config");
+const OptionType = require('../../util/optiontype');
+const configuration = require("../../config");
 
-const memesFolder = path.join(__dirname, '../../memes');
+const memesFolder = path.join(__dirname, '../../../memes');
 
 let idx = 0
 const getRandomItem = numItems => {
@@ -20,7 +20,7 @@ class Command {
         this.description = "Get a random meme uploaded to the bot.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

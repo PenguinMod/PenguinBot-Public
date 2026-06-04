@@ -8,7 +8,7 @@ class WheelCommand {
         this.description = "Spin the wheel and see which option it lands on! Use commas to seperate options.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.slash = {

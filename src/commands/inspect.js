@@ -7,7 +7,7 @@ class Command {
         this.description = "View how a message's content works.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
         this.example = [
             { text: `${state.prefix}inspect`, image: "inspect_example1.png" }

@@ -52,7 +52,7 @@ class Command {
         this.description = "Play a game of Blackjack";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

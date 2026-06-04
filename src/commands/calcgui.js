@@ -8,7 +8,7 @@ class Command {
         this.description = "Use a calculator, on Discord.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.slash = {

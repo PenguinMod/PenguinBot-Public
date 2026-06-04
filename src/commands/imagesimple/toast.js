@@ -8,7 +8,7 @@ class Command {
         this.description = "Toastify yourself";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

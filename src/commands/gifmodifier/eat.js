@@ -133,7 +133,7 @@ class Command extends GifModifierCommand {
         this.description = "Makes a GIF of eating your image.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

@@ -8,7 +8,7 @@ class Command {
         this.description = "Pings Spoonfeeders. Can only be used in <#1090809014343974972>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToHelp: true
         };
     }

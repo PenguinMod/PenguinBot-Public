@@ -8,7 +8,7 @@ class Command {
         this.description = "Generate a photo with the Penguin Mod logo on top of the mentioned user's avatar or a custom background color.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

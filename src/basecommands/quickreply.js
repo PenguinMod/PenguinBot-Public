@@ -3,7 +3,7 @@ class QuickReplyCommand {
         this.message = 'Quick reply text.';
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 

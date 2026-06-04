@@ -8,7 +8,7 @@ class Command {
         this.description = "Wanted Poster on someone or you";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

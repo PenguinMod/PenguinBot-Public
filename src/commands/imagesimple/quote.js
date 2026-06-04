@@ -10,7 +10,7 @@ class Command {
         this.description = "Quotes the provided text and puts it on an image.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 

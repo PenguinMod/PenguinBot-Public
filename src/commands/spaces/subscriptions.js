@@ -9,7 +9,7 @@ class Command {
         this.description = "See all roles you are subscribed to in <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

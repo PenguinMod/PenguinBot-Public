@@ -8,7 +8,7 @@ class Command {
         this.description = "Pings a reaction role in your <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             spaceOwner: true,
         };
 

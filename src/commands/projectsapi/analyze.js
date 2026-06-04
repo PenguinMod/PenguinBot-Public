@@ -193,7 +193,7 @@ class Command {
         this.description = "Analyze a PenguinMod project by it's ID to get info about it's contents.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [

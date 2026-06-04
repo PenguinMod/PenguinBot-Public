@@ -158,7 +158,7 @@ class Command {
         this.description = "See the compatibility of two users.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
         this.example = [{

@@ -28,7 +28,7 @@ class Command extends GifModifierCommand {
         this.description = "make a pet pet gif";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

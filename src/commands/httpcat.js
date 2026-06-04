@@ -7,7 +7,7 @@ class Command {
         this.description = "Get a cute http cat image using an HTTP Code";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 

@@ -8,7 +8,7 @@ class SigmaCommand {
         this.description = "I feel so sigma!";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

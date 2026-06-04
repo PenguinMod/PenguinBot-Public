@@ -6,7 +6,7 @@ class Command {
         this.description = "Toilet Paper... NOW!";
         this.attributes = {
             unlisted: true,
-            admin: false,
+            permission: 0,
         };
     }
 

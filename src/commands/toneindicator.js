@@ -9,7 +9,7 @@ class Command {
         this.description = "Explains the provided tone indicator";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: false,
         };
 

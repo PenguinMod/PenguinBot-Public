@@ -14,7 +14,7 @@ class Command {
         this.description = "Generate an Minesweeper Game.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
     }

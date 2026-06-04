@@ -7,7 +7,7 @@ class Command {
         this.description = "Evaluate a mathematical expression.";
         this.attributes = {
             unlisted: true,
-            admin: true,
+            permission: 3,
             lockedToCommands: true,
         };
         this.slash = {

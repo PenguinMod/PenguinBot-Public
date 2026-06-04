@@ -7,7 +7,7 @@ class Command {
         this.description = 'Get your avatar, or someone else\'s avatar.';
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
         this.slash = {
             options: [{

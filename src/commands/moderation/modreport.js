@@ -8,7 +8,7 @@ class Command {
         this.slashdescription = "Privately send a report about a moderator to managers, & optionally include a screenshot.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
 
         this.slash = {

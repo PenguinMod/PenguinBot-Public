@@ -6,7 +6,7 @@ class Command {
         this.description = "Get the response time of the bot.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
             lockedToCommands: true,
         };
 

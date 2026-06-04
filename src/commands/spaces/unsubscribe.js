@@ -10,7 +10,7 @@ class Command {
         this.description = "Unsubscribe from a role, or all roles of a space in <#1181097377730400287>.";
         this.attributes = {
             unlisted: false,
-            admin: false,
+            permission: 0,
         };
     }
 
