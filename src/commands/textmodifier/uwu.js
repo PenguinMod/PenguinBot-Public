@@ -51,9 +51,7 @@ class Command extends TextModifierCommand {
         if ((!uwuText.endsWith("~")) && shouldDoThing(1)) {
             uwuText += '~';
         }
-        if (` ${uwuText.trim()} `.split(' ').includes('gay')) {
-            uwuText += ' <:boykisser_hide:1164848680680042577>';
-        } else if (shouldDoThing(3)) {
+        if (shouldDoThing(3)) {
             uwuText += ' <:BLEH:1123465973312278629>';
         }
         if (shouldDoThing(1)) {

@@ -10,7 +10,7 @@ const spawnProcess = () => {
     }
     const botProcess = childProcess.spawn('node', args);
     botProcess.stdout.on('data', (data) => {
-        console.log(data.toString('utf8'));
+        process.stdout.write(data.toString('utf8'));
     });
     botProcess.stderr.on('data', (data) => {
         console.log(data.toString('utf8'));

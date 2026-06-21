@@ -13,12 +13,12 @@ const config = {
     pointUp: ':small_red_triangle:',
 
     compatibilityRatings: {
-        300: {
-            rating: 'WHAT THE GYATT!!1!11!111!!!!! <:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:explain:1121205574017744896><:explain:1121205574017744896><:explain:1121205574017744896><:excusemewhat:1117472083081969714><:explain:1121205574017744896>',
-            ratingImage: './assets/heart_strong.png'
-        },
         1000: {
             rating: 'i would like an explanation... <:explain:1121205574017744896><:explain:1121205574017744896><:explain:1121205574017744896>',
+            ratingImage: './assets/heart_strong.png'
+        },
+        300: {
+            rating: 'WHAT THE GYATT!!1!11!111!!!!! <:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:excusemewhat:1117472083081969714><:explain:1121205574017744896><:explain:1121205574017744896><:explain:1121205574017744896><:excusemewhat:1117472083081969714><:explain:1121205574017744896>',
             ratingImage: './assets/heart_strong.png'
         },
         100: {
@@ -81,18 +81,27 @@ const config = {
             ratingImage: './assets/heart_strong.png'
         }
     ],
-    customRatings: [{
-            users: ['694587798598058004', '598606736148135937'], // ddede and puzzlinGG
-            compatibility: 300
-        },
+    customRatings: [
         {
             users: ['1033131187901841478', '1063935325761716224'], // cube and mason
             compatibility: 1000
         },
         {
-            users: ['989439473223888957', '1160426569156808734'],
+            users: ['694587798598058004', '598606736148135937'], // ddede and puzzlinGG
+            compatibility: 300
+        },
+        {
+            users: ['989439473223888957', '1160426569156808734'], // starlight and mubi
             compatibility: 100
-        }
+        },
+        { // evil proshipping
+            users: ['462098932571308033', '750860494197227632'], // jeremygamer13 and penguinbot
+            compatibility: 0
+        },
+        { // evil proshipping
+            users: ['462098932571308033', '738358663168786432'], // jeremygamer13 and jeremy stream bot
+            compatibility: 0
+        },
     ]
 };
 

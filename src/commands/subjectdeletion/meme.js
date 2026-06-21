@@ -49,9 +49,11 @@ class Command {
     
         const okMessage = await message.reply("Got the attachment, now downloading...");
         const url = attachment.url;
+
+        const memeFile = path.join(memesFolder, `${attachment.name}`);
         
         // Create a write stream and log the progress
-        const writeStream = fs.createWriteStream(`${memesFolder}`);
+        const writeStream = fs.createWriteStream(`${memeFile}`);
     
           // Use Axios to download the image and pipe it to the write stream
         const response = await axios({
