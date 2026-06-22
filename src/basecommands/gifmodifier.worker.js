@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const Canvas = require('canvas');
+const Canvas = require('@napi-rs/canvas')
 const GIFEncoder = require('gifencoder');
 const decodeGif = require("../util/decode-gif");
 

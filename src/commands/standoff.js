@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 const crypto = require("crypto");
-const { createCanvas, loadImage } = require('canvas');
+const { createCanvas, loadImage } = require('@napi-rs/canvas')
 const OptionType = require('../util/optiontype');
 
 const delay = (ms) => {

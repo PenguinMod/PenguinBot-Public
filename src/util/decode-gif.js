@@ -1,7 +1,7 @@
 const { Jimp: jimp, JimpMime } = require('jimp');
 const OmgGif = require("omggif");
 const GifReader = OmgGif.GifReader;
-const { loadImage } = require('canvas');
+const { loadImage } = require('@napi-rs/canvas')
 
 const decodeGif = async (buffer, exportType) => {
     const gifReader = new GifReader(new Uint8Array(buffer));

@@ -1,4 +1,4 @@
-const { createCanvas, loadImage } = require('canvas'); // best when dealing with text & shapes
+const { createCanvas, loadImage } = require('@napi-rs/canvas') // best when dealing with text & shapes
 const { Jimp: jimp, JimpMime } = require('jimp'); // best for adding effects to images & dealing with transparency
 const axios = require('axios');
 const JSZip = require('jszip');
