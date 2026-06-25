@@ -156,9 +156,8 @@ class Command {
         // show the info for this command
         embed.setTitle(`How to use ${usingSlash ? '/' : prefix}${commandName}`);
 
-        const text = `${command.description}`;
         const imagePath = command.exampleImage || (!command.example ? null : command.example.map(example => example.image ? `assets/examples/${example.image}` : null).at(0));
-        embed.setDescription(command.descriptionLong || command.description);
+        embed.setDescription(stateFill(command.descriptionLong || command.description));
         if (command.alias) {
             embed.addFields({
                 name: "Aliases",
