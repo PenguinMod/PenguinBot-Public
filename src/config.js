@@ -40,8 +40,8 @@ const configuration = {
         // A channel dedicated to bot commands for developers.
         commandsDev: "1174359501688803358",
 
-        // The channel where blocked automod alerts are sent. PenguinBot will send automod bypass alerts here too, if the basic_automod file is added.
-        // See src/util/utility.js to see where basic_automod is used.
+        // The channel where blocked automod alerts are sent. PenguinBot will send automod bypass alerts here too, if the basic-automod file is added.
+        // See src/util/utility.js to see where basic-automod is used.
         automod: "1335746419193151598",
 
         // A channel where PenguinBot can send reported users to. Usable via /report

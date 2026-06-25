@@ -9,7 +9,6 @@ class Command {
             permission: 3,
         };
 
-        this.alias = ["e"]
         this.client = client;
     }
 

@@ -117,7 +117,7 @@ const wait = (ms) => {
 };
 
 class Command {
-    constructor(client, state) {
+    constructor(client) {
         this.name = "pizza";
         this.description = "Make a pizza with toppings.";
         this.attributes = {
@@ -126,9 +126,9 @@ class Command {
             lockedToCommands: true,
         };
         this.example = [
-            { text: `${state.prefix}pizza pepperoni`, image: "pizza_example1.png" },
-            { text: `${state.prefix}pizza toppings` },
-            { text: `${state.prefix}pizza` },
+            { text: `{{prefix}}pizza pepperoni`, image: "pizza_example1.png" },
+            { text: `{{prefix}}pizza toppings` },
+            { text: `{{prefix}}pizza` },
         ];
         this.slash = {
             options: [{

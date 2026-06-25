@@ -11,8 +11,8 @@ const delay = (ms) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client, state) {
-        super(client, state);
+    constructor(client) {
+        super(client);
         this.name = "compile";
         this.description = "Removes totally unnecessary junk from your English text.";
         this.textDescription = "Text to totally superly clean up.";

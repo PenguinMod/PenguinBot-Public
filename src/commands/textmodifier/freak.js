@@ -56,14 +56,14 @@ const mappings = {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client, state) {
-        super(client, state);
+    constructor(client) {
+        super(client);
         this.name = "freak";
         this.description = "Turn your text 𝒻𝓇𝑒𝒶𝓀𝓎.";
         this.textDescription = "Text to convert from.";
         this.example = [
-            { text: `${state.prefix}freak Hello my text is here` },
-            { text: `${state.prefix}freak (replying to a message)` },
+            { text: `{{prefix}}freak Hello my text is here` },
+            { text: `{{prefix}}freak (replying to a message)` },
         ];
         this.setSlashDetail();
     }

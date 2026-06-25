@@ -18,7 +18,7 @@ src/util/aprilfools.js
 ## commands & command modules
 src/util/freearttranslator.js
 src/util/gamejam-themegen.js
-src/resources/basic_automod.js
+src/resources/basic-automod.js
 src/commands/gameidea.js
 src/commands/textmodifier/joyous.js
 

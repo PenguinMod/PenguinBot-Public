@@ -1,28 +1,19 @@
 const discord = require("discord.js");
-const discordVoice = require('@discordjs/voice');
-const fetch = require("node-fetch");
 const OptionType = require('../util/optiontype');
-const { Readable } = require('stream')
-const PenguinChatVC = false;
-const voiceChannelWithTTS = ['1169802355861114901', PenguinChatVC ? '1124133055012020296' : '_'];
-const speechCooldowns = {};
 
 class Command {
-    constructor(client, state) {
+    constructor(client) {
         this.name = "speak";
         this.description = "Read out what you say or reply to someone to make it say what someone else says in the Scratch TTS voice.";
         this.attributes = {
-            unlisted: false,
             permission: 0,
             lockedToCommands: true,
         };
         this.example = [
-            { text: `${state.prefix}speak abc`, image: "speak_example1.png" }
+            { text: `{{prefix}}speak abc`, image: "speak_example1.png" }
         ];
 
         this.client = client;
-        this.connection = null;
-        this.player = null;
     }
 
     filterBypass(text = '') {
@@ -95,54 +86,7 @@ class Command {
         if (wasCutDown) {
             messageOptions.content = '*The text had to be trimmed down for Scratch to handle it.*';
         }
-        // are we in VC?
-        const vc = message.member.voice.channel;
-        if (!(vc && vc.id && voiceChannelWithTTS.includes(vc.id))) {
-            message.reply(messageOptions);
-            return;
-        }
-        // try to speak in VC
-
-        if (message.author.id in speechCooldowns) {
-            const cooldown = speechCooldowns[message.author.id];
-            if (Date.now() - cooldown <= 4500) {
-                speechCooldowns[message.author.id] += 3500;
-                return message.reply('stop speaking');
-            }
-        }
-
-        if (!this.connection) {
-            this.connection = discordVoice.joinVoiceChannel({
-                channelId: vc.id,
-                guildId: message.guild.id,
-                adapterCreator: message.guild.voiceAdapterCreator
-            });
-            this.connection.on("stateChange", (_, newState) => {
-                const disconnected = newState.status === discordVoice.VoiceConnectionStatus.Disconnected
-                    || newState.status === discordVoice.VoiceConnectionStatus.Destroyed;
-                if (disconnected) {
-                    this.connection = null;
-                    this.player = null;
-                }
-            });
-        }
-        const connection = this.connection;
-
-        const readable = new Readable();
-        readable._read = () => { }; // _read is required but you can noop it
-        readable.push(buffer);
-        readable.push(null);
-
-        const resource = discordVoice.createAudioResource(readable, {
-            inlineVolume: true
-        });
-        resource.volume.setVolume(2);
-        if (!this.player) {
-            this.player = discordVoice.createAudioPlayer();
-            connection.subscribe(this.player);
-        }
-        this.player.play(resource);
-        speechCooldowns[message.author.id] = Date.now();
+        message.reply(messageOptions);
     }
 }
 

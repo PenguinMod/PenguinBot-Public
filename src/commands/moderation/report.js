@@ -5,7 +5,7 @@ class Command {
     constructor(client) {
         this.name = "report";
         this.description = "Slash command only. Privately send a report about a user to moderators, and optionally include a screenshot.";
-        this.slashdescription = "Privately send a report about a user to moderators, & optionally include a screenshot.";
+        this.slashDescription = "Privately send a report about a user to moderators, & optionally include a screenshot.";
         this.attributes = {
             unlisted: false,
             permission: 0,

@@ -1,7 +1,6 @@
 const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
 const { createCanvas, loadImage } = require('canvas');
 const axios = require('axios');
-const fetch = require('node-fetch');
 
 // Function to generate an image
 async function generateBlackjackImage(playerHand, dealerHand, playerScore, dealerCardBack) {
@@ -15,7 +14,7 @@ async function generateBlackjackImage(playerHand, dealerHand, playerScore, deale
     ctx.fillRect(0, 0, width, height);
 
     // Load card images
-    const playerCardImages = await Promise.all(playerHand.map(card => fetch(card.image).then(res => res.buffer()).then(buffer => loadImage(buffer))));
+    const playerCardImages = await Promise.all(playerHand.map(card => fetch(card.image).then(res => res.arrayBuffer()).then(buffer => loadImage(Buffer.from(buffer)))));
     const dealerCardBackImage = await loadImage(dealerCardBack);
 
     // Draw dealer's face-up card

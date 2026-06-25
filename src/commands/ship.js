@@ -162,7 +162,7 @@ const getUserAvatar = (user) => {
 }
 
 class Command {
-    constructor(_, state) {
+    constructor() {
         this.name = "ship";
         this.description = "See the compatibility of two users.";
         this.attributes = {
@@ -171,14 +171,14 @@ class Command {
             lockedToCommands: true,
         };
         this.example = [{
-                text: `${state.prefix}ship @user1 @user2`,
+                text: `{{prefix}}ship @user1 @user2`,
                 image: "ship_example1.png"
             },
             {
-                text: `${state.prefix}ship @user`
+                text: `{{prefix}}ship @user`
             },
             {
-                text: `${state.prefix}ship any_text_you_want another_piece_of_text`
+                text: `{{prefix}}ship any_text_you_want another_piece_of_text`
             },
         ];
         this.slash = {

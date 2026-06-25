@@ -2,6 +2,7 @@ const synchronizeSlashCommands = require('@frostzzone/discord-sync-commands');
 const glob = require("glob");
 
 const env = require("../../util/env-util");
+const envFill = require("../../util/env-fill");
 const configuration = require("../../config");
 
 const ReactionMessageUtil = require("../../util/reaction-msg-util");
@@ -26,10 +27,9 @@ class BotEvent {
             .filter(file => file.endsWith('.js'))
             .filter(file => file.substring(file.lastIndexOf("/")).match(/\.{1}/).length === 1);
 
+        // handle files
         let errors = '';
         let failed = false;
-
-        // handle files
         const slash = [];
         for (const fileName of files) {
             try {
@@ -42,33 +42,50 @@ class BotEvent {
                     };
                 }
 
+                // register all the commands in this file
                 for (const commandName in module) {
                     const commandClass = module[commandName];
                     const command = new commandClass(client, state);
 
-                    // Define a function to create a new instance of the command
-                    command.instantiate = () => {
-                        return new commandClass(client, state);
-                    };
-
-                    // Register command and aliases in state.commands map
+                    // Register command in state.commands map
+                    // check that this command name isnt taken by another command or an alias
+                    if (state.commands[command.name])
+                        throw new Error(`Command name ${command.name} has been taken by existing command`);
+                    if (state.alias[command.name])
+                        throw new Error(`Command name ${command.name} has been taken by command alias`);
+                    // register the command
                     state.commands[command.name] = command;
                     state.slash[command.name] = command.convertSlashCommand || (() => false);
-
                     if (command.slash) {
-                        command.slash.name = command.name;
-                        command.slash.description = command.slashdescription || command.description;
+                        // see if a separate slash name was defined & if it conflicts with another command
+                        if (command.slash.name && state.commands[command.slash.name] !== command)
+                            throw new Error(`Slash Command name ${command.slash.name} has been taken by existing command`);
+                        if (command.slash.name && state.alias[command.slash.name] && state.alias[command.slash.name] !== command)
+                            throw new Error(`Slash Command name ${command.slash.name} has been taken by command alias`);
+                        if (command.slash.name && slash.find(slashRegistry => slashRegistry.name === command.slash.name))
+                            throw new Error(`Slash Command name ${command.slash.name} has been taken by existing slash command`);
+                        // if there is no separate slash name/desc, use the command name/desc
+                        if (!command.slash.name) command.slash.name = command.name;
+                        if (!command.slash.description) command.slash.description = command.slashDescription || command.description;
                         slash.push(command.slash);
-                        console.log('Slash command', command.name, 'is queued...');
+                        console.log('Queued Slash command', command.name);
                     }
 
+                    // register aliases in state.alias map
                     if (Array.isArray(command.alias)) {
                         for (const alias of command.alias) {
-                            state.commands[alias] = command;
+                            // check that this alias isnt taken by an existing command name or an existing alias
+                            if (state.commands[alias])
+                                throw new Error(`Alias ${alias} for ${command.name} conflicts with command`);
+                            if (state.alias[alias])
+                                throw new Error(`Alias ${alias} for ${command.name} conflicts with alias ${state.alias[alias].name}`);
+                            // register the command
+                            state.alias[alias] = command;
+                            console.log('Aliased', command.name, "as", alias);
                         }
                     }
 
-                    console.log('Registered', command.name);
+                    console.log('Registered command', command.name);
                 }
             } catch (err) {
                 console.error('Failed to load', fileName, '\n', err.message);
@@ -84,12 +101,11 @@ class BotEvent {
         console.log('Registered slash commands!');
 
         // set our status
-        const baseStatusText = isInTestMode ? configuration.status.testing : configuration.status.normal;
-        const statusText = baseStatusText.replace(/{{[^}]+}}/g, (text) => env.get(text.replace(/[{}]/g, "")))
+        const statusText = isInTestMode ? configuration.status.testing : configuration.status.normal;
         client.user.setPresence({
             status: "online",
             activities: [{
-                name: statusText,
+                name: envFill(statusText),
                 type: "PLAYING"
             }]
         });

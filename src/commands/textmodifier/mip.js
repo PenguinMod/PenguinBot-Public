@@ -8,14 +8,14 @@ const shouldDoThing = (chance, thing) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client, state) {
-        super(client, state);
+    constructor(client) {
+        super(client);
         this.name = "mip";
         this.description = "mip your text.";
         this.textDescription = "Text to mip.";
         this.example = [
-            { text: `${state.prefix}mip Hello my text is here` },
-            { text: `${state.prefix}mip (replying to a message)` },
+            { text: `{{prefix}}mip Hello my text is here` },
+            { text: `{{prefix}}mip (replying to a message)` },
         ];
         this.setSlashDetail();
     }

@@ -37,6 +37,7 @@ const state = {
     commands: {},
     services: {}, // commands can add to this object themselves
     slash: {},
+    alias: {},
     prefix,
     isInTestMode,
     panelForcedDisabled: env.getBool("STATE_DEFAULT_PANELFORCEDDISABLED"),

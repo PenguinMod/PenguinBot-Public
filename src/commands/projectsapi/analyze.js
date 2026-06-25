@@ -75,6 +75,7 @@ const categories = {
     // internal extensions (incase it coulsnt be found)
     jg3d: ['3D', '#B100FE']
 };
+// TODO: See if this still matters with `fetch`
 // axios & node-fetch cannot get data URLs that are not encoded with base64
 // this is proven, i literally ran the code and axios & node-fetch both failed to fetch a URL encoded data URL
 // ex: data:application/javascript,%2F%2F%20Parcialmente%20nublado%20lluvia%20icon%20by%20Icons8%0Aconst%20weatherico
@@ -188,7 +189,7 @@ const collectProjectInfo = async id => {
 }
 
 class Command {
-    constructor(_, state) {
+    constructor() {
         this.name = "analyze";
         this.description = "Analyze a PenguinMod project by it's ID to get info about it's contents.";
         this.attributes = {
@@ -197,8 +198,8 @@ class Command {
             lockedToCommands: true,
         };
         this.example = [
-            { text: `${state.prefix}analyze 4023876129249`, image: "analyze_example1.png" },
-            { text: `${state.prefix}analyze (project id)` },
+            { text: `{{prefix}}analyze 4023876129249`, image: "analyze_example1.png" },
+            { text: `{{prefix}}analyze (project id)` },
         ];
         this.slash = {
             options: [{

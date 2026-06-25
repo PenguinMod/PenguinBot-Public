@@ -4,7 +4,7 @@ const ReactionMessageUtil = require("../../util/reaction-msg-util");
 const resolveEmoji = require("../../util/resolve-emoji");
 
 class Command {
-    constructor(client, state) {
+    constructor(client) {
         this.name = "reactionmsg";
         this.description = "Allows you to create reaction roles in <#1181097377730400287>.";
         this.attributes = {
@@ -13,7 +13,7 @@ class Command {
             spaceOwner: true,
         };
         this.example = [
-            { text: `(Reply to a message you sent) ${state.prefix}reactionmsg 🖐️` }
+            { text: `(Reply to a message you sent) {{prefix}}reactionmsg 🖐️` }
         ];
 
         this.client = client;

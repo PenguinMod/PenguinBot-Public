@@ -10,7 +10,7 @@ const tryCatch = require('./try-catch');
 const bypass = require("./bypass-characters");
 const isCompatibleImage = require('./compatible-images');
 
-const automodKeywords = tryCatch(() => require('../resources/basic_automod')) || [];
+const automodKeywords = tryCatch(() => require('../resources/basic-automod')) || [];
 
 /**
  * @classdesc Meant to be a helper for common discord-related functions.
@@ -110,8 +110,10 @@ class CommandUtility {
                     return [];
                 } else {
                     // get the PFP of the mentioned user, or the author
-                    const requestGif = isDonator && allowGif;
-                    const options = { format: !requestGif ? "png" : "gif", size: 256, dynamic: requestGif };
+                    // NOTE: Discord.js v13 either has some weird quirk with dynamic avatars or the api is just really weird.
+                    // Either way, we aren't going to request GIF avatars from discord because the api returns a silent error message
+                    // when the user doesn't have an animated avatar and we try to request one anyways.
+                    const options = { format: "png", size: 256 };
                     const imageUrl = mention ? mention.displayAvatarURL(options)
                         : (message.member?.avatarURL(options) || message.author.displayAvatarURL(options));
                     
@@ -119,7 +121,7 @@ class CommandUtility {
                     const attachmentFetch = await fetch(imageUrl);
                     const attachmentArrayBuffer = await attachmentFetch.arrayBuffer();
                     const attachmentBuffer = Buffer.from(attachmentArrayBuffer);
-                    return [requestGif ? attachmentBuffer : (await makePng(attachmentBuffer))];
+                    return [await makePng(attachmentBuffer)];
                 }
             }
         }

@@ -1,6 +1,7 @@
 const compatibleImages = [
     'png', 'jpeg', 'jpg', 'webp', 'avif', 'gif',
-    'heif', 'heic', 'x-tiff', 'tiff', 'quicktime'
+    'heif', 'heic', 'x-tiff', 'tiff', 'quicktime',
+    "svg", "svg+xml", "svg-xml",
 ];
 
 const isCompatibleImage = (mimeEnding) => {

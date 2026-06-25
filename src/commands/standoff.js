@@ -25,7 +25,7 @@ const loadFrames = async () => {
 loadFrames();
 
 class Command {
-    constructor(client, state) {
+    constructor(client) {
         this.name = "standoff";
         this.description = "Challenge another user. One user must shoot the other before the other one can.";
         this.attributes = {
@@ -34,7 +34,7 @@ class Command {
             lockedToCommands: true,
         };
         this.example = [
-            { text: `${state.prefix}standoff @user`, image: "standoff_example1.png" },
+            { text: `{{prefix}}standoff @user`, image: "standoff_example1.png" },
         ];
 
         /**

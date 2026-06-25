@@ -8,15 +8,15 @@ const shouldDoThing = (chance, thing) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client, state) {
-        super(client, state);
+    constructor(client) {
+        super(client);
         this.name = "joe";
         this.description = "Joe-ify your text.";
         this.textDescription = "Text to joe-ify.";
         this.example = [
-            { text: `${state.prefix}joe`, image: "joe_example1.png" },
-            { text: `${state.prefix}joe Hello my text is here` },
-            { text: `${state.prefix}joe (replying to a message)` },
+            { text: `{{prefix}}joe`, image: "joe_example1.png" },
+            { text: `{{prefix}}joe Hello my text is here` },
+            { text: `{{prefix}}joe (replying to a message)` },
         ];
         this.setSlashDetail();
     }

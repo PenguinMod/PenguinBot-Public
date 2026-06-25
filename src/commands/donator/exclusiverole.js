@@ -3,7 +3,6 @@ const DonatorRoleDB = new Database('./databases/donator-roles.json');
 
 const { Message, MessageEmbed, GuildEmoji } = require('discord.js');
 const configuration = require("../../config");
-const fetch = require("node-fetch");
 
 class Command {
     constructor() {

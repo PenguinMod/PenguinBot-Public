@@ -1,16 +1,16 @@
 const OptionType = require('../util/optiontype');
 
 class TextModifierCommand {
-    constructor(client, state) {
+    constructor(client) {
         this.name = "textmodifier";
-        this.description = `Base command for text modifiers like ${state.prefix}uwu`;
+        this.description = `Base command for text modifiers`;
         this.textDescription = "Text to modify.";
         this.attributes = {
             unlisted: false,
             permission: 0,
         };
         this.example = [
-            { text: `${state.prefix}textmodifier (replying to a message)` },
+            { text: `{{prefix}}textmodifier (replying to a message)` },
         ];
         this.setSlashDetail();
 
