@@ -1,6 +1,7 @@
 const { MessageActionRow, MessageButton } = require('discord.js');
+
 const OptionType = require('../util/optiontype');
-const math = require('mathjs');
+const { mathEvaluateRaw } = require("../util/math-evaluate.js");
 
 class Command {
     constructor() {
@@ -157,7 +158,7 @@ class Command {
 
             if (i.customId === "result") {
                 try {
-                    data = math.evaluate(data).toString();
+                    data = mathEvaluateRaw(data);
                 } catch (e) {
                     data = "";
                     extra = "An error occurred! Please click on the \"AC\" button to restart.";

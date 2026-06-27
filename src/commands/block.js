@@ -30,21 +30,21 @@ class Command {
     }
 
     async invoke(message, args) {
-        if (!args[0]) return message.reply('Please provide blocks written in [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax).');
+        if (!args[0]) return message.reply('Please provide blocks written in [scratchblocks syntax](<https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax>).');
 
         try {
             const renderedBuffer = await ScratchBlocks.render(args.join(" "));
             if (!renderedBuffer)
                 return message.reply('The resulting image is blank.'
-                    + "\n" + 'Please provide blocks written in [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax).');
+                    + "\n" + 'Please provide blocks written in [scratchblocks syntax](<https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax>).');
             message.reply({
                 content: `-# Rendered by <@${message.author.id}>`,
                 files: [renderedBuffer]
             });
         } catch (err) {
             if (`${err}`.includes("error while reading from input stream"))
-                return message.reply("That script is too complicated for me to render it properly."
-                    + " " + 'Make sure you are entering valid [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax).');
+                return message.reply("Sorry, that script was too complicated for me to render."
+                    + " " + 'Make sure you are entering valid [scratchblocks syntax](<https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax>).');
             throw err;
         }
     }

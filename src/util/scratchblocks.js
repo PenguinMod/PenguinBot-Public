@@ -106,7 +106,7 @@ class ScratchBlocks {
         // Create a new thread and assign it a temp file to use for the png
         const requestId = uuid.v4();
         const tempFile = path.join(__dirname, `../../temp/block-${requestId}.png`);
-        const workerPath = path.join(__dirname, "../resources/scratchblocks.worker.js");
+        const workerPath = path.join(__dirname, "../resources/worker/scratchblocks.worker.js");
         await runNewThread(workerPath, path.resolve(__dirname, __filename), {
             requestId,
             tempFile,
