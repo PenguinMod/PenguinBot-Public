@@ -81,6 +81,9 @@ const configuration = {
             "1102050296265445436", // Server Booster
         ],
 
+        // Role ID automatically given to members when they join.
+        memberRole: "1127013285510787224",
+
         // Channels checked for in the lockedToCommands property (excluding commands channel from above & threads within that channel)
         lockedToCommands: [
             // These are the channels allowed in PenguinMod's server:
