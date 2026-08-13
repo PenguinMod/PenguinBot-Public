@@ -6,9 +6,12 @@ class BotEvent {
         this.once = false;
 
         this.client = client;
+
+        this.productionOnly = true;
     }
 
     async invoke(client, state, member) {
+        if (!configuration.permissions.memberRole) return;
         try {
             await member.roles.add(configuration.permissions.memberRole);
         } catch (err) {
