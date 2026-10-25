@@ -1,10 +1,13 @@
+const path = require('path');
+
+const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors');
-const path = require('path');
-const app = express();
 
-const env = require("../../util/env-util");
+const env = require("../../util/env-util.js");
+const BotState = require("../../util/bot-state.js");
+
+const app = express();
 
 class BotEvent {
     constructor(client) {
@@ -39,9 +42,6 @@ class BotEvent {
         app.get('/robots.txt', async function (_, res) {
             res.sendFile(path.join(__dirname, './../../admin/robots.txt'));
         });
-        app.get('/memes', async function (_, res) {
-            res.sendFile(path.join(__dirname, './../../admin/memes.html'));
-        });
         app.get('/panel', async function (_, res) {
             res.sendFile(path.join(__dirname, './../../admin/panel.html'));
         });
@@ -67,7 +67,10 @@ class BotEvent {
             handleDoAction(req, res, client, state);
         });
         
-        app.listen(port, () => console.log('Started web panel on port', port));
+        if (BotState.shuttingDown)
+            return;
+        const server = app.listen(port, () => console.log('Started web panel on port', port));
+        BotState.server = server;
     }
 }
 

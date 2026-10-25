@@ -1,7 +1,10 @@
 const discord = require("discord.js");
 
-class Command {
-    constructor(client) {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "ping";
         this.description = "Get the response time of the bot.";
         this.attributes = {
@@ -9,9 +12,6 @@ class Command {
             permission: 0,
             lockedToCommands: true,
         };
-
-        /** @type {discord.Client} */
-        this.client = client;
     }
 
     async invoke(message) {

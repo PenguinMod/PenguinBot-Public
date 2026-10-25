@@ -1,10 +1,14 @@
 const Database = require('sync-json-database');
 const PingResponseDB = new Database('./databases/ping-responses.json');
 const PingResponseChannelsDB = new Database('./databases/ping-res-channels.json');
-const isChannel = /^<#\d+>$/
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+const isChannel = /^<#\d+>$/;
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "pingresponse";
         this.description = "Set a message when users ping you, exclusive to supporters.";
         this.attributes = {

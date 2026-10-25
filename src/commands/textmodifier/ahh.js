@@ -1,8 +1,8 @@
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 class AhhCommand extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "ahh";
         this.description = "ahh your text.";
         this.textDescription = "Text to ahh.";

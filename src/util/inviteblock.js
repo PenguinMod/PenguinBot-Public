@@ -1,18 +1,18 @@
-const Discord = require('discord.js');
-const commandUtility = require("./utility.js");
+const discord = require('discord.js');
 const { default: axios } = require('axios');
 
 const configuration = require("../config.js");
+
 const env = require("./env-util.js");
+const BotState = require("./bot-state.js");
+const DiscordUtility = require("./utility-discord.js");
 
 /**
- * @param {Discord.Message} message
- * @param {Discord.Client} client
- * @param {commandUtility} commandUtility
+ * @param {discord.Message} message
  */
-module.exports = async (message, client, commandUtility) => {
-    const isAllowedServer = message.guildId === env.get("SERVER_ID") ||
-        (env.getBool("CHECK_FOR_DEFAULT_TEST_SERVERS") && message.guildId === "746156168560508950");
+const handleInviteBlock = async (message) => {
+    const isAllowedServer = configuration.servers.production.includes(message.guildId) ||
+        (configuration.servers.testing.includes(message.guildId));
     if (!isAllowedServer) return;
 
     // ignore #team-wanted
@@ -25,9 +25,10 @@ module.exports = async (message, client, commandUtility) => {
     if (!message.author) return;
     if (message.system) return;
 
-    if (commandUtility.getPermissionLevel(message) >= 2) return;
+    if (DiscordUtility.getPermissionLevel(message) >= 2) return;
 
-    const containsDscGG = commandUtility.containsInviteShorteners(message.content);
+    // TODO: Make this configurable
+    const containsDscGG = DiscordUtility.containsInviteShorteners(message.content);
     if (containsDscGG) {
         await message.delete();
         message.author.send(`:warning: **Discord Invite URL shorteners are not allowed in the ${configuration.nameReference} server.**`
@@ -35,10 +36,11 @@ module.exports = async (message, client, commandUtility) => {
         return;
     }
 
-    const invites = commandUtility.extractInvites(message.content, {
+    const invites = DiscordUtility.extractInvites(message.content, {
         includeShorteners: false,
         inviteCodes: true
     });
+    // TODO: Make this configurable
     if (invites.length > 2) {
         await message.delete();
         message.author.send(`:warning: You sent too many invites in one message in the ${configuration.nameReference} server. Use less invites!`);
@@ -48,8 +50,8 @@ module.exports = async (message, client, commandUtility) => {
     // TODO: Limit the amount of invites sent. If a user sends too many NSFW invites, its likely a hacked account and should be autobanned.
     const messageAuthorText = `<@${message.author.id}> (${message.author.id})`;
     const guildIsNSFW = async (inviteCode, guildName) => {
-        const logChannel = client.channels.cache.get(configuration.channels.automod);
-        const embed = new Discord.MessageEmbed();
+        const logChannel = BotState.client.channels.cache.get(configuration.channels.automod);
+        const embed = new discord.MessageEmbed();
         embed.setColor('RED');
         embed.setTitle('User sent NSFW server invite');
         embed.setFields([
@@ -82,12 +84,15 @@ module.exports = async (message, client, commandUtility) => {
             console.error("Failed to timeout member for NSFW invite link", message.author.id)
         }
     };
+    // TODO: Make this configurable whether to even do nsfw check or not
     for (const inviteCode of invites) {
         try {
+            // TODO: This looks really weird. Does discord.js not have a way to do this natively?
             const response = await axios.get(`https://discord.com/api/invites/${inviteCode}`);
             const guild = response.data.guild;
             const guildName = String(guild.name || '');
 
+            // TODO: Make this configurable (either name and nsfw check, or solo name check, solo nsfw check)
             // 1: EXPLICIT, 3: AGE_RESTRICTED
             const guildNSFW = guild.nsfw === true || guild.nsfw_level === 1 || guild.nsfw_level === 3;
             // NOTE: Maybe at some point we should add more words to this, 🤷‍♂️
@@ -100,3 +105,5 @@ module.exports = async (message, client, commandUtility) => {
         }
     }
 };
+
+module.exports = handleInviteBlock;

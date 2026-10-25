@@ -1,19 +1,21 @@
 const discord = require("discord.js");
 
-const Canvas = require("canvas");
+const Canvas = require("skia-canvas");
 
+const BaseCommand = require("../../classes/basecommand.js");
 const CharacterManager = require("../../util/character-manager.js");
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "charactertalk";
         this.description = "In development";
         this.attributes = {
             helpIcon: "😃",
+            unlisted: true, // TODO: Temp
             permission: 0,
         };
 
-        this.client = client;
         this.alias = ["talkcharacter", "chartalk", "talkchar"];
     }
 

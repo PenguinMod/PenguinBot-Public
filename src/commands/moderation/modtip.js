@@ -1,10 +1,16 @@
+const discord = require("discord.js");
+
 const Database = require('sync-json-database');
 const ModMailDB = new Database('./databases/anonymous-modmail-db.json');
 
-const { MessageEmbed } = require("discord.js");
+const env = require("../../util/env-util.js");
+const DiscordUtility = require("../../util/utility-discord.js");
 
-class Command {
-    constructor(client) {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "modtip";
         this.description = "Send an anonymous message to a member in the server. Will be logged to other mods, and the user can reply back.";
         this.attributes = {
@@ -14,16 +20,18 @@ class Command {
                 '1176024649390366780',
                 '1038252107846930513',
                 '1255097127600656484',
-                '1139749855913316474'
+                '1139749855913316474',
+                '1551460701044867172',
             ],
         };
-        
-        this.client = client;
     }
 
     async invoke(message, args) {
+        if (!env.getBool("USE_MOD_TIP_DMS"))
+            throw new Error("USE_MOD_TIP_DMS is disabled on this host");
+
         const moderator = message.author;
-        const moderatorDisplayImage = moderator.avatarURL({ format: 'png' });
+        const moderatorDisplayImage = DiscordUtility.avatarURL(moderator, { format: 'png' });
         const mentionedMember = message.mentions.members.at(0) ?? args[0];
         if (!mentionedMember) return message.reply("Please mention a member to send a tip to.");
 
@@ -33,7 +41,7 @@ class Command {
         if (tipMessage.length > 2048) return message.reply("The message is too long. Please shorten it.");
         
         // create a log embed
-        const embedForLog = new MessageEmbed();
+        const embedForLog = new discord.MessageEmbed();
         embedForLog.setTitle("Moderator Tip Sent");
         embedForLog.setColor("#ffcd03");
         embedForLog.setDescription(tipMessage);
@@ -42,7 +50,7 @@ class Command {
 
         // create the user DM
         // NOTE: Discord does not seem to provide a way to check whether or not you can DM someone, so we just try to send this DM.
-        const embedForDM = new MessageEmbed();
+        const embedForDM = new discord.MessageEmbed();
         embedForDM.setTitle("Anonymous Tip");
         embedForDM.setColor("#ff0000");
         embedForDM.setDescription(`**You've received a moderator message from PenguinMod's Discord server.**\nBe careful in the future to follow the rules of the PenguinMod community.\n\n**Moderator Message**:\n${tipMessage}\n\nPlease **REPLY to THIS MESSAGE** to respond.`);

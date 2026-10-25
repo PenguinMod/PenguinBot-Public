@@ -4,6 +4,8 @@ const { stringify } = require('../../util/json-circular.js');
 
 const Lua = require("../../util/lua.js");
 
+const MAX_BYTES = 1 * 1024 * 1024 // 1mb
+
 const runWorker = async (data) => {
     const { luaCode } = data;
     return await Lua._evaluate(luaCode);
@@ -13,7 +15,10 @@ const runWorker = async (data) => {
 process.on('message', async (data) => {
     try {
         const result = await runWorker(data);
-        process.send({ success: true, result: stringify(result) });
+        const serializedResult = stringify(result);
+        if (Buffer.byteLength(serializedResult, 'utf8') > MAX_BYTES) 
+            throw new Error("Result is larger than 1 MB");
+        process.send({ success: true, result: serializedResult });
     } catch (err) {
         process.send({ success: false, error: err.message });
     } finally {

@@ -1,7 +1,10 @@
 const configuration = require("../../config");
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "delmsg";
         this.description = "you cant use it loser";
         this.attributes = {
@@ -22,7 +25,7 @@ class Command {
         if (!configuration.permissions.delmsg.includes(message.author.id))
             return this.reject(message);
 
-        const replyMsg = await util.getReply(message);
+        const replyMsg = await util.getReply();
         return replyMsg.delete();
     }
 }

@@ -2,7 +2,7 @@ const discord = require('discord.js');
 const Database = require('sync-json-database');
 const ReactionMessageDB = new Database('./databases/spaces-reactionmsg.json');
 
-const CommandUtility = require("./utility.js");
+const DiscordUtility = require("./utility-discord.js");
 
 class ReactionMessageUtil {
     static getInvalidKeywordReason(keyword) {
@@ -190,7 +190,7 @@ class ReactionMessageUtil {
                 if (!reaction) continue;
 
                 const activeUsers = this.getUsersOfRole(spaceId, keyword); // userIds
-                const realUsers = await CommandUtility.getReactingUsers(reaction); // user objects
+                const realUsers = await DiscordUtility.getReactingUsers(reaction); // user objects
                 const realUserIds = realUsers.map(user => user.id);
                 const totalUsersToEvaluate = [].concat(activeUsers, realUserIds);
 

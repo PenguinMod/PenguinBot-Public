@@ -1,7 +1,9 @@
-const FormatTime = require('../../util/format-time');
+const FormatTime = require('../../util/format-time.js');
+const BaseCommand = require("../../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "cooldown";
         this.description = "Set a cooldown for the channel. Time is in seconds.";
         this.attributes = {

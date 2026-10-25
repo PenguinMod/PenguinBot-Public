@@ -1,9 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const Canvas = require('canvas');
-const GIFEncoder = require('gifencoder');
-const decodeGif = require("../util/decode-gif");
+const Canvas = require('skia-canvas');
+const GIFEncoder = require('gif-encoder-2');
+
+const decodeGif = require("../../util/decode-gif.js");
 
 const processGif = async (data) => {
     const { workerSrc, commandSrc, tempDir, imagePath, usingGif, width, height, args, serializableData } = data;
@@ -21,7 +22,8 @@ const processGif = async (data) => {
             image = await Canvas.loadImage(buffer);
         }
     }
-    const canvas = Canvas.createCanvas(width, height);
+    // TODO: Stop separating canvas from command scripts, its unnecessary and confusing
+    const canvas = new Canvas.Canvas(width, height);
     const ctx = canvas.getContext('2d');
 
     const encoder = new GIFEncoder(width, height);

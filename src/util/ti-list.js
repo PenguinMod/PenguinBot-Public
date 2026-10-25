@@ -2,129 +2,106 @@ module.exports = {
     // https://toneindicators.carrd.co/
     // https://tonetaglist.carrd.co/
     "!": "Excited",
-    j: "Joking",
-    hj: "Half Joking",
-    s: "Sarcastic",
-    sarc: "Sarcastic", // Alias for s
-    gen: "Genuine",
-    g: "Genuine", // Alias for gen,
-    genq: "Genuine Question",
-    gq: "Genuine Question", // Alias for genq
-    srs: "Serious",
-    nsrs: "Non-Serious",
-    pos: "Positive Connotation",
-    pc: "Positive Connotation", // Alias for pos
-    neu: "Neutral Connotation",
-    neg: "Negative Connotation",
-    nc: "Negative Connotation", // Alias for neg
-    p: "Platonic",
-    r: "Romantic",
     a: "Alterous",
-    c: "Copypasta",
-    l: "Lyrics",
-    ly: "Lyrics", // Alias for l
-    lyr: "Lyrics", // Alias for l
-    lh: "Light-Hearted",
-    nm: "Not Mad",
-    lu: "A Little Upset",
-    nbh: "Not Directed At Anybody Here",
-    nay: "Not Directed At You",
-    ay: "Directed At You",
-    nsb: "Not Subtweeting",
-    nx: "Non-Sexual Intent",
-    nsx: "Non-Sexual Intent", // Alias for nx
-    rh: "Rhetorical Question",
-    rt: "Rhetorical Question", // Alias for rh
-    t: "Teasing",
-    ij: "Inside Joke",
-    m: "Metaphorically",
-    li: "Literally",
-    hyp: "Hyperbole",
-    ex: "Exaggeration",
-    f: "Fake",
-    q: "Quote",
-    cb: "Clickbait",
-    ref: "Reference",
-    nf: "Not Forced",
-    nbr: "Not Being Rude",
-    ot: "Off-Topic",
-    nj: "Not Joking",
-    naj: "Not A Joke",
-    th: "Threat",
-    joe: "Joe", // :bart:
-    spoiler: "Spoiler",
-    sp: "Spoiler", // Alias for spoiler
-    tw: "Trigger Warning (sensitive content)",
-    cw: "Content Warning (sensitive content)",
-    ft: "Fixing Typo",
-    nmh: "Not My Headcanon",
-    v: "Vague",
     ao:	"An Order",
     av:	"Venting",
+    ay: "Directed At You",
     br:	"Bragging",
+    c: "Copypasta",
     calm: "Calm / Calmly",
+    cb: "Clickbait",
     cel: "Celebratory",
-    co: "Comforting",
     cf:	"Comforting", // Alias for co
+    co: "Comforting",
     curi: "Curious/Curiously",
+    cw: "Content Warning (sensitive content)",
+    ex: "Exaggeration",
+    f: "Fake",
     fam: "Familial",
     fl: "Flirting",
+    ft: "Fixing Typo",
     fx: "Flexing/Bragging",
-    gentle:	"Gentle / Gently",
-    gs: "Genuine Suggestion",
+    g: "Genuine", // Alias for gen,
+    gen: "Genuine",
+    genq: "Genuine Question",
     gens: "Genuine Suggestion", // Alias for gs
+    gentle:	"Gentle / Gently",
+    gq: "Genuine Question", // Alias for genq
+    gs: "Genuine Suggestion",
+    hj: "Half Joking",
+    hyp: "Hyperbole",
+    ij: "Inside Joke",
     info: "Information or Informing",
     irre: "Irrelevant",
+    j: "Joking",
     jk: "Just Kidding",
+    joe: "Joe", // :bart:
     jw: "Just Wondering",
+    l: "Lyrics",
+    lh: "Light-Hearted",
+    li: "Literally",
+    lu: "A Little Upset",
+    ly: "Lyrics", // Alias for l
+    lyr: "Lyrics", // Alias for l
+    m: "Metaphorically",
     nabr: "Not Bragging",
-    nfl: "Not Flirting",
     nafx: "Not Flexing/Bragging",
+    naj: "Not A Joke",
     nao: "Not An Order",
-    x: "Sexual Intent (please report this)",
-    sx: "Sexual Intent (please report this)", // Alias for x
-    
-    // TODO: add these
-    // /naq	not a question (see also: /st or /state)
-    // /nav	not a vent
-    // /nay	not at you
-    // /nbh	nobody here
-    // /nbr	not being rude
-    // /neg or /nc	negative connotation
-    // /neu	neutral connotation
-    // /nf	not fake
-    // /nfl or	not flirting
-    // /nm	not mad
-    // /nmay	not mad at you, to specify that someone isnt mad at someone else
-    // /npa	not passive aggressive
-    // /nsb	not subtweeting
-    // /nsrs	not serious
-    // /nsx or /nx	nonsexual or not sexual intent
-    // /ny	not yelling
-    // /ot	off topic
-    // /p	platonic
-    // /pa	passive aggressive
-    // /para	paraphrase
-    // /pf	playful
-    // /pos or /pc	positive connotation
-    // /q	quote
-    // /qp	queerplatonic
-    // /r	romantic
-    // /rh or /rt	rhetorical question
-    // /s or /sarc	sarcastic / sarcastically
-    // /sbh	somebody here
-    // /sbtw	subtweeting
-    // /srs	serious
-    // /st or /state	statement (see also: /naq)
-    // /sx or /x	sexual intent
-    // /t	teasing
-    // /tan	tangent
-    // /th	threat
-    // /tic	tic, for when something typed out was unintentional due to being a tic
-    // /ts	to self
-    // /u	upset
-    // /unin	unintentional
-    // /unre	unrelated
-    // /vu	very upset
-    // /w	warm / warmth
+    naq: "Not A Question",
+    nav: "Not A Vent",
+    nay: "Not Directed At You",
+    nbh: "Not Directed At Anybody Here",
+    nbr: "Not Being Rude",
+    nc: "Negative Connotation", // Alias for neg
+    neg: "Negative Connotation",
+    neu: "Neutral Connotation",
+    nf: "Not Forced or Not Fake",
+    nfl: "Not Flirting",
+    nj: "Not Joking",
+    nm: "Not Mad",
+    nmay: "Not Mad At You",
+    nmh: "Not My Headcanon",
+    npa: "Not Passive Aggressive",
+    nsb: "Not Subtweeting",
+    nsrs: "Non-Serious",
+    nsx: "Non-Sexual Intent", // Alias for nx
+    nx: "Non-Sexual Intent",
+    ny: "Not Yelling",
+    ot: "Off-Topic",
+    p: "Platonic",
+    pa: "Passive Aggressive",
+    para: "Paraphrase",
+    pc: "Positive Connotation", // Alias for pos
+    pf: "Playful",
+    pos: "Positive Connotation",
+    q: "Quote",
+    qp: "Queerplatonic",
+    r: "Romantic",
+    ref: "Reference",
+    rh: "Rhetorical Question",
+    rt: "Rhetorical Question", // Alias for rh
+    s: "Sarcastic",
+    sarc: "Sarcastic", // Alias for s
+    sbh: "Somebody Here",
+    sbtw: "Subtweeting",
+    sp: "Spoiler", // Alias for spoiler
+    spoiler: "Spoiler",
+    srs: "Serious",
+    st: "Statement",
+    state: "Statement", // Alias for st
+    sx: "Sexual Intent", // Alias for x
+    t: "Teasing",
+    tan: "Tangent",
+    th: "Threat",
+    tic: "Tic (likely unintentional)",
+    ts: "To Self",
+    tw: "Trigger Warning (sensitive content)",
+    u: "Upset",
+    unin: "Unintentional",
+    unre: "Unrelated",
+    v: "Vague",
+    vu: "Very Upset",
+    w: "Warm",
+    x: "Sexual Intent",
 };

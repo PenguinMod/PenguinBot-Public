@@ -1,14 +1,15 @@
-const { Jimp: jimp, JimpMime } = require('jimp');
 const OmgGif = require("omggif");
+const { loadImage } = require('skia-canvas');
+const { Jimp, JimpMime } = require('jimp');
+
 const GifReader = OmgGif.GifReader;
-const { loadImage } = require('canvas');
 
 const decodeGif = async (buffer, exportType) => {
     const gifReader = new GifReader(new Uint8Array(buffer));
     const numFrames = gifReader.numFrames();
     const gifFrames = [];
 
-    let mainImage = new jimp({ width: gifReader.width, height: gifReader.height });
+    let mainImage = new Jimp({ width: gifReader.width, height: gifReader.height });
 
     for (let i = 0; i < numFrames; i++) {
         const framePixels = [];
@@ -40,7 +41,7 @@ const decodeGif = async (buffer, exportType) => {
         // Handle disposal method
         switch (disposal) {
             case 2: // "Return to background", blank out the current frame
-                mainImage = new jimp({ width: gifReader.width, height: gifReader.height });
+                mainImage = new Jimp({ width: gifReader.width, height: gifReader.height });
                 break;
             default:
                 // we dont implement method 3, see below for info

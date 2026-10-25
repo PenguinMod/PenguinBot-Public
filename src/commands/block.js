@@ -1,10 +1,12 @@
 const discord = require("discord.js");
 
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 const ScratchBlocks = require("../util/scratchblocks.js");
-const OptionType = require('../util/optiontype');
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "block";
         this.description = "Generate images of blocks from [scratchblocks syntax](https://en.scratch-wiki.info/wiki/Block_Plugin/Syntax)";
         this.slashDescription = "Generate images of blocks from scratchblocks syntax";

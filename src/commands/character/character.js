@@ -1,5 +1,6 @@
 const discord = require("discord.js");
 
+const BaseCommand = require("../../classes/basecommand.js");
 const CharacterManager = require("../../util/character-manager.js");
 
 const getHsvFromRgb = hexCode => {
@@ -30,8 +31,9 @@ const getHsvFromRgb = hexCode => {
     return { h, s, v };
 }
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "character";
         this.description = "See the index of characters on the bot.";
         this.descriptionLong = "See the index of characters on the bot."
@@ -42,10 +44,10 @@ class Command {
         this.attributes = {
             helpIcon: "😃",
             lockedToCommands: true,
+            unlisted: true, // TODO: Temp
             permission: 0,
         };
 
-        this.client = client;
         this.alias = ["characterget", "getcharacter", "charget", "char"];
     }
 

@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 const shouldDoThing = (chance, thing) => {
     if (Math.round(Math.random() * chance) === 0) {
@@ -8,8 +8,8 @@ const shouldDoThing = (chance, thing) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "uwu";
         this.description = "UwU-ify your text. Why must I be forced to program these things.";
         this.textDescription = "Text to uwu-ify.";

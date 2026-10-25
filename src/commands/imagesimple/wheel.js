@@ -1,9 +1,15 @@
-const { createCanvas, loadImage } = require('canvas');
-const OptionType = require('../../util/optiontype');
 const discord = require("discord.js");
 
-class WheelCommand {
+const Canvas = require("skia-canvas");
+
+const OptionType = require('../../util/optiontype.js');
+const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
+
+class WheelCommand extends BaseCommand {
     constructor() {
+        super();
         this.name = "wheel";
         this.description = "Spin the wheel and see which option it lands on! Use commas to seperate options.";
         this.attributes = {
@@ -57,21 +63,21 @@ class WheelCommand {
 
         const percentage = (1 / options.length) * 100; // Calculate the percentage
 
-        const wheelResultBase = await loadImage('assets/wheel_finished.png');
-        const canvas = createCanvas(wheelResultBase.width, wheelResultBase.height);
+        const wheelResultBase = await Canvas.loadImage('assets/wheel_finished.png');
+        const canvas = new Canvas.Canvas(wheelResultBase.width, wheelResultBase.height);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(wheelResultBase, 0, 0);
         ctx.font = `28px Sans`;
         ctx.textAlign = "center";
         ctx.textBaseline = "top";
         ctx.fillStyle = 'black';
-        ctx.fillText(chosenOption, 128, 85, 240);
+        SkiaCanvasUtil.fillTextWrapped(ctx, chosenOption, 128, 85, 240, 28);
         ctx.font = `10px Sans`;
         ctx.textAlign = "left";
         ctx.textBaseline = "bottom";
         ctx.fillStyle = 'white';
-        ctx.fillText(`Requested by ${message.author.tag} | ${percentage.toFixed(2)}%`, 4, 256, 256 - 4);
-        const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'wheel_result.png');
+        SkiaCanvasUtil.fillText(ctx, `Requested by ${message.author.tag} | ${percentage.toFixed(2)}%`, 4, 256, 256 - 4);
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'wheel_result.png');
 
         setTimeout(() => {
             wheelMessage.edit({

@@ -1,9 +1,13 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require("discord.js");
+const discord = require("discord.js");
+
 const Database = require('sync-json-database');
 const SusDB = new Database('./databases/suspicious-users.json');
 
-class Command {
-    constructor(client) {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "sus";
         this.description = "Command to handle suspicious users.";
         this.attributes = {
@@ -14,11 +18,10 @@ class Command {
                 '1038252107846930513',
                 '1174360726765305987',
                 '1109289217152000030',
-                '1139749855913316474'
+                '1139749855913316474',
+                '1551460701044867172',
             ],
         };
-
-        this.client = client;
     }
 
     async fetchUserName(userId) {
@@ -46,23 +49,23 @@ class Command {
         const userCount = userContent.length;
         const maxPages = Math.ceil(userCount / userOnOnePage);
 
-        const embed = new MessageEmbed()
+        const embed = new discord.MessageEmbed()
             .setTitle('Suspicious User List')
             .setColor('GOLD')
             .setTimestamp();
 
         const buttonRow = [
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: 'last',
                     style: 'PRIMARY',
                     label: "◀",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: 'next',
                     style: 'PRIMARY',
                     label: "▶",
-                })
+                }),
             ])
         ];
 
@@ -118,9 +121,8 @@ class Command {
     }
 
     async invoke(message, args, util) {
-        const prefix = util.request("prefix");
         if (args.length < 1) {
-            return message.reply(`Usage: \`${prefix}sus <add/remove/list> userID (reason if adding)\``);
+            return message.reply(`Usage: \`${util.prefix}sus <add/remove/list> userID (reason if adding)\``);
         }
 
         const action = args[0].toLowerCase();

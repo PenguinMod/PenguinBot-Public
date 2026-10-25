@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 const shouldDoThing = (chance, thing) => {
     if (Math.round(Math.random() * chance) === 0) {
@@ -8,8 +8,8 @@ const shouldDoThing = (chance, thing) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "joe";
         this.description = "Joe-ify your text.";
         this.textDescription = "Text to joe-ify.";
@@ -50,7 +50,7 @@ class Command extends TextModifierCommand {
             '<:joe:1203485574674128977>',
             '<:joe_stare:1203485609734185011>',
             '<:joekay:1203485636930179142>',
-            '<:idontjoe:1203485654470631434>',
+            '<:joe:1203485574674128977>',
             '<:juuuuuh:1203488569440870430>',
             ' Joe',
             ' I love Joe',

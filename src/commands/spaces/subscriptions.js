@@ -1,10 +1,12 @@
-const configuration = require("../../config");
-const resolveEmoji = require("../../util/resolve-emoji");
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
-const env = require("../../util/env-util");
+const configuration = require("../../config.js");
 
-class Command {
+const env = require("../../util/env-util.js");
+const BaseCommand = require("../../classes/basecommand.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "subscriptions";
         this.description = "See all roles you are subscribed to in <#1181097377730400287>.";
         this.attributes = {

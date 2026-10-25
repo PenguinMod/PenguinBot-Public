@@ -1,5 +1,10 @@
-class Command {
+const BotState = require("../../util/bot-state.js");
+const HostUtility = require("../../util/utility-host.js");
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "restart";
         this.description = "Restart the bot";
         this.attributes = {
@@ -8,13 +13,15 @@ class Command {
         };
     }
 
-    async invoke(message, _, util) {
-        const shouldntRestart = util.request('preventRuntimeChanges');
+    async invoke(message) {
+        const shouldntRestart = BotState.request('preventRuntimeChanges');
         if (shouldntRestart)
             return message.reply('Variable `PREVENT_UPDATES` is set to true on this host.');
 
-        await message.reply('Restarting bot... <:juice:1158872031211831377>');
-        process.exit(50);
+        BotState.persist("restartMessage", message.id);
+        BotState.persist("restartChannel", message.channel.id);
+        await message.reply('Restarting bot...');
+        await HostUtility.restart();
     }
 }
 

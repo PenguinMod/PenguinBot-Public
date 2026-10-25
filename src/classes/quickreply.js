@@ -1,10 +1,18 @@
-class QuickReplyCommand {
+const BaseCommand = require("./basecommand.js");
+
+class QuickReplyCommand extends BaseCommand {
     constructor() {
-        this.message = 'Quick reply text.';
+        super();
         this.attributes = {
             unlisted: false,
             permission: 0,
         };
+
+        /**
+         * The message to reply with upon usage.
+         * @type {string}
+         */
+        this.message = 'Quick reply text.';
     }
 
     invoke(message) {

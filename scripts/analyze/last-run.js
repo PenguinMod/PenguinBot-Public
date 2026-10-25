@@ -1,5 +1,135 @@
-// NOTE: Strip out the nicer defined ones
+// NOTE: This file is rewritten automatically, but you can generally use this file to override any buggy/garbage entries.
 const LAST_RUN = {
+    "motion": {
+        "name": "Motion",
+        "color": "#4C97FF",
+        "id": "motion",
+        "hsv": {
+            "h": 214.86033519553072,
+            "s": 0.7019607843137254,
+            "v": 1
+        }
+    },
+    "looks": {
+        "name": "Looks",
+        "color": "#9966FF",
+        "id": "looks",
+        "hsv": {
+            "h": 260,
+            "s": 0.6,
+            "v": 1
+        }
+    },
+    "sound": {
+        "name": "Sound",
+        "color": "#D65CD6",
+        "id": "sound",
+        "hsv": {
+            "h": 300,
+            "s": 0.5700934579439253,
+            "v": 0.8392156862745098
+        }
+    },
+    "event": {
+        "name": "Events",
+        "color": "#FFD500",
+        "id": "event",
+        "hsv": {
+            "h": 50.11764705882353,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "control": {
+        "name": "Control",
+        "color": "#FFAB19",
+        "id": "control",
+        "hsv": {
+            "h": 38.086956521739125,
+            "s": 0.9019607843137255,
+            "v": 1
+        }
+    },
+    "sensing": {
+        "name": "Sensing",
+        "color": "#4CBFE6",
+        "id": "sensing",
+        "hsv": {
+            "h": 195.19480519480518,
+            "s": 0.6695652173913044,
+            "v": 0.9019607843137255
+        }
+    },
+    "operator": {
+        "name": "Operators",
+        "color": "#40BF4A",
+        "id": "operator",
+        "hsv": {
+            "h": 124.72440944881889,
+            "s": 0.6649214659685864,
+            "v": 0.7490196078431373
+        }
+    },
+    "variables": {
+        "name": "Variables",
+        "color": "#FF8C1A",
+        "id": "variables",
+        "hsv": {
+            "h": 29.868995633187776,
+            "s": 0.8980392156862745,
+            "v": 1
+        }
+    },
+    "lists": {
+        "name": "Lists",
+        "color": "#FF661A",
+        "id": "lists",
+        "hsv": {
+            "h": 19.912663755458514,
+            "s": 0.8980392156862745,
+            "v": 1
+        }
+    },
+    "procedures": {
+        "name": "My Blocks",
+        "color": "#FF6680",
+        "id": "procedures",
+        "hsv": {
+            "h": 349.80392156862746,
+            "s": 0.6,
+            "v": 1
+        }
+    },
+    "jg3d": {
+        "name": "3D",
+        "color": "#B100FE",
+        "id": "jg3d",
+        "hsv": {
+            "h": 281.81102362204723,
+            "s": 1,
+            "v": 0.996078431372549
+        }
+    },
+    "cst12293d": {
+        "name": "CST 3D",
+        "color": "#2a47e8",
+        "id": "cst12293d",
+        "hsv": {
+            "h": 230.8421052631579,
+            "s": 0.8189655172413793,
+            "v": 0.9098039215686274
+        }
+    },
+    "cst1229extendable": {
+        "name": "Extendable Blocks",
+        "color": "#0FBD8C",
+        "id": "cst1229extendable",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
     "DebuggerExtensionTS": {
         "id": "DebuggerExtensionTS",
         "url": "https://extensions.penguinmod.com/extensions/TheShovel/shoveldebugger.js",
@@ -893,7 +1023,7 @@ const LAST_RUN = {
     },
     "SPtuneShark3": {
         "id": "SPtuneShark3",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Tune-Shark-V3.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tune-Shark-V3.js",
         "name": "Tune Shark V3",
         "color": "#666666",
         "hsv": {
@@ -948,7 +1078,7 @@ const LAST_RUN = {
     },
     "SPyoutubeoperations": {
         "id": "SPyoutubeoperations",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/YouTube-Operations.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/YouTube-Operations.js",
         "name": "YouTube Operations",
         "color": "#ff0000",
         "hsv": {
@@ -959,7 +1089,7 @@ const LAST_RUN = {
     },
     "SPcomments": {
         "id": "SPcomments",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Better-Comments.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Better-Comments.js",
         "name": "Better Comments",
         "color": "#b8af37",
         "hsv": {
@@ -970,7 +1100,7 @@ const LAST_RUN = {
     },
     "SPmbpCST": {
         "id": "SPmbpCST",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/My-Blocks-Plus.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/My-Blocks-Plus.js",
         "name": "My Blocks+",
         "color": "#FF6680",
         "hsv": {
@@ -981,7 +1111,7 @@ const LAST_RUN = {
     },
     "speechSP": {
         "id": "speechSP",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Speech-Bubbles.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Speech-Bubbles.js",
         "name": "Speech Bubbles",
         "color": "#9966ff",
         "hsv": {
@@ -992,7 +1122,7 @@ const LAST_RUN = {
     },
     "SPPause": {
         "id": "SPPause",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Pause-Utilities.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pause-Utilities.js",
         "name": "Pause Utilities",
         "color": "#5f5b49",
         "hsv": {
@@ -1003,7 +1133,7 @@ const LAST_RUN = {
     },
     "SPturboSkins": {
         "id": "SPturboSkins",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Turbo-Skins.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Turbo-Skins.js",
         "name": "Turbo Skins",
         "color": "#e81c48",
         "hsv": {
@@ -1014,7 +1144,7 @@ const LAST_RUN = {
     },
     "DICandSPmonitorsPlus": {
         "id": "DICandSPmonitorsPlus",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Variables-Expanded.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Variables-Expanded.js",
         "name": "Variables Expanded",
         "color": "#FF8C1A",
         "hsv": {
@@ -1025,7 +1155,7 @@ const LAST_RUN = {
     },
     "BetterInputSP": {
         "id": "BetterInputSP",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Better-Input.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Better-Input.js",
         "name": "Submit\", image: \"",
         "color": "#9400ff",
         "hsv": {
@@ -1036,7 +1166,7 @@ const LAST_RUN = {
     },
     "SPjson": {
         "id": "SPjson",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/JSON-Array.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/JSON-Array.js",
         "name": "Swift JSON",
         "color": "#677cd6",
         "hsv": {
@@ -1047,7 +1177,7 @@ const LAST_RUN = {
     },
     "SPprogress": {
         "id": "SPprogress",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Fetch-Progress.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Fetch-Progress.js",
         "name": "Fetch+",
         "color": "#00be1e",
         "hsv": {
@@ -1058,7 +1188,7 @@ const LAST_RUN = {
     },
     "filesExpanded": {
         "id": "filesExpanded",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Files-Expanded.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Files-Expanded.js",
         "name": "Files Expanded",
         "color": "#fcb103",
         "hsv": {
@@ -1069,7 +1199,7 @@ const LAST_RUN = {
     },
     "SPevents": {
         "id": "SPevents",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Runtime-Events.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Runtime-Events.js",
         "name": "Runtime Events",
         "color": "#0FBD8C",
         "hsv": {
@@ -1080,7 +1210,7 @@ const LAST_RUN = {
     },
     "SPrenderControl": {
         "id": "SPrenderControl",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Renderer-Control.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Renderer-Control.js",
         "name": "Renderer Control",
         "color": "#5386b5",
         "hsv": {
@@ -1091,7 +1221,7 @@ const LAST_RUN = {
     },
     "SPlooksExpanded": {
         "id": "SPlooksExpanded",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Looks-Expanded.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Looks-Expanded.js",
         "name": "Looks Expanded",
         "color": "#9966FF",
         "hsv": {
@@ -1102,7 +1232,7 @@ const LAST_RUN = {
     },
     "SPspriteEffects": {
         "id": "SPspriteEffects",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Sprite-Effects.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Effects.js",
         "name": "Sprite Effects",
         "color": "#9966FF",
         "hsv": {
@@ -1113,7 +1243,7 @@ const LAST_RUN = {
     },
     "SPpartEngine": {
         "id": "SPpartEngine",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Particle-Engine.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Particle-Engine.js",
         "name": "Particle Engine",
         "color": "#0FBD8C",
         "hsv": {
@@ -1124,7 +1254,7 @@ const LAST_RUN = {
     },
     "SPdisplayTextV2": {
         "id": "SPdisplayTextV2",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Display-Text-V2.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Display-Text-V2.js",
         "name": "Display Text V2",
         "color": "#647b91",
         "hsv": {
@@ -1135,7 +1265,7 @@ const LAST_RUN = {
     },
     "SPtempVars": {
         "id": "SPtempVars",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Temporary-Variables.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Temporary-Variables.js",
         "name": "Temporary Variables",
         "color": "#FF8C1A",
         "hsv": {
@@ -1146,7 +1276,7 @@ const LAST_RUN = {
     },
     "SPmessagePlus": {
         "id": "SPmessagePlus",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Messages-Plus.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Messages-Plus.js",
         "name": "Messages+",
         "color": "#FFBF00",
         "hsv": {
@@ -1157,7 +1287,7 @@ const LAST_RUN = {
     },
     "HyperSenseSP": {
         "id": "HyperSenseSP",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Hyper-Sense.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Hyper-Sense.js",
         "name": "Hyper Sense",
         "color": "#5cb1d6",
         "hsv": {
@@ -1179,7 +1309,7 @@ const LAST_RUN = {
     },
     "iStimezones": {
         "id": "iStimezones",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Timezones.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Timezones.js",
         "name": "Timezones",
         "color": "#e7900d",
         "hsv": {
@@ -1190,7 +1320,7 @@ const LAST_RUN = {
     },
     "SPpopups": {
         "id": "SPpopups",
-        "url": "https://sharkpools-extensions.vercel.app/extension-code/Popup-Phoenix.js",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Popup-Phoenix.js",
         "name": "Popup Phoenix",
         "color": "#a812ff",
         "hsv": {
@@ -3144,6 +3274,622 @@ const LAST_RUN = {
             "h": 0,
             "s": 0.864406779661017,
             "v": 0.9254901960784314
+        }
+    },
+    "SharkPoolSharktilities": {
+        "id": "SharkPoolSharktilities",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sharktilities.js",
+        "name": "Sharktilities",
+        "color": "#33B6FF",
+        "hsv": {
+            "h": 201.47058823529412,
+            "s": 0.8,
+            "v": 1
+        }
+    },
+    "SPscratchUtilities": {
+        "id": "SPscratchUtilities",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Scratch-Utilities.js",
+        "name": "Scratch Utilities",
+        "color": "#faa51f",
+        "hsv": {
+            "h": 36.712328767123296,
+            "s": 0.876,
+            "v": 0.9803921568627451
+        }
+    },
+    "SPtuneShark": {
+        "id": "SPtuneShark",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tune-Shark.js",
+        "name": "Tune Shark (Legacy)",
+        "color": "#848484",
+        "hsv": {
+            "h": 0,
+            "s": 0,
+            "v": 0.5176470588235295
+        }
+    },
+    "SPaddedmotion": {
+        "id": "SPaddedmotion",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Added-Motion.js",
+        "name": "Added Motion",
+        "color": "#4c97ff",
+        "hsv": {
+            "h": 214.86033519553072,
+            "s": 0.7019607843137254,
+            "v": 1
+        }
+    },
+    "GDapiSP": {
+        "id": "GDapiSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Geometry-Dash-API.js",
+        "name": "Geometry Dash API",
+        "color": "#004de8",
+        "hsv": {
+            "h": 220.08620689655172,
+            "s": 1,
+            "v": 0.9098039215686274
+        }
+    },
+    "SPsoundWaves": {
+        "id": "SPsoundWaves",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sound-Waves.js",
+        "name": "Sound Waves",
+        "color": "#2BB39A",
+        "hsv": {
+            "h": 168.97058823529414,
+            "s": 0.759776536312849,
+            "v": 0.7019607843137254
+        }
+    },
+    "HyperSense2SP": {
+        "id": "HyperSense2SP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Hyper-Sense-V2.js",
+        "name": "Hyper Sense V2",
+        "color": "#5cb1d6",
+        "hsv": {
+            "h": 198.19672131147541,
+            "s": 0.5700934579439253,
+            "v": 0.8392156862745098
+        }
+    },
+    "enderKeysPlusV2": {
+        "id": "enderKeysPlusV2",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/KeysPlusV2.js",
+        "name": "Keys+ V2",
+        "color": "#647970",
+        "hsv": {
+            "h": 154.2857142857143,
+            "s": 0.17355371900826444,
+            "v": 0.4745098039215686
+        }
+    },
+    "CameraSensingPlusSP": {
+        "id": "CameraSensingPlusSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Camera-Sensing-Plus.js",
+        "name": "Camera Sensing+",
+        "color": "#00b2a4",
+        "hsv": {
+            "h": 175.2808988764045,
+            "s": 1,
+            "v": 0.6980392156862745
+        }
+    },
+    "ParticleToolsSP": {
+        "id": "ParticleToolsSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Particle-Tools.js",
+        "name": "Particle Tools",
+        "color": "#0090ff",
+        "hsv": {
+            "h": 206.11764705882354,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "SPspriteEffectsV2": {
+        "id": "SPspriteEffectsV2",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Effects-V2.js",
+        "name": "Sprite Effects V2",
+        "color": "#9966FF",
+        "hsv": {
+            "h": 260,
+            "s": 0.6,
+            "v": 1
+        }
+    },
+    "imgEffectsSP": {
+        "id": "imgEffectsSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Image-Effects.js",
+        "name": "Image Effects",
+        "color": "#9966FF",
+        "hsv": {
+            "h": 260,
+            "s": 0.6,
+            "v": 1
+        }
+    },
+    "SPimgEditor": {
+        "id": "SPimgEditor",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Image-Editor.js",
+        "name": "Image Editor",
+        "color": "#4756b3",
+        "hsv": {
+            "h": 231.66666666666666,
+            "s": 0.6033519553072625,
+            "v": 0.7019607843137254
+        }
+    },
+    "lbgpixelutilities": {
+        "id": "lbgpixelutilities",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pixel-Utilities.js",
+        "name": "Pixel Utilities",
+        "color": "#0085ff",
+        "hsv": {
+            "h": 208.7058823529412,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "SPrecording2": {
+        "id": "SPrecording2",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Recording-V2.js",
+        "name": "Recording V2",
+        "color": "#7B9149",
+        "hsv": {
+            "h": 78.33333333333331,
+            "s": 0.496551724137931,
+            "v": 0.5686274509803921
+        }
+    },
+    "SPaudioNG": {
+        "id": "SPaudioNG",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Newgrounds-Audio.js",
+        "name": "Newgrounds Audio",
+        "color": "#EB7522",
+        "hsv": {
+            "h": 24.776119402985074,
+            "s": 0.8553191489361702,
+            "v": 0.9215686274509803
+        }
+    },
+    "SPspriteParent": {
+        "id": "SPspriteParent",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Parenting.js",
+        "name": "Sprite Parenting",
+        "color": "#4B21CC",
+        "hsv": {
+            "h": 254.73684210526315,
+            "s": 0.8382352941176471,
+            "v": 0.8
+        }
+    },
+    "SPrigidBody": {
+        "id": "SPrigidBody",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Rigidbodies.js",
+        "name": "Rigidbodies",
+        "color": "#4a93b0",
+        "hsv": {
+            "h": 197.05882352941177,
+            "s": 0.5795454545454545,
+            "v": 0.6901960784313725
+        }
+    },
+    "LZcollisionsSP": {
+        "id": "LZcollisionsSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Lazy-Collisions.js",
+        "name": "Lazy Collisions",
+        "color": "#5cb1d6",
+        "hsv": {
+            "h": 198.19672131147541,
+            "s": 0.5700934579439253,
+            "v": 0.8392156862745098
+        }
+    },
+    "SPlistMonitors": {
+        "id": "SPlistMonitors",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sty-Lists.js",
+        "name": "Sty-Lists",
+        "color": "#FF661A",
+        "hsv": {
+            "h": 19.912663755458514,
+            "s": 0.8980392156862745,
+            "v": 1
+        }
+    },
+    "SPgrids": {
+        "id": "SPgrids",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tile-Grids.js",
+        "name": "Tile Grids",
+        "color": "#c60b00",
+        "hsv": {
+            "h": 3.333333333333328,
+            "s": 1,
+            "v": 0.7764705882352941
+        }
+    },
+    "SPanimations": {
+        "id": "SPanimations",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Animations.js",
+        "name": "Animations",
+        "color": "#7a7a7a",
+        "hsv": {
+            "h": 0,
+            "s": 0,
+            "v": 0.47843137254901963
+        }
+    },
+    "SPttsV2": {
+        "id": "SPttsV2",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Text-to-Speech-V2.js",
+        "name": "Text to Speech V2",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPpauseV2": {
+        "id": "SPpauseV2",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pause.js",
+        "name": "Pause",
+        "color": "#5f5b49",
+        "hsv": {
+            "h": 49.09090909090909,
+            "s": 0.2315789473684211,
+            "v": 0.37254901960784315
+        }
+    },
+    "SPscripts": {
+        "id": "SPscripts",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Script-Control.js",
+        "name": "Script Control",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPmessages": {
+        "id": "SPmessages",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Advanced-Messages.js",
+        "name": "Advanced Messages",
+        "color": "#FFBF00",
+        "hsv": {
+            "h": 44.94117647058823,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "SPeventsPlus": {
+        "id": "SPeventsPlus",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Events-Plus.js",
+        "name": "Events+",
+        "color": "#ffbf00",
+        "hsv": {
+            "h": 44.94117647058823,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "SPgeolocation": {
+        "id": "SPgeolocation",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Geolocation.js",
+        "name": "Geolocation",
+        "color": "#029fe8",
+        "hsv": {
+            "h": 199.04347826086956,
+            "s": 0.9913793103448276,
+            "v": 0.9098039215686274
+        }
+    },
+    "SPspotify": {
+        "id": "SPspotify",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Spotify.js",
+        "name": "Spotify API",
+        "color": "#1db954",
+        "hsv": {
+            "h": 141.15384615384616,
+            "s": 0.8432432432432432,
+            "v": 0.7254901960784313
+        }
+    },
+    "SPsoundCloud": {
+        "id": "SPsoundCloud",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/SoundCloud-API.js",
+        "name": "SoundCloud API",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPspreads": {
+        "id": "SPspreads",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Google-Spreadsheets.js",
+        "name": "Google Spreadsheets",
+        "color": "#34a853",
+        "hsv": {
+            "h": 136.0344827586207,
+            "s": 0.6904761904761905,
+            "v": 0.6588235294117647
+        }
+    },
+    "SPmoney": {
+        "id": "SPmoney",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Money-Utilities.js",
+        "name": "Money Utilities",
+        "color": "#35b300",
+        "hsv": {
+            "h": 102.23463687150839,
+            "s": 1,
+            "v": 0.7019607843137254
+        }
+    },
+    "SPcolorMaster": {
+        "id": "SPcolorMaster",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Color-Master.js",
+        "name": "Color Master",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPqrCodes": {
+        "id": "SPqrCodes",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/QR-Codes.js",
+        "name": "QR Codes",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPlayering": {
+        "id": "SPlayering",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Layer-Control.js",
+        "name": "Layer Control",
+        "color": "#bb71e6",
+        "hsv": {
+            "h": 277.9487179487179,
+            "s": 0.5086956521739131,
+            "v": 0.9019607843137255
+        }
+    },
+    "SPtimeCalc": {
+        "id": "SPtimeCalc",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Time-Calculation.js",
+        "name": "Time Calculation",
+        "color": "#5b54d0",
+        "hsv": {
+            "h": 243.38709677419357,
+            "s": 0.5961538461538461,
+            "v": 0.8156862745098039
+        }
+    },
+    "since2000": {
+        "id": "since2000",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Since-2000.js",
+        "name": "Since 2000",
+        "color": "#15b9a4",
+        "hsv": {
+            "h": 172.3170731707317,
+            "s": 0.8864864864864864,
+            "v": 0.7254901960784313
+        }
+    },
+    "SeedsSP": {
+        "id": "SeedsSP",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Seeds.js",
+        "name": "Seeds",
+        "color": "#e64e28",
+        "hsv": {
+            "h": 12.000000000000004,
+            "s": 0.8260869565217391,
+            "v": 0.9019607843137255
+        }
+    },
+    "SPperlin": {
+        "id": "SPperlin",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Perlin-Noise.js",
+        "name": "Perlin Noise",
+        "color": "#b67373",
+        "hsv": {
+            "h": 0,
+            "s": 0.36813186813186816,
+            "v": 0.7137254901960784
+        }
+    },
+    "SPadvControl": {
+        "id": "SPadvControl",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Extra-Controls.js",
+        "name": "Extra Controls",
+        "color": "#FFAB19",
+        "hsv": {
+            "h": 38.086956521739125,
+            "s": 0.9019607843137255,
+            "v": 1
+        }
+    },
+    "SPmoreOPs": {
+        "id": "SPmoreOPs",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/More-Operators.js",
+        "name": "More Operators",
+        "color": "#59C059",
+        "hsv": {
+            "h": 120,
+            "s": 0.5364583333333334,
+            "v": 0.7529411764705882
+        }
+    },
+    "SPcaptcha": {
+        "id": "SPcaptcha",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Captchas.js",
+        "name": "Captchas",
+        "color": "#606E90",
+        "hsv": {
+            "h": 222.49999999999997,
+            "s": 0.3333333333333333,
+            "v": 0.5647058823529412
+        }
+    },
+    "SPspritePanel": {
+        "id": "SPspritePanel",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Panel.js",
+        "name": "Sprite Panel",
+        "color": "#3d6f99",
+        "hsv": {
+            "h": 207.39130434782606,
+            "s": 0.6013071895424836,
+            "v": 0.6
+        }
+    },
+    "SPdomSelect": {
+        "id": "SPdomSelect",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/DOM-Selector.js",
+        "name": "DOM Selector",
+        "color": "#148500",
+        "hsv": {
+            "h": 110.97744360902256,
+            "s": 1,
+            "v": 0.5215686274509804
+        }
+    },
+    "SPsvgSheets": {
+        "id": "SPsvgSheets",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/SVG-Spritesheets.js",
+        "name": "SVG Spritesheets",
+        "color": "#ff3333",
+        "hsv": {
+            "h": 0,
+            "s": 0.8,
+            "v": 1
+        }
+    },
+    "SPspotlight": {
+        "id": "SPspotlight",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Community-Spotlight.js",
+        "name": "Community Spotlight",
+        "color": "#14c490",
+        "hsv": {
+            "h": 162.27272727272728,
+            "s": 0.8979591836734693,
+            "v": 0.7686274509803922
+        }
+    },
+    "SPgifManager": {
+        "id": "SPgifManager",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/GIF-Manager.js",
+        "name": "GIF Manager",
+        "color": "#ff7724",
+        "hsv": {
+            "h": 22.73972602739726,
+            "s": 0.8588235294117648,
+            "v": 1
+        }
+    },
+    "SP0zMenuMaker": {
+        "id": "SP0zMenuMaker",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Dropdown-Maker.js",
+        "name": "Dropdown Maker",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "SPscenes": {
+        "id": "SPscenes",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Scenes.js",
+        "name": "Scenes",
+        "color": "#fa3e3e",
+        "hsv": {
+            "h": 0,
+            "s": 0.752,
+            "v": 0.9803921568627451
+        }
+    },
+    "SPpenPapers": {
+        "id": "SPpenPapers",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pen-Papers.js",
+        "name": "Pen Papers",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "ObscurasMIDITools": {
+        "id": "ObscurasMIDITools",
+        "url": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/MIDI-Tools.js",
+        "name": "Obscuras MIDI Tools v5.0",
+        "color": "#310061",
+        "hsv": {
+            "h": 270.30927835051546,
+            "s": 1,
+            "v": 0.3803921568627451
+        }
+    },
+    "cst1229multiline": {
+        "id": "cst1229multiline",
+        "url": "https://cst1229.eu.org/extensions/multilinetext.js",
+        "name": "Mutliline Text Input",
+        "color": "#a63fa6",
+        "hsv": {
+            "h": 300,
+            "s": 0.6204819277108433,
+            "v": 0.6509803921568628
+        }
+    },
+    "cst1229extendable2": {
+        "id": "cst1229extendable2",
+        "url": "https://cst1229.eu.org/extensions/extendableblocks2.js",
+        "name": "Extendable Blocks 2",
+        "color": "#0FBD8C",
+        "hsv": {
+            "h": 163.10344827586206,
+            "s": 0.9206349206349206,
+            "v": 0.7411764705882353
+        }
+    },
+    "cst1229scratch22": {
+        "id": "cst1229scratch22",
+        "url": "https://cst1229.eu.org/extensions/scratch22.js",
+        "name": "Scratch 2.2",
+        "color": "#88ff33",
+        "hsv": {
+            "h": 95,
+            "s": 0.8,
+            "v": 1
+        }
+    },
+    "jeremygameraepicamrbeastuitolaa": {
+        "id": "jeremygameraepicamrbeastuitolaa",
+        "url": "https://turbololder.vercel.app/extensions/mrbeastutil.js",
+        "name": "MR BEAST UTILTITIES",
+        "color": "#00bcFF",
+        "hsv": {
+            "h": 195.76470588235293,
+            "s": 1,
+            "v": 1
+        }
+    },
+    "JungleInferno": {
+        "id": "JungleInferno",
+        "url": "https://turbololder.vercel.app/extensions/jungleinferno.js",
+        "name": "Shitpost Status",
+        "color": "#9c5321",
+        "hsv": {
+            "h": 24.390243902439025,
+            "s": 0.7884615384615385,
+            "v": 0.611764705882353
         }
     }
 };

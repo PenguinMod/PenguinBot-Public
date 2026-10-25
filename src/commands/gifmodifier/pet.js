@@ -2,7 +2,7 @@
  * @fileoverview PenguinBot implementation of https://github.com/aDu/pet-pet-gif
  */
 /** */
-const GifModifierCommand = require('../../basecommands/gifmodifier');
+const GifModifierCommand = require('../../classes/gifmodifier');
 const path = require("path");
 
 // frameSet should align with petpet-sheet.png

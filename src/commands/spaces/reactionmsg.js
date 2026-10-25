@@ -1,10 +1,13 @@
 const Database = require('sync-json-database');
 const ReactionMessageDB = new Database('./databases/spaces-reactionmsg.json');
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
-const resolveEmoji = require("../../util/resolve-emoji");
 
-class Command {
-    constructor(client) {
+const BaseCommand = require("../../classes/basecommand.js");
+const DiscordUtility = require("../../util/utility-discord.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "reactionmsg";
         this.description = "Allows you to create reaction roles in <#1181097377730400287>.";
         this.attributes = {
@@ -15,12 +18,10 @@ class Command {
         this.example = [
             { text: `(Reply to a message you sent) {{prefix}}reactionmsg 🖐️` }
         ];
-
-        this.client = client;
     }
 
     async invoke(message, args, util) {
-        const reply = await util.getReply(message);
+        const reply = await util.getReply();
         if (!reply) return message.reply('You need to reply to a message you\'ve sent.');
         if (reply.author.id !== message.author.id) return message.reply("Reaction messages must be sent by the space owner.");
         if (reply.channel.id !== message.channel.id) return;
@@ -28,7 +29,7 @@ class Command {
         // get the emoji & keyword to use
         const rawEmoji = args.shift();
         if (!rawEmoji) return message.reply("Use a valid emoji for the reaction role.");
-        const resolvedEmoji = resolveEmoji(rawEmoji, this.client);
+        const resolvedEmoji = DiscordUtility.resolveEmoji(rawEmoji);
         if (!resolvedEmoji) return message.reply("Use a valid emoji for the reaction role.");
         const emoji = resolvedEmoji.emoji || resolvedEmoji.id;
         const keyword = args.shift();
@@ -53,12 +54,11 @@ class Command {
         ReactionMessageUtil.createCollector(reply, spaceId);
         
         // finish by telling them how to ping
-        const prefix = util.request("prefix");
-        const messageLink = util.makeMessageLink(reply);
+        const messageLink = DiscordUtility.makeMessageLink(reply);
         const emojiMention = resolvedEmoji.type === "unicode" ? emoji : `the emoji`;
         message.reply({
             content: `Role **${keyword}** created (accessible by [reacting to the message](${messageLink}) with ${emojiMention}). You can manage this role with other commands.`
-                + `\n` + `Use \`${prefix}reactionping ${keyword}\` to ping users which add themselves to the role.`
+                + `\n` + `Use \`${util.prefix}reactionping ${keyword}\` to ping users which add themselves to the role.`
                 + `\n` + `-# You may delete this message with other commands.`,
             allowedMentions: { // ping NO ONE. this can DEFINETLY be abused if we did allow pings
                 parse: [],

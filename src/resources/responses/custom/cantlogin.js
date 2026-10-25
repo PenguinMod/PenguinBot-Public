@@ -1,5 +1,6 @@
-const axios = require('axios');
+const PenguinModClient = require("../../../util/penguinmod-client.js");
 
+// TODO: put this in configuration
 const statusChannelId = "1040401867924062259";
 
 const responses = {
@@ -9,15 +10,16 @@ const responses = {
 };
 let currentResponse = responses.unknown;
 
-const intervalTime = 60000; // 60 secs
+// TODO: make it so you can Configure env to see if we should even do this
+const intervalTime = 30 * 60 * 1000; // 30 minutes
 const intervalCallback = async () => {
     const startTime = Date.now();
     try {
-        const response = await axios.get('https://projects.penguinmod.com/api/v1');
+        const successful = await PenguinModClient.checkOnline();
         const currentTime = Date.now();
         const amountOfTime = currentTime - startTime;
         currentResponse = responses.unknown;
-        if (response.status === 200) {
+        if (successful) {
             currentResponse = responses.up;
             if (amountOfTime > 2500) {
                 currentResponse = responses.slow
@@ -26,6 +28,8 @@ const intervalCallback = async () => {
     } catch {
         currentResponse = responses.unknown;
     }
+
+    console.log("cantlogin: pinged PenguinModClient.checkOnline() for cantlogin response;", currentResponse);
 };
 setInterval(intervalCallback, intervalTime);
 intervalCallback();

@@ -1,9 +1,12 @@
-const { MessageEmbed, MessageActionRow, MessageButton } = require('discord.js');
-const Sokoban = require('../util/sokoban');
-const db = require('../util/sokobandb');
+const discord = require('discord.js');
 
-class Command {
+const db = require('../util/sokobandb.js');
+const Sokoban = require('../util/sokoban.js');
+const BaseCommand = require("../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = 'sokoban';
         this.description = 'Play Sokoban game';
         this.attributes = {
@@ -37,59 +40,59 @@ class Command {
             db.set(userId, game.serialize());
             const response = game.getLevelWithEmojis();
 
-            const embed = new MessageEmbed()
+            const embed = new discord.MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle(`Level ${game.levelNumber} | Sokoban`)
                 .setDescription(response)
                 .setFooter({ text: 'Use the buttons below to move' });
 
-            const row1 = new MessageActionRow()
+            const row1 = new discord.MessageActionRow()
                 .addComponents(
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('clear_up')
                         .setLabel('‎ ')
                         .setStyle('SECONDARY')
                         .setDisabled(true),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('move_up')
                         .setEmoji('⬆️')
                         .setStyle('PRIMARY'),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('clear_up_2')
                         .setLabel('‎ ')
                         .setStyle('SECONDARY')
                         .setDisabled(true)
                 );
 
-            const row2 = new MessageActionRow()
+            const row2 = new discord.MessageActionRow()
                 .addComponents(
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('move_left')
                         .setEmoji('⬅️')
                         .setStyle('PRIMARY'),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('clear_center')
                         .setLabel('‎ ')
                         .setStyle('SECONDARY')
                         .setDisabled(true),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('move_right')
                         .setEmoji('➡️')
                         .setStyle('PRIMARY')
                 );
 
-            const row3 = new MessageActionRow()
+            const row3 = new discord.MessageActionRow()
                 .addComponents(
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('clear_down')
                         .setLabel('‎ ')
                         .setStyle('SECONDARY')
                         .setDisabled(true),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('move_down')
                         .setEmoji('⬇️')
                         .setStyle('PRIMARY'),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setCustomId('del')
                         .setLabel('‎🗑️')
                         .setStyle('SECONDARY')
@@ -107,7 +110,7 @@ class Command {
             db.setLocal(`${userId}_threadId`, gameThread.id);
             db.saveDataToFile();
 
-            this.cleanUpNonCommands(gameThread, userId, util.request("prefix"));
+            this.cleanUpNonCommands(gameThread, userId, util.prefix);
         } else if (command === 'config') {
             await this.configureEmojis(message);
             return;
@@ -117,8 +120,8 @@ class Command {
         } else {
             const gameState = db.get(userId);
             if (!gameState) {
-                const prefix = util.request("prefix");
-                const embed = new MessageEmbed()
+                const prefix = util.prefix;
+                const embed = new discord.MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle('Sokoban Game Commands')
                     .setDescription(`You need to start a game first by using \`${prefix}sokoban start\`.`)
@@ -138,30 +141,30 @@ class Command {
     async configureEmojis(message) {
         const userId = message.author.id;
 
-        const embed = new MessageEmbed()
+        const embed = new discord.MessageEmbed()
             .setColor('#0099ff')
             .setTitle('Configure Emojis')
             .setDescription('Click a button to configure the corresponding emoji.');
 
-        const row = new MessageActionRow()
+        const row = new discord.MessageActionRow()
             .addComponents(
-                new MessageButton()
+                new discord.MessageButton()
                     .setCustomId('config_wall')
                     .setLabel('Wall')
                     .setStyle('PRIMARY'),
-                new MessageButton()
+                new discord.MessageButton()
                     .setCustomId('config_player')
                     .setLabel('Player')
                     .setStyle('PRIMARY'),
-                new MessageButton()
+                new discord.MessageButton()
                     .setCustomId('config_empty')
                     .setLabel('Empty')
                     .setStyle('PRIMARY'),
-                new MessageButton()
+                new discord.MessageButton()
                     .setCustomId('config_goal')
                     .setLabel('Goal')
                     .setStyle('PRIMARY'),
-                new MessageButton()
+                new discord.MessageButton()
                     .setCustomId('config_box')
                     .setLabel('Box')
                     .setStyle('PRIMARY')
@@ -198,7 +201,7 @@ class Command {
             });
         });
 
-        this.cleanUpNonCommands(configThread, userId, util.request("prefix"));
+        this.cleanUpNonCommands(configThread, userId, util.prefix);
     }
 
     async deleteGame(message, userId) {

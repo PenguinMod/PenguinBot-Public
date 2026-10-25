@@ -1,7 +1,7 @@
 const fs = require("fs/promises");
 const path = require("path");
 
-const Canvas = require('canvas');
+const Canvas = require('skia-canvas');
 const sharp = require("sharp");
 
 const makePng = require("../../util/make-png.js");
@@ -35,7 +35,7 @@ const motionBlur = (intensity) => {
     };
 };
 
-const GifModifierCommand = require('../../basecommands/gifmodifier');
+const GifModifierCommand = require('../../classes/gifmodifier');
 class Command extends GifModifierCommand {
     // NOTE: Constructor will be called as a new instance of this class is made when "initialize" happens.
     // New instances are made by the "Editing video" thread to reduce performance impact when running videomodifier commands.
@@ -107,7 +107,7 @@ class Command extends GifModifierCommand {
         // do our dramatic end
         // make motion blur frames for 16 blurs (which we draw in grayscale)
         const blurImages = [];
-        const finalFrameBuffer = this.canvas.toBuffer("image/png");
+        const finalFrameBuffer = await this.canvas.toBuffer("image/png");
         for (let i = 32; i > 2; i--) {
             const kernel = motionBlur(i);
             const brightness = 1 + ((i / 32) / 4);

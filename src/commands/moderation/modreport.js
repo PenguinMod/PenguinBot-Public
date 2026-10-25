@@ -1,8 +1,11 @@
-const OptionType = require('../../util/optiontype');
 const configuration = require("../../config");
 
-class Command {
-    constructor(client) {
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "modreport";
         this.description = "Slash command only. Privately send a report about a moderator to managers, and optionally include a screenshot.";
         this.slashDescription = "Privately send a report about a moderator to managers, & optionally include a screenshot.";
@@ -49,8 +52,6 @@ class Command {
                 description: '(Optional) A screenshot to include.'
             }]
         };
-
-        this.client = client;
     }
 
     convertSlashCommand(interaction) {
@@ -70,8 +71,8 @@ class Command {
 
         const adminReportChannel = this.client.channels.cache.get(configuration.channels.adminReports);
         const moderator = message.options.getMember('moderator');
-        const isMod = moderator._roles.some(v => configuration.permissions.permission3.includes(v)) // developer
-            || moderator._roles.some(v => configuration.permissions.permission2.includes(v)); // mod
+        const isMod = moderator.roles.cache.some(role => configuration.permissions.permission3.includes(role.id)) // developer
+            || moderator.roles.cache.some(role => configuration.permissions.permission2.includes(role.id)); // mod
         if (!isMod) return message.reply({
             content: 'Please select a moderator, not a regular user.',
             ephemeral: true,

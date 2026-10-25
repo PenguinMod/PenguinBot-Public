@@ -1,11 +1,16 @@
-const { MessageAttachment, Message } = require('discord.js');
-const Canvas = require('canvas');
+const discord = require('discord.js');
 
-const OptionType = require('../../util/optiontype');
-const env = require("../../util/env-util");
+const Canvas = require('skia-canvas');
 
-class Command {
+const env = require("../../util/env-util.js");
+const OptionType = require('../../util/optiontype.js');
+const DiscordUtility = require("../../util/utility-discord.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "quote";
         this.description = "Quotes the provided text and puts it on an image.";
         this.attributes = {
@@ -15,35 +20,29 @@ class Command {
     }
 
     /**
-     * @param {Message} message
+     * @param {discord.Message} message
      * @param {string[]} args
      */
     async invoke(message, args, util) {
-        let quoteText;
-        let user;
-        let referencedMessage = message
-        let options = {
+        const replyMessage = await util.getReply();
+        const referencedMessage = replyMessage || message;
+        const user = referencedMessage.author;
+
+        const canOverrideText = (env.get("OWNER") === message.author.id && args.length > 2);
+        let quoteText = (!replyMessage || canOverrideText) ? args.join(' ').trim() : referencedMessage.content;
+        const options = {
             bold: false,
             italic: false
         }
 
-        if (message.reference) {
-            referencedMessage = await message.channel.messages.fetch(message.reference.messageId);
-            let overrideText = (env.get("OWNER") == message.author.id && args.length > 2)
-            quoteText = overrideText ? args.join(' ').trim() : referencedMessage.content;
-            user = referencedMessage.author;
-
-            if (message.author.id !== env.get("OWNER") && message.author.id !== user.id && util.interactionsBlocked(user.id)) {
+        if (replyMessage) {
+            if (message.author.id !== env.get("OWNER") && !util.canInteract(user.id))
                 return message.reply('The user you mentioned has interactions disabled.');
-            }
 
-            if (!overrideText) {
-                if (args.includes("bold" || args.includes("b"))) options.bold = true
+            if (!canOverrideText) {
+                if (args.includes("bold") || args.includes("b")) options.bold = true
                 if (args.includes("italic") || args.includes("italics") || args.includes("i")) options.italic = true
             }
-        } else {
-            quoteText = args.join(' ').trim();
-            user = message.author;
         }
 
         let emojis = []
@@ -61,7 +60,7 @@ class Command {
             quoteText += "..."
         }
 
-        const canvas = Canvas.createCanvas(1920, 1080);
+        const canvas = new Canvas.Canvas(1920, 1080);
         const ctx = canvas.getContext('2d');
 
         ctx.fillStyle = '#000000';
@@ -69,8 +68,8 @@ class Command {
 
         const guildMember = message.guild.members.cache.get(user.id);
         const avatarURL = guildMember && guildMember.avatar 
-            ? guildMember.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 }) 
-            : user.displayAvatarURL({ format: 'png', dynamic: true, size: 1024 });
+            ? DiscordUtility.avatarURL(guildMember, { format: 'png', size: 1024 }) 
+            : DiscordUtility.avatarURL(user, { format: 'png', size: 1024 });
         
         const avatar = await Canvas.loadImage(avatarURL);
 
@@ -154,7 +153,7 @@ class Command {
         if (referencedMessage.author.nickname !== undefined) authorText = `(${referencedMessage.author.nickname}) ` + authorText
         ctx.fillText(authorText, 1920 - 20, 1080 - 20)
 
-        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'quote.png');
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'quote.png');
 
         message.reply({ files: [attachment] });
     }

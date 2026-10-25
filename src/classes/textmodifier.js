@@ -1,10 +1,12 @@
-const OptionType = require('../util/optiontype');
+const BaseCommand = require("./basecommand.js");
+const OptionType = require('../util/optiontype.js');
+const DiscordUtility = require("../util/utility-discord.js");
 
-class TextModifierCommand {
-    constructor(client) {
+class TextModifierCommand extends BaseCommand {
+    constructor() {
+        super();
         this.name = "textmodifier";
         this.description = `Base command for text modifiers`;
-        this.textDescription = "Text to modify.";
         this.attributes = {
             unlisted: false,
             permission: 0,
@@ -12,11 +14,19 @@ class TextModifierCommand {
         this.example = [
             { text: `{{prefix}}textmodifier (replying to a message)` },
         ];
-        this.setSlashDetail();
 
-        this.client = client;
+        /**
+         * A description for the slash command argument of text to modify.
+         * @type {string}
+         */
+        this.textDescription = "Text to modify.";
+        this.setSlashDetail();
     }
 
+    /**
+     * Sets the slash command info for this command.
+     * @returns {void}
+     */
     setSlashDetail() {
         this.slash = {
             options: [{
@@ -34,14 +44,14 @@ class TextModifierCommand {
     }
 
     async invoke(message, args, util) {
-        if (!util.automodAllows(message, true))
+        if (!DiscordUtility.automodAllows(message, true))
             return message.reply("nuh uh");
 
         let text = '';
         if (!(message.reference && message.reference.messageId)) {
             text = args.join(' ');
         } else {
-            const reply = await util.getReply(message);
+            const reply = await util.getReply();
             text = reply.content || text;
         }
         if (!text) {
@@ -55,7 +65,7 @@ class TextModifierCommand {
         }
         uwuText = String(uwuText);
 
-        if (!util.automodAllows(uwuText, true)) { // dont allow bad shit
+        if (!DiscordUtility.automodAllows(uwuText, true)) { // dont allow bad shit
             return message.reply("nuh uh");
         }
 

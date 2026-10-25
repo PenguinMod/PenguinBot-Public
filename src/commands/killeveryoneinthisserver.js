@@ -1,5 +1,8 @@
-class Command {
-    constructor(client) {
+const BaseCommand = require("../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "killeveryoneinthisserver";
         this.description = "i dont like you";
         this.attributes = {

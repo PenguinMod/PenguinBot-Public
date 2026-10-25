@@ -1,8 +1,8 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const Canvas = require('canvas');
-const GIFEncoder = require('gifencoder');
+const Canvas = require('skia-canvas');
+const GIFEncoder = require('gif-encoder-2');
 
 const CellularAutomataLifeLike = require("../../../util/cellularAutomata/lifeLike.js");
 
@@ -13,7 +13,7 @@ const simulateAndRender = async (serializableData) => {
     const width = 256;
     const height = 256;
     const image = await Canvas.loadImage(imagePath);
-    const canvas = Canvas.createCanvas(width, height);
+    const canvas = new Canvas.Canvas(width, height);
     const ctx = canvas.getContext("2d");
     ctx.imageSmoothingEnabled = false;
     ctx.fillStyle = "#000000";

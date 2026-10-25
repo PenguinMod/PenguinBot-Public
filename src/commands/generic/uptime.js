@@ -1,10 +1,12 @@
 const discord = require("discord.js");
-
 const systemInformation = require("systeminformation");
-const FormatTime = require('../../util/format-time');
 
-class Command {
-    constructor(client) {
+const FormatTime = require('../../util/format-time.js');
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "uptime";
         this.description = "How long the bot has been online for.";
         this.attributes = {
@@ -12,8 +14,6 @@ class Command {
             permission: 0,
             lockedToCommands: true,
         };
-
-        this.client = client;
     }
 
     async invoke(message) {

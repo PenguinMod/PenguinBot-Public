@@ -2,8 +2,12 @@ const crypto = require("crypto");
 
 const discord = require("discord.js");
 
-const { createCanvas, loadImage } = require('canvas');
-const OptionType = require('../util/optiontype');
+const Canvas = require('skia-canvas');
+
+const OptionType = require('../util/optiontype.js');
+const SkiaCanvasUtil = require("../util/canvas-util-skia.js");
+
+const BaseCommand = require("../classes/basecommand.js");
 
 const delay = (ms) => {
     return new Promise((resolve) => {
@@ -15,19 +19,20 @@ const delay = (ms) => {
 
 const standoffFrames = [];
 const loadFrames = async () => {
-    standoffFrames.push(await loadImage('assets/standoff0001.png'));
-    standoffFrames.push(await loadImage('assets/standoff0002.png'));
-    standoffFrames.push(await loadImage('assets/standoff0003.png'));
-    standoffFrames.push(await loadImage('assets/standoff0004.png'));
-    standoffFrames.push(await loadImage('assets/standoff_secret0001.png'));
-    standoffFrames.push(await loadImage('assets/standoff_secret0002.png'));
-    standoffFrames.push(await loadImage('assets/standoff_secret0003.png'));
-    standoffFrames.push(await loadImage('assets/standoff_secret0004.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff0001.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff0002.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff0003.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff0004.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff_secret0001.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff_secret0002.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff_secret0003.png'));
+    standoffFrames.push(await Canvas.loadImage('assets/standoff_secret0004.png'));
 };
 loadFrames();
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "standoff";
         this.description = "Challenge another user. One user must shoot the other before the other one can.";
         this.attributes = {
@@ -39,26 +44,22 @@ class Command {
             { text: `{{prefix}}standoff @user`, image: "standoff_example1.png" },
         ];
 
-        /**
-         * @type {discord.Client}
-         */
-        this.client = client;
+        this.alias = ["shootout"];
     }
 
     /**
      * @param {discord.Message} message 
      */
     async invoke(message, _, util) {
-        const prefix = util.request("prefix");
+        const prefix = util.prefix;
         
         const u1 = message.mentions.members.at(0);
         if (!u1) return message.reply(`Ping another user to go against.\nUse **${prefix}help standoff** for more info.`);
 
-        if (util.interactionsBlocked(u1)) {
-            if (u1.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-        }
+        if (!util.canInteract(u1))
+            return message.reply('The user you mentioned has interactions disabled.');
 
-        const activityLog = ['🛑 \`\`Both users must click the reaction to start\`\`'];
+        const activityLog = ['🛑 **Both users must click the reaction to start**'];
 
         const embed = new discord.MessageEmbed();
         embed.setTitle(`${message.member.displayName} VS. ${u1.displayName}`);
@@ -67,7 +68,7 @@ class Command {
         let isDrawingDirty = false;
         const isSecretEnabled = crypto.randomInt(0, 80) === 0;
         const couldBeSecretIndexPush = isSecretEnabled ? 4 : 0;
-        const canvas = createCanvas(standoffFrames[0 + couldBeSecretIndexPush].width, standoffFrames[0 + couldBeSecretIndexPush].height);
+        const canvas = new Canvas.Canvas(standoffFrames[0 + couldBeSecretIndexPush].width, standoffFrames[0 + couldBeSecretIndexPush].height);
         const ctx = canvas.getContext('2d');
         ctx.font = `13px Sans`; // this font loads faster on my laptop :3
         if (isSecretEnabled) {
@@ -75,15 +76,15 @@ class Command {
         }
         const addText = () => {
             ctx.textAlign = "left";
-            ctx.fillText(message.member.displayName, 2, 14, 310 / 2);
+            SkiaCanvasUtil.fillText(ctx, message.member.displayName, 2, 14, 310 / 2);
             ctx.textAlign = "right";
-            ctx.fillText(u1.displayName, 310 - 2, 14, 130);
+            SkiaCanvasUtil.fillText(ctx, u1.displayName, 310 - 2, 14, 130);
         };
         ctx.drawImage(standoffFrames[0 + couldBeSecretIndexPush], 0, 0);
         addText();
 
         // note: i think MessageAttachment has to be used here so that setImage gets the same file name as the buffer
-        const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'standoff.png');
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'standoff.png');
         embed.setImage(`attachment://standoff.png`);
 
         const messageOptions = {
@@ -93,16 +94,16 @@ class Command {
         const repliedMessage = await message.reply(messageOptions);
         repliedMessage.react('🛑');
 
-        const updateMessage = () => {
+        const updateMessage = async () => {
             if (isDrawingDirty) {
-                const attachment = new discord.MessageAttachment(canvas.toBuffer("image/png"), 'standoff.png');
+                const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'standoff.png');
                 messageOptions.files = [attachment];
                 isDrawingDirty = false;
             }
             embed.setDescription(activityLog.join('\n'));
             repliedMessage.edit(messageOptions);
         };
-        updateMessage();
+        await updateMessage();
 
         let startTimestamp = Date.now();
 
@@ -126,8 +127,8 @@ class Command {
                 isDrawingDirty = true;
                 embed.setColor('GREEN');
                 const timeDiff = Date.now() - startTimestamp;
-                activityLog.push(`<:gold_pengin:1158864673861537864> \`\`${authorWon ? message.member.displayName : u1.displayName} won!\`\` (${timeDiff}ms)`);
-                updateMessage();
+                activityLog.push(`<:gold_pengin:1158864673861537864> **${authorWon ? message.member.displayName : u1.displayName} won!** (${timeDiff}ms)`);
+                await updateMessage();
                 // remove reactions
                 await repliedMessage.reactions.removeAll();
             }
@@ -152,10 +153,10 @@ class Command {
                 // remove reactions
                 await repliedMessage.reactions.removeAll();
 
-                const randomTime = crypto.randomInt(700, 2300);
+                const randomTime = crypto.randomInt(2300, 3300);
                 embed.setColor('DARK_BUT_NOT_BLACK');
-                activityLog.push('💬 \`\`Ready...\`\`');
-                updateMessage();
+                activityLog.push('💬 **Ready...**');
+                await updateMessage();
                 await delay(randomTime);
                 // this callback will only check for the fighting users
                 // since we are only listening to new reactions on the message,
@@ -163,11 +164,11 @@ class Command {
                 // is always the first event that this callback will receive
                 this.client.on('messageReactionAdd', shootReactionCallback);
                 embed.setColor('RED');
-                activityLog.push('💥 \`\`Fire!\`\`');
+                activityLog.push('💥 **Fire!**');
                 ctx.drawImage(standoffFrames[1 + couldBeSecretIndexPush], 0, 0);
                 addText();
                 isDrawingDirty = true;
-                updateMessage();
+                await updateMessage();
                 startTimestamp = Date.now();
                 await repliedMessage.react('💥');
                 setTimeout(() => {

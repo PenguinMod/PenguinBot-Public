@@ -7,13 +7,11 @@ node_modules
 assets/*
 src/commands/event/*
 src/commands/secrets/*
-src/basecommands/event/*
-src/basecommands/secrets/*
+src/classes/event/*
+src/classes/secrets/*
 
 ## non-command stuff
-src/events/client/guildBanAdd.js
 src/modules/cloudlink-client.js
-src/util/aprilfools.js
 
 ## commands & command modules
 src/util/freearttranslator.js
@@ -53,3 +51,6 @@ dump.txt
 scripts/*.bat
 .dev/*
 src/commands/.dev/*
+desktop.ini
+.DS_Store
+src/util/aprilfools.js

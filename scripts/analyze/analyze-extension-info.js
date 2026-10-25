@@ -1,10 +1,9 @@
-// NOTE: This will make src/util/penguinmod-analyze-extensions.js
+// NOTE: This will make src/util/penguinmod-analyze-extensions.js and scripts/analyze/last-run.js
 // node scripts/analyze/analyze-extension-info.js
 const fs = require("fs/promises");
 const path = require("path");
 
 // NOTE: All the additional extension URLs to cache
-// TODO: Add sharkpool's library
 const EXTENSION_URLS = {
     // PenguinMod
     "penP": "https://extensions.penguinmod.com/extensions/ObviousAlexC/PenPlus.js",
@@ -190,31 +189,90 @@ const EXTENSION_URLS = {
     "GameJoltAPI": "https://extensions.turbowarp.org/gamejolt.js",
     "NGIO": "https://extensions.turbowarp.org/obviousAlexC/newgroundsIO.js",
     "lmsmcutils": "https://extensions.turbowarp.org/Lily/McUtils.js",
+    // SharkPool
+    "SharkPoolSharktilities": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sharktilities.js",
+    "SPyoutubeoperations": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/YouTube-Operations.js",
+    "SPscratchUtilities": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Scratch-Utilities.js",
+    "SPtuneShark3": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tune-Shark-V3.js",
+    "SPtuneShark": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tune-Shark.js",
+    "SPcamera": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Camera.js",
+    "SPaddedmotion": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Added-Motion.js",
+    "GDapiSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Geometry-Dash-API.js",
+    "SPsoundWaves": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sound-Waves.js",
+    "HyperSense2SP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Hyper-Sense-V2.js",
+    "enderKeysPlusV2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/KeysPlusV2.js",
+    "SPpopups": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Popup-Phoenix.js",
+    "BetterInputSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Better-Input.js",
+    "CameraSensingPlusSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Camera-Sensing-Plus.js",
+    "SPpartEngine": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Particle-Engine.js",
+    "ParticleToolsSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Particle-Tools.js",
+    "SPlooksExpanded": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Looks-Expanded.js",
+    "SPspriteEffectsV2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Effects-V2.js",
+    "imgEffectsSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Image-Effects.js",
+    "SPimgEditor": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Image-Editor.js",
+    "lbgpixelutilities": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pixel-Utilities.js",
+    "SPrecording2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Recording-V2.js",
+    "SPaudioNG": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Newgrounds-Audio.js",
+    "SPspriteParent": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Parenting.js",
+    "SPrigidBody": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Rigidbodies.js",
+    "LZcollisionsSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Lazy-Collisions.js",
+    "filesExpanded": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Files-Expanded.js",
+    "SPtempVars": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Temporary-Variables.js",
+    "DICandSPmonitorsPlus": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Variables-Expanded.js",
+    "SPlistMonitors": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sty-Lists.js",
+    "Gamepad": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Gamepad-Expanded.js",
+    "SPgrids": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Tile-Grids.js",
+    "SPanimations": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Animations.js",
+    "SPttsV2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Text-to-Speech-V2.js",
+    "SPASfontManager": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Font-Manager.js",
+    "SPpauseV2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pause.js",
+    "SPscripts": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Script-Control.js",
+    "SPmessagePlus": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Messages-Plus.js",
+    "SPmessages": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Advanced-Messages.js",
+    "SPeventsPlus": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Events-Plus.js",
+    "SPevents": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Runtime-Events.js",
+    "SPprogress": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Fetch-Progress.js",
+    "SPgeolocation": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Geolocation.js",
+    "SPspotify": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Spotify.js",
+    "SPsoundCloud": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/SoundCloud-API.js",
+    "SPspreads": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Google-Spreadsheets.js",
+    "SPmoney": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Money-Utilities.js",
+    "SPdisplayTextV2": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Display-Text-V2.js",
+    "SPcolorMaster": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Color-Master.js",
+    "SPqrCodes": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/QR-Codes.js",
+    "speechSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Speech-Bubbles.js",
+    "SPlayering": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Layer-Control.js",
+    "SPrenderControl": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Renderer-Control.js",
+    "SPtimeCalc": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Time-Calculation.js",
+    "iStimezones": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Timezones.js",
+    "since2000": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Since-2000.js",
+    "SeedsSP": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Seeds.js",
+    "SPperlin": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Perlin-Noise.js",
+    "SPadvControl": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Extra-Controls.js",
+    "SPmoreOPs": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/More-Operators.js",
+    "SPcaptcha": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Captchas.js",
+    "SPcomments": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Better-Comments.js",
+    "SPspritePanel": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Sprite-Panel.js",
+    "SPdomSelect": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/DOM-Selector.js",
+    "SPsvgSheets": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/SVG-Spritesheets.js",
+    "SPspotlight": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Community-Spotlight.js",
+    "SPgifManager": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/GIF-Manager.js",
+    "SPjson": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/JSON-Array.js",
+    "SPmbpCST": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/My-Blocks-Plus.js",
+    "SP0zMenuMaker": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Dropdown-Maker.js",
+    "SPturboSkins": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Turbo-Skins.js",
+    "SPscenes": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Scenes.js",
+    "SPpenPapers": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/Pen-Papers.js",
+    "ObscurasMIDITools": "https://sharkpool-sp.github.io/SharkPools-Extensions/extension-code/MIDI-Tools.js",
+    // cst1229
+    "cst1229multiline": "https://cst1229.eu.org/extensions/multilinetext.js",
+    "cst1229extendable2": "https://cst1229.eu.org/extensions/extendableblocks2.js",
+    "cst1229scratch22": "https://cst1229.eu.org/extensions/scratch22.js",
+    // turbololder
+    "jeremygameraepicamrbeastuitolaa": "https://turbololder.vercel.app/extensions/mrbeastutil.js",
+    "JungleInferno": "https://turbololder.vercel.app/extensions/jungleinferno.js",
     // analyzed from existing projects
-    "SPyoutubeoperations": "https://sharkpools-extensions.vercel.app/extension-code/YouTube-Operations.js",
-    "SPcomments": "https://sharkpools-extensions.vercel.app/extension-code/Better-Comments.js",
-    "SPmbpCST": "https://sharkpools-extensions.vercel.app/extension-code/My-Blocks-Plus.js",
-    "speechSP": "https://sharkpools-extensions.vercel.app/extension-code/Speech-Bubbles.js",
-    "SPPause": "https://sharkpools-extensions.vercel.app/extension-code/Pause-Utilities.js",
-    "SPturboSkins": "https://sharkpools-extensions.vercel.app/extension-code/Turbo-Skins.js",
-    "DICandSPmonitorsPlus": "https://sharkpools-extensions.vercel.app/extension-code/Variables-Expanded.js",
-    "BetterInputSP": "https://sharkpools-extensions.vercel.app/extension-code/Better-Input.js",
-    "SPtuneShark3": "https://sharkpools-extensions.vercel.app/extension-code/Tune-Shark-V3.js",
-    "SPjson": "https://sharkpools-extensions.vercel.app/extension-code/JSON-Array.js",
-    "SPprogress": "https://sharkpools-extensions.vercel.app/extension-code/Fetch-Progress.js",
-    "filesExpanded": "https://sharkpools-extensions.vercel.app/extension-code/Files-Expanded.js",
-    "SPevents": "https://sharkpools-extensions.vercel.app/extension-code/Runtime-Events.js",
-    "SPrenderControl": "https://sharkpools-extensions.vercel.app/extension-code/Renderer-Control.js",
-    "SPlooksExpanded": "https://sharkpools-extensions.vercel.app/extension-code/Looks-Expanded.js",
-    "SPspriteEffects": "https://sharkpools-extensions.vercel.app/extension-code/Sprite-Effects.js",
-    "SPpartEngine": "https://sharkpools-extensions.vercel.app/extension-code/Particle-Engine.js",
-    "SPdisplayTextV2": "https://sharkpools-extensions.vercel.app/extension-code/Display-Text-V2.js",
-    "SPtempVars": "https://sharkpools-extensions.vercel.app/extension-code/Temporary-Variables.js",
-    "SPmessagePlus": "https://sharkpools-extensions.vercel.app/extension-code/Messages-Plus.js",
-    "HyperSenseSP": "https://sharkpools-extensions.vercel.app/extension-code/Hyper-Sense.js",
     "WebExtension": "https://gabsthecuriouskid.github.io/DinosaurModExtensions/extensions/webextension.js",
-    "iStimezones": "https://sharkpools-extensions.vercel.app/extension-code/Timezones.js",
-    "SPpopups": "https://sharkpools-extensions.vercel.app/extension-code/Popup-Phoenix.js",
 };
 
 // NOTE: these we dont bother trying to get again
@@ -235,11 +293,15 @@ const KNOWN_EXTENSION_INFO = {
     procedures: { name: 'My Blocks', color: '#FF6680' },
     // stuff we cant get from fetching
     jg3d: { name: '3D', color: '#B100FE' },
+    // NOTE: These are missing CORS so users likely use them via import file/text rather than URL
+    cst12293d: { name: 'CST 3D', color: '#2a47e8' },
+    cst1229extendable: { name: 'Extendable Blocks', color: DEFAULT_EXTENSION_COLOR },
     // just the last run's info
     ...(require("./last-run.js")),
 };
 
 const OUTPUT_PATH = path.join(__dirname, "../../src/util/penguinmod-analyze-extensions.js");
+const OUTPUT_PATH_LAST = path.join(__dirname, "./last-run.js");
 
 const getHsvFromHex = hexCode => {
     hexCode = hexCode.slice(1)
@@ -364,5 +426,13 @@ module.exports = EXTENSION_INFO;
  * Do not edit this file manually.
  */
         `;
+    const finalCacheCode = `// NOTE: This file is rewritten automatically, but you can generally use this file to override any buggy/garbage entries.
+const LAST_RUN = ${JSON.stringify(EXTENSION_INFO, null, 4)};
+
+module.exports = LAST_RUN;
+`;
+    console.log("writing final file");
     await fs.writeFile(OUTPUT_PATH, finalJsCode, "utf8");
+    console.log("writing cache file");
+    await fs.writeFile(OUTPUT_PATH_LAST, finalCacheCode, "utf8");
 })();

@@ -1,8 +1,11 @@
-const Discord = require("discord.js");
-const OptionType = require('../util/optiontype');
+const discord = require("discord.js");
 
-class Command {
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "httpcat";
         this.description = "Get a cute http cat image using an HTTP Code";
         this.attributes = {
@@ -22,7 +25,7 @@ class Command {
     
         // Generate the http.cat image URL
         const imageUrl = `https://http.cat/${statusCode}`;
-        const embed = new Discord.MessageEmbed().setTitle(`Cat HTTP Code ${statusCode}`).setImage(`${imageUrl}.jpg`);
+        const embed = new discord.MessageEmbed().setTitle(`Cat HTTP Code ${statusCode}`).setImage(`${imageUrl}.jpg`);
         message.reply({ embeds: [embed] });
     }
 }

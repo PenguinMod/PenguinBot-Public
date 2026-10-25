@@ -1,9 +1,15 @@
-const Discord = require('discord.js');
-const OptionType = require('../../util/optiontype');
+const discord = require('discord.js');
+
 const { Jimp: jimp, JimpMime, BlendMode } = require('jimp');
 
-class Command {
+const OptionType = require('../../util/optiontype.js');
+const DiscordUtility = require("../../util/utility-discord.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "toast";
         this.description = "Toastify yourself";
         this.attributes = {
@@ -13,12 +19,12 @@ class Command {
         };
     }
 
-    async invoke(message) {
+    async invoke(message, _, util) {
         // Load background image
         const background = await jimp.read('./assets/toast.png');
 
         // Load user's avatar
-        const userAvatar = await jimp.read(message.author.displayAvatarURL({ format: 'png' }));
+        const userAvatar = await jimp.read(util.avatarURL({ format: 'png' }));
 
         // Resize and roundify user's avatar
         userAvatar.resize({ w: 320, h: 320 }).circle();
@@ -35,10 +41,10 @@ class Command {
         const buffer = await background.getBuffer(JimpMime.png);
 
         // Create a Discord.js attachment from the buffer
-        const attachment = new Discord.MessageAttachment(buffer, 'toast.png');
+        const attachment = new discord.MessageAttachment(buffer, 'toast.png');
 
         // Create an embed with an image attachment
-        const embed = new Discord.MessageEmbed()
+        const embed = new discord.MessageEmbed()
             .setTitle('Toast')
             .setImage('attachment://toast.png');
 

@@ -1,8 +1,14 @@
-const { createCanvas, loadImage } = require('canvas');
-const Discord = require("discord.js");
+const discord = require("discord.js");
 
-class LicenseCommand {
+const Canvas = require('skia-canvas');
+
+const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
+
+class LicenseCommand extends BaseCommand {
     constructor() {
+        super();
         this.name = "license";
         this.description = "Generates a license with user's avatar.";
         this.attributes = {
@@ -12,15 +18,20 @@ class LicenseCommand {
         };
     }
 
-    async invoke(message, args) {
+    /**
+     * @param {import("discord.js").Message} message 
+     * @param {string[]} args 
+     * @param {import("../../util/utility-command.js")} util 
+     */
+    async invoke(message, args, util) {
         // Load user's avatar
-        const userAvatar = await loadImage(message.author.displayAvatarURL({ format: 'png', size: 256 }));
+        const userAvatar = await Canvas.loadImage(util.avatarURL({ format: 'png', size: 256 }));
 
         // Load the license template
-        const licenseTemplate = await loadImage('assets/license.png');
+        const licenseTemplate = await Canvas.loadImage('assets/license.png');
 
         // Create a canvas
-        const canvas = createCanvas(licenseTemplate.width, licenseTemplate.height);
+        const canvas = new Canvas.Canvas(licenseTemplate.width, licenseTemplate.height);
         const ctx = canvas.getContext('2d');
 
         // Draw the license template
@@ -38,7 +49,7 @@ class LicenseCommand {
         ctx.font = 'bold 30px Arial'; // Set font size, type, and weight
         ctx.fillStyle = '#000000'; // Set text color
         ctx.textAlign = 'center'; // Center the text horizontally
-        ctx.fillText(licenseText, canvas.width / 2, 45, 475); // Draw the text at y-coordinate 35
+        SkiaCanvasUtil.fillText(ctx, licenseText, canvas.width / 2, 45, 475); // Draw the text at y-coordinate 35
 
         // Add additional text lines manually
         ctx.font = 'bold 20px Arial'; // Set font size, type, and weight for additional text
@@ -62,7 +73,7 @@ class LicenseCommand {
         ctx.fillText(sequence, 50, 330);
         
         // Convert the canvas to a Discord attachment
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer("image/png"), 'license.png');
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'license.png');
 
         // Send the license image as a reply
         message.reply({ files: [attachment] });

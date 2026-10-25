@@ -23,7 +23,7 @@ module.exports = async (message, replyingUserId) => {
         }
 
         const response = PingResponseDB.get(`${userId}`) || '';
-        text += `**${member.user.tag}** currently has a message for people who ping them.\n${response}\n`;
+        text += `-# **${member.user.tag}** currently has a message for people who ping them.\n${response}\n`;
     }
 
     if (!text) return;

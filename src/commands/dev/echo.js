@@ -2,8 +2,11 @@ const discord = require("discord.js");
 
 const configuration = require("../../config");
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "echo";
         this.description = "you cant use it loser";
         this.attributes = {
@@ -28,7 +31,7 @@ class Command {
         await message.delete();
 
         // check for reply
-        const replyMsg = await util.getReply(message);
+        const replyMsg = await util.getReply();
         const sendFunction = replyMsg
             ? (payload) => replyMsg.reply(payload)
             : (payload) => message.channel.send(payload);

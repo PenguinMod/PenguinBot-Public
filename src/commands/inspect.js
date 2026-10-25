@@ -1,9 +1,11 @@
 const discord = require("discord.js");
 
-const OptionType = require('../util/optiontype');
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "inspect";
         this.description = "View how a message's content works.";
         this.attributes = {
@@ -13,12 +15,10 @@ class Command {
         this.example = [
             { text: `{{prefix}}inspect`, image: "inspect_example1.png" }
         ];
-
-        this.client = client;
     }
 
     async invoke(message, _, util) {
-        const reply = await util.getReply(message);
+        const reply = await util.getReply();
         if (!reply) return message.reply("Reply to a message to inspect its content.");
 
         const attachment = new discord.MessageAttachment(Buffer.from(reply.content, 'utf8'), 'text.txt');

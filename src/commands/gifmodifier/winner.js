@@ -1,4 +1,4 @@
-const GifModifierCommand = require('../../basecommands/gifmodifier');
+const GifModifierCommand = require('../../classes/gifmodifier');
 const path = require("path");
 
 // frameSet should align with redditgold_sheet.jpg

@@ -1,4 +1,11 @@
-const CommandUtility = require("../../util/utility.js");
+const discord = require("discord.js");
+
+const configuration = require("../../config.js");
+
+const env = require("../../util/env-util.js");
+const Utility = require("../../util/utility.js");
+const DiscordUtility = require("../../util/utility-discord.js");
+const CommandUtility = require("../../util/utility-command.js");
 
 class BotEvent {
     constructor(client) {
@@ -41,11 +48,14 @@ class BotEvent {
         fakeBlockedMessage.author = interaction.member.user;
         fakeBlockedMessage.member = interaction.member;
     
-        // check if blocked
-        const isBlocked = CommandUtility.handleCommandBlock(command, fakeBlockedMessage, []);
-        if (isBlocked) return;
+        // create the util for this command and check if blocked
+        // TODO: Slash command support just sucks right now and this is an example of that. Eventually we should focus on supporting slash commands *first* and deprecate [string] args.
+        const util = new CommandUtility(command, fakeBlockedMessage);
+        if (await util.handleCommandBlock()) return;
+        // actually use the right "message" now
+        util.message = interaction;
     
-        const convertedInfo = await (commandConversion.bind(command))(interaction, CommandUtility, fakeBlockedMessage);
+        const convertedInfo = await (commandConversion.bind(command))(interaction, util, fakeBlockedMessage);
         if (convertedInfo === false) {
             return interaction.reply({
                 content: 'This command is not supported for slash yet.',
@@ -54,7 +64,7 @@ class BotEvent {
         }
     
         // use converted info to invoke the command normally
-        command.invoke(...convertedInfo);    
+        command.invoke(...convertedInfo);
     }
 }
 

@@ -1,10 +1,12 @@
 const Database = require('sync-json-database');
 const DisabledInteractionsDB = new Database('./databases/disabled-interactions.json');
 
-const OptionType = require('../util/optiontype');
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "interactions";
         this.description = "Enable or disable yourself from being used in commands that involve other users.";
         this.attributes = {};

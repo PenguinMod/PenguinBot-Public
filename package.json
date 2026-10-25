@@ -28,7 +28,7 @@
     "express": "^4.19.2",
     "fengari": "^0.1.5",
     "fluent-ffmpeg": "^2.1.3",
-    "gifencoder": "^2.0.1",
+    "gif-encoder-2": "^1.0.5",
     "glob": "^11.0.3",
     "jimp": "^1.6.0",
     "jsdom": "^26.1.0",
@@ -37,10 +37,16 @@
     "omggif": "^1.0.10",
     "penguinmod": "github:PenguinMod/PenguinMod-ApiModule",
     "scratchblocks": "^3.6.4",
-    "sharp": "^0.34.5",
+    "sharp": "^0.35.4",
+    "skia-canvas": "^3.0.8",
     "sync-json-database": "^1.0.5",
     "systeminformation": "^5.31.7",
     "uuid": "^11.1.1",
     "ws": "^8.17.0"
+  },
+  "allowScripts": {
+    "canvas@3.2.3": true,
+    "protobufjs@7.6.5": true,
+    "skia-canvas@3.0.8": true
   }
 }

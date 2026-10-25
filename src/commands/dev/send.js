@@ -1,7 +1,10 @@
 const discord = require('discord.js');
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "send";
         this.description = "send a nice message";
         this.attributes = {

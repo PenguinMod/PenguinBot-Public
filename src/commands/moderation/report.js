@@ -1,8 +1,11 @@
-const OptionType = require('../../util/optiontype');
-const configuration = require("../../config");
+const configuration = require("../../config.js");
 
-class Command {
-    constructor(client) {
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "report";
         this.description = "Slash command only. Privately send a report about a user to moderators, and optionally include a screenshot.";
         this.slashDescription = "Privately send a report about a user to moderators, & optionally include a screenshot.";
@@ -49,8 +52,6 @@ class Command {
                 description: '(Optional) A screenshot to include.'
             }]
         };
-
-        this.client = client;
     }
 
     convertSlashCommand(interaction) {

@@ -1,8 +1,11 @@
 const discord = require("discord.js");
-const OptionType = require('../util/optiontype');
 
-class Command {
-    constructor(client) {
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "speak";
         this.description = "Read out what you say or reply to someone to make it say what someone else says in the Scratch TTS voice.";
         this.attributes = {
@@ -12,8 +15,6 @@ class Command {
         this.example = [
             { text: `{{prefix}}speak abc`, image: "speak_example1.png" }
         ];
-
-        this.client = client;
     }
 
     filterBypass(text = '') {

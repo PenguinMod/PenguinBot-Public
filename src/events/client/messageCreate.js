@@ -1,11 +1,15 @@
 const discord = require("discord.js");
-const CommandUtility = require("../../util/utility.js");
 
+const configuration = require("../../config.js");
+
+const env = require("../../util/env-util.js");
+const Utility = require("../../util/utility.js");
 const handleInviteBlock = require('../../util/inviteblock.js');
 const handlePingMessage = require('../../util/pingmessage.js');
+const DiscordUtility = require("../../util/utility-discord.js");
+const CommandUtility = require("../../util/utility-command.js");
+
 const handleBotAutoResponse = require('../../resources/responses/index.js');
-const configuration = require("../../config");
-const env = require("../../util/env-util");
 
 class BotEvent {
     constructor(client) {
@@ -31,7 +35,7 @@ class BotEvent {
         const prefix = state.prefix;
 
         const isInTestMode = state.isInTestMode;
-        const isTestingInPublic = isInTestMode && !(env.getBool("CHECK_FOR_DEFAULT_TEST_SERVERS") && message.guildId === "746156168560508950")
+        const isTestingInPublic = isInTestMode && !(configuration.servers.testing.includes(message.guildId))
 
         // ignore #spam
         if (
@@ -40,8 +44,8 @@ class BotEvent {
         ) return;
     
         // handle invites
-        if (!isTestingInPublic && env.getBool('REPORT_INAPPROPRIATE_INVITES') && CommandUtility.containsInvite(message.content, { includeShorteners: true })) {
-            handleInviteBlock(message, client, CommandUtility);
+        if (!isTestingInPublic && env.getBool('REPORT_INAPPROPRIATE_INVITES') && DiscordUtility.containsInvite(message.content, { includeShorteners: true })) {
+            handleInviteBlock(message);
         }
     
         // handle the case where they are not using a cmd but we can still do stuff
@@ -71,20 +75,20 @@ class BotEvent {
                 handleBotAutoResponse(message);
             }
 
-            if (!isTestingInPublic && env.getBool("REPORT_AUTOMOD_BYPASS") && CommandUtility.getPermissionLevel(message) < 2) {
+            if (!isTestingInPublic && env.getBool("REPORT_AUTOMOD_BYPASS") && DiscordUtility.getPermissionLevel(message) < 2) {
                 const automodReportChannel = client.channels.cache.get(configuration.channels.automod);
 
                 // third arg makes it return null on safe and the blcoked word on unsafe
                 const messageChecked = message.content;
-                const originalAgainstRules = CommandUtility.automodAllows(messageChecked, false, true);
-                const actuallyAgainstRules = CommandUtility.automodAllows(messageChecked, true, true);
+                const originalAgainstRules = DiscordUtility.automodAllows(messageChecked, false, true);
+                const actuallyAgainstRules = DiscordUtility.automodAllows(messageChecked, true, true);
                 if (automodReportChannel && (!originalAgainstRules && actuallyAgainstRules)) {
                     // automod was bypassed for this message
                     const embed = new discord.MessageEmbed();
                     embed.setTitle("AutoMod Bypassed");
                     embed.setAuthor({
                         name: message.author.displayName || message.author.username,
-                        iconURL: message.author.avatarURL({ format: "png" }),
+                        iconURL: DiscordUtility.avatarURL(message.author, { format: "png" }),
                     });
                     embed.setDescription(messageChecked);
                     embed.addFields([
@@ -94,7 +98,7 @@ class BotEvent {
                         },
                         {
                             name: "Jump to Message",
-                            value: CommandUtility.makeMessageLink(message),
+                            value: DiscordUtility.makeMessageLink(message),
                         }
                     ]);
                     embed.setColor(0xff9900);
@@ -130,14 +134,16 @@ class BotEvent {
                 }
             });
         }
+        
+        // create the util for this cmmand, and see if we should block it
+        const util = new CommandUtility(command, message);
+        if (await util.handleCommandBlock()) return;
 
         // Only chop off the first whitespace character, then preserve all the rest
         const argumentsString = messageSlice.slice(commandName.length);
         const indexOfFirstNonWhitespace = argumentsString.search(/\S/);
         const textToSplit = (indexOfFirstNonWhitespace === -1 ? argumentsString : argumentsString.slice(indexOfFirstNonWhitespace));
         const split = textToSplit === "" ? [] : textToSplit.split(" ");
-        const isBlocked = CommandUtility.handleCommandBlock(command, message, split);
-        if (isBlocked) return;
 
         // some commands can allow number conversion
         const convertNums = command.attributes.numberConversion === true;
@@ -145,7 +151,7 @@ class BotEvent {
     
         // use command now
         try {
-            await command.invoke(message, args, CommandUtility);
+            await command.invoke(message, args, util);
         } catch (err) {
             console.error(err);
             message.reply({

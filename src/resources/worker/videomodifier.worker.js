@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const Canvas = require('canvas');
+const Canvas = require('skia-canvas');
 
 const processFrames = async (data) => {
     const { workerSrc, commandSrc, tempDir, imagePath, frameCount, frameRate, width, height, args, serializableData } = data;
@@ -15,7 +15,8 @@ const processFrames = async (data) => {
         const buffer = await fs.readFileSync(imagePath);
         image = await Canvas.loadImage(buffer);
     }
-    const canvas = Canvas.createCanvas(width, height);
+    // TODO: Stop separating canvas from command scripts, its unnecessary and confusing
+    const canvas = new Canvas.Canvas(width, height);
     const ctx = canvas.getContext('2d');
 
     if (commandClass.initialize) {
@@ -26,7 +27,7 @@ const processFrames = async (data) => {
         commandClass.drawFrame(ctx, image, i, frameCount, frameRate, width, height, args, serializableData);
 
         const framePath = path.join(tempDir, `frame${String(i).padStart(6, '0')}.png`);
-        fs.writeFileSync(framePath, canvas.toBuffer("image/png"));
+        fs.writeFileSync(framePath, await canvas.toBuffer("image/png"));
     }
 };
 

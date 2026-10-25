@@ -2,8 +2,11 @@ const Database = require('sync-json-database');
 const PingResponseDB = new Database('./databases/ping-responses.json');
 const PingResponseChannelsDB = new Database('./databases/ping-res-channels.json');
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "pingresponseclear";
         this.description = "Clears your ping response if you don't have boosts anymore.";
         this.attributes = {

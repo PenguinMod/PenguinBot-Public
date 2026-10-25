@@ -3,6 +3,7 @@ const path = require("path");
 
 const configuration = require("../../config");
 
+// TODO: rework ALL of this this ENTIRE FILE and STOP LOADING THINGS LIKE THIS
 const responses = [];
 const files = fs.readdirSync(path.join(__dirname, '..', 'responses'));
 for (const file of files) {

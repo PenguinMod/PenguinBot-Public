@@ -1,8 +1,10 @@
 const ToneMap = require('../util/ti-list.js');
 const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "toneindicator";
         this.description = "Names the provided tone indicator";
         this.descriptionLong = "Names the provided tone indicator."

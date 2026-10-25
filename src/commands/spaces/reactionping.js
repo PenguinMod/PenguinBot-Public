@@ -1,9 +1,13 @@
 const Database = require('sync-json-database');
 const ReactionMessageDB = new Database('./databases/spaces-reactionmsg.json');
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+const DiscordUtility = require("../../util/utility-discord.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "reactionping";
         this.description = "Pings a reaction role in your <#1181097377730400287>.";
         this.attributes = {
@@ -20,7 +24,7 @@ class Command {
     }
     async invoke(message, args, util) {
         const spaceId = message.channel.id;
-        const reply = await util.getReply(message);
+        const reply = await util.getReply();
         if (!reply) return message.reply('You need to reply to a message. Subscribers will be linked to the replied message upon ping.');
         if (reply.channel.id !== spaceId) return;
 
@@ -46,7 +50,7 @@ class Command {
             });
             
             // edit after to show the message link
-            const messageLink = util.makeMessageLink(reply);
+            const messageLink = DiscordUtility.makeMessageLink(reply);
             await sentMessage.edit(`Subscribers, see ${messageLink} [(or the replied message)](${messageLink})`
                 + "\n" + `-# *(${chunk.length} users pinged for **${keyword}**)*`);
         }

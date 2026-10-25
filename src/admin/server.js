@@ -1,15 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const configuration = require("../config");
-const env = require("../util/env-util");
+const configuration = require("../config.js");
 
-const isInTestMode = process.argv[2] === 'test';
+const env = require("../util/env-util.js");
+const HostUtility = require("../util/utility-host.js");
+
+const isInTestMode = HostUtility.launchMode === "test";
 if (isInTestMode) {
     console.log('Launched WEB PANEL in test mode');
 }
-
-const memesFolder = path.join(__dirname, '../../memes');
 
 const handleDoAction = async (req, res, client, state) => {
     if (!req.body) return res.status(400).send("-1");
@@ -27,7 +27,7 @@ const handleDoAction = async (req, res, client, state) => {
             await mainChannel.send({
                 content: "Restart triggered from remote, please wait..."
             });
-            process.exit(50);
+            await HostUtility.restart();
             return;
         }
         case 'sendmsg': {
@@ -38,18 +38,6 @@ const handleDoAction = async (req, res, client, state) => {
 
             res.status(200).json({ success: true });
             return;
-        }
-        case 'loadmemes': {
-            const memeFiles = fs.readdirSync(memesFolder)
-                .filter(file => !file.endsWith('Thumbs.db'));
-
-            res.status(200).json(memeFiles);
-            break;
-        }
-        case 'getmeme': {
-            const sanitizedName = String(req.body.file).replace(/[\/\\]/g, '');
-            res.status(200).sendFile(memesFolder + '/' + sanitizedName);
-            break;
         }
         default:
             res.status(403).send("-1");

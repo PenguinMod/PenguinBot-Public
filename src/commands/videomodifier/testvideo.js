@@ -1,4 +1,4 @@
-const VideoModifierCommand = require('../../basecommands/videomodifier');
+const VideoModifierCommand = require('../../classes/videomodifier');
 const path = require("path");
 
 class Command extends VideoModifierCommand {

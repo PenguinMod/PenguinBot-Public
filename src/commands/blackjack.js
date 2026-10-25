@@ -1,12 +1,15 @@
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage } = require('canvas');
+const discord = require('discord.js');
 const axios = require('axios');
+
+const Canvas = require('skia-canvas');
+
+const BaseCommand = require("../classes/basecommand.js");
 
 // Function to generate an image
 async function generateBlackjackImage(playerHand, dealerHand, playerScore, dealerCardBack) {
     const width = 1000;  // Increased width
     const height = 600;  // Increased height
-    const canvas = createCanvas(width, height);
+    const canvas = new Canvas.Canvas(width, height);
     const ctx = canvas.getContext('2d');
 
     // Fill the background
@@ -14,8 +17,8 @@ async function generateBlackjackImage(playerHand, dealerHand, playerScore, deale
     ctx.fillRect(0, 0, width, height);
 
     // Load card images
-    const playerCardImages = await Promise.all(playerHand.map(card => fetch(card.image).then(res => res.arrayBuffer()).then(buffer => loadImage(Buffer.from(buffer)))));
-    const dealerCardBackImage = await loadImage(dealerCardBack);
+    const playerCardImages = await Promise.all(playerHand.map(card => fetch(card.image).then(res => res.arrayBuffer()).then(buffer => Canvas.loadImage(Buffer.from(buffer)))));
+    const dealerCardBackImage = await Canvas.loadImage(dealerCardBack);
 
     // Draw dealer's face-up card
     ctx.fillStyle = '#ffffff'; // White for text
@@ -42,11 +45,12 @@ async function generateBlackjackImage(playerHand, dealerHand, playerScore, deale
     ctx.fillText(`Your Score: ${playerScore}`, 20, height - 20);
 
     // Return the image buffer
-    return canvas.toBuffer('image/png');
+    return await canvas.toBuffer('image/png');
 }
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "blackjack";
         this.description = "Play a game of Blackjack";
         this.attributes = {
@@ -75,17 +79,17 @@ class Command {
         let playerTurn = true;
         let gameMessage;
 
-        const hitButton = new MessageButton()
+        const hitButton = new discord.MessageButton()
             .setCustomId('hit')
             .setLabel('Hit')
             .setStyle('PRIMARY');
 
-        const standButton = new MessageButton()
+        const standButton = new discord.MessageButton()
             .setCustomId('stand')
             .setLabel('Stand')
             .setStyle('SECONDARY');
 
-        const row = new MessageActionRow()
+        const row = new discord.MessageActionRow()
             .addComponents(hitButton, standButton);
 
         // Generate and send the initial image
@@ -119,7 +123,7 @@ class Command {
                 dealerScore = this.calculateScore(dealerHand);
             }
 
-            const resultEmbed = new MessageEmbed()
+            const resultEmbed = new discord.MessageEmbed()
                 .setTitle(`${player.username}'s Blackjack Game`)
                 .addField('Your Hand', `${this.formatHand(playerHand)}\n(Score: ${playerScore})`, true)
                 .addField("Dealer's Hand", `${this.formatHand(dealerHand)}\n(Score: ${dealerScore})`, true);
@@ -136,12 +140,12 @@ class Command {
                 resultEmbed.setDescription('Dealer wins!').setColor('RED');
             }
 
-            const againButton = new MessageButton()
+            const againButton = new discord.MessageButton()
                 .setCustomId('again')
                 .setLabel('Again!')
                 .setStyle('PRIMARY');
 
-            const againRow = new MessageActionRow()
+            const againRow = new discord.MessageActionRow()
                 .addComponents(againButton);
 
             await gameMessage.edit({ embeds: [resultEmbed], files: [{ attachment: resultImageBuffer, name: 'blackjack.png' }], components: [againRow] });

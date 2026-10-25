@@ -1,8 +1,10 @@
 const svgRender = require("../util/svg-render");
 const svgRepair = require("../util/svg-repair");
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "svg";
         this.description = "Renders an SVG costume/drawing as a PNG.";
         this.attributes = {

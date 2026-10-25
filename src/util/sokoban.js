@@ -1,4 +1,4 @@
-// Sokoban Client made by ChatG... MubiLop
+// DISCLOSURE: Sokoban Client made by ChatG... MubiLop
 
 class Sokoban {
     constructor(state, emojis = {}) {

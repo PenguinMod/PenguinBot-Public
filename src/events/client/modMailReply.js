@@ -1,8 +1,10 @@
+const discord = require("discord.js");
+
 const Database = require('sync-json-database');
 const ModMailDB = new Database('./databases/anonymous-modmail-db.json');
-const CommandUtility = require("../../util/utility.js");
 
-const discord = require("discord.js");
+const env = require("../../util/env-util.js");
+const DiscordUtility = require("../../util/utility-discord.js");
 
 class BotEvent {
     constructor(client) {
@@ -14,7 +16,7 @@ class BotEvent {
 
     async userRepliedToMod(message) {
         const messageContent = `${message.content}`;
-        const displayImage = message.author.avatarURL({ format: 'png' });
+        const displayImage = DiscordUtility.avatarURL(message.author, { format: 'png' });
         const embedForLog = new discord.MessageEmbed();
         embedForLog.setTitle("Replied to Moderator Message");
         embedForLog.setColor("#34eb4c");
@@ -84,7 +86,7 @@ class BotEvent {
 
         // send the reply
         const tipMessage = `${message.content}`;
-        const displayImage = message.author.avatarURL({ format: 'png' });
+        const displayImage = DiscordUtility.avatarURL(message.author, { format: 'png' });
 
         // create a log embed
         const embedForLog = new discord.MessageEmbed();
@@ -130,6 +132,9 @@ class BotEvent {
         });
     }
     async invoke(client, state, message) {
+        if (!env.getBool("USE_MOD_TIP_DMS"))
+            return;
+
         // ignore bots
         if (!message.author) return;
         if (message.author.bot) return;
@@ -153,7 +158,7 @@ class BotEvent {
 
         // this is a regular text channel, check if modmail db has this message & they are mod
         if (!ModMailDB.has("NeedsReply" + replyId)) return;
-        if (CommandUtility.getPermissionLevel(message) < 2) return;
+        if (DiscordUtility.getPermissionLevel(message) < 2) return;
         const warnedAuthorId = ModMailDB.get("NeedsReply" + replyId);
         const warnedAuthor = await this.client.users.fetch(warnedAuthorId);
         this.modRepliedToUser(message, warnedAuthor);

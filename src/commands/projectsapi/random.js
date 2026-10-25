@@ -1,11 +1,13 @@
 const discord = require("discord.js");
 
-const PenguinModClient = require("../../util/penguinmod-client");
-const PenguinModFormat = require("../../util/penguinmod-format");
-const OptionType = require('../../util/optiontype');
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
+const PenguinModClient = require("../../util/penguinmod-client.js");
+const PenguinModFormat = require("../../util/penguinmod-format.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "random";
         this.description = "Gets a random PenguinMod project.";
         this.attributes = {

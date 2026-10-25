@@ -1,11 +1,12 @@
-const configuration = require("../../config");
-const resolveEmoji = require("../../util/resolve-emoji");
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
+const configuration = require("../../config.js");
 
-const tryCatch = require("../../util/try-catch");
+const tryCatch = require("../../util/try-catch.js");
+const BaseCommand = require("../../classes/basecommand.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "unsubscribe";
         this.description = "Unsubscribe from a role, or all roles of a space in <#1181097377730400287>.";
         this.attributes = {

@@ -2,11 +2,14 @@ const fs = require("fs/promises");
 const path = require("path");
 
 const uuid = require('uuid');
-const canvas = require('canvas');
+const Canvas = require("canvas");
 const { JSDOM } = require("jsdom");
 
+const delay = require("./delay.js");
 const env = require("./env-util.js");
 const makePng = require("./make-png.js");
+const xmlEscape = require("./xml-escape.js");
+const svgRepair = require("./svg-repair.js");
 const runNewThread = require('./multi-thread.js');
 
 let scratchblocks;
@@ -14,25 +17,6 @@ let scratchblocks;
     scratchblocks = await import("../modules/scratchblocks/index.js");
     scratchblocks = scratchblocks.default;
 })();
-
-const xmlEscape = function (unsafe) {
-    return unsafe.replace(/[<>&'"]/g, c => {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\'': return '&apos;';
-            case '"': return '&quot;';
-        }
-    });
-};
-const delay = (ms) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, ms);
-    });
-};
 
 class ScratchBlocks {
     /** @private @param {string} scratchblocksString */
@@ -44,6 +28,17 @@ class ScratchBlocks {
         const dom = new JSDOM(`<pre class='blocks'>${xmlEscape(scratchblocksString)}</pre>`);
         const scratchBlocksInstance = scratchblocks(dom.window);
         scratchBlocksInstance.appendStyles();
+
+        // add extra style tags & stuff
+        const styleTag1 = dom.window.document.head.appendChild(dom.window.document.createElement('style'));
+        styleTag1.innerHTML = `.sb3-comment-label {
+            fill: black !important;
+        }
+        * {
+            font: 500 12pt Helvetica, sans-serif;
+        }`;
+
+        // render
         scratchBlocksInstance.renderMatching("pre.blocks", {
             style: "scratch3",
             languages: ["en"]
@@ -51,6 +46,12 @@ class ScratchBlocks {
 
         const scratchBlocksDiv = dom.window.document.querySelector("div.scratchblocks");
         const svgElement = scratchBlocksDiv.getElementsByTagName('svg').item(0);
+
+        const styleTag2 = svgElement.appendChild(dom.window.document.createElement('style'));
+        styleTag2.innerHTML = dom.window.document.head.innerHTML;
+        const styleTag3 = svgElement.appendChild(dom.window.document.createElement('style'));
+        styleTag3.innerHTML = scratchBlocksInstance.scratch3.stylee.cssContent;
+        svgElement.appendChild(styleTag1);
 
         // resize image, or return early if there is no image
         let newWidth = Math.ceil(Number(svgElement.getAttribute('width')) * 2);
@@ -70,27 +71,16 @@ class ScratchBlocks {
         svgElement.setAttribute('height', String(newHeight));
         svgElement.setAttribute('viewbox', `0 0 ${newWidth} ${newHeight}`);
 
-        // add extra style tags & stuff
-        const styleTag1 = svgElement.appendChild(dom.window.document.createElement('style'));
-        styleTag1.innerHTML = `.sb3-comment-label {
-            fill: black !important;
-        }
-        * {
-            font: 500 12pt "Helvetica Neue", "Helvetica 65 Medium", Helvetica Neue, Helvetica, sans-serif;
-        }`;
-        const styleTag2 = svgElement.appendChild(dom.window.document.createElement('style'));
-        styleTag2.innerHTML = dom.window.document.head.innerHTML;
-        const styleTag3 = svgElement.appendChild(dom.window.document.createElement('style'));
-        styleTag3.innerHTML = scratchBlocksInstance.scratch3.stylee.cssContent;
-
         // get svg data
         const svgData = scratchBlocksDiv.innerHTML;
-        const uri = 'data:image/svg+xml;base64,' + Buffer.from(svgData, 'utf8').toString('base64url');
-        const image = await canvas.loadImage(uri);
-        const drawingCanvas = canvas.createCanvas(image.width, image.height);
-        const ctx = drawingCanvas.getContext('2d');
+        const repairedData = svgRepair(svgData);
+        const uri = 'data:image/svg+xml;base64,' + Buffer.from(repairedData, 'utf8').toString('base64url');
+        const image = await Canvas.loadImage(uri);
+        const canvas = Canvas.createCanvas(image.width, image.height);
+        const ctx = canvas.getContext('2d');
+        ctx.textDrawingMode = "glyph";
         ctx.drawImage(image, 0, 0, image.width, image.height);
-        return await drawingCanvas.toBuffer("image/png");
+        return await canvas.toBuffer("image/png");
     }
 
     /**

@@ -1,12 +1,15 @@
 const fs = require("fs/promises");
+const path = require("path");
 
 const discord = require("discord.js");
 
 const stateFill = require("../../util/state-fill.js");
-const OptionType = require('../../util/optiontype');
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "help";
         this.description = "Lists all usable commands";
         this.attributes = {
@@ -23,8 +26,6 @@ class Command {
         };
 
         this.alias = ["commands", "cmds"];
-
-        this.client = client;
     }
 
     convertSlashCommand(interaction, util) {
@@ -44,7 +45,7 @@ class Command {
         return "👤";
     }
     async handleSendingList(message, args, util) {
-        const commands = util.request('commands');
+        const commands = util.commands;
         const embed = new discord.MessageEmbed();
         embed.setColor("#00c3ff");
         embed.setTitle("Command List");
@@ -55,8 +56,8 @@ class Command {
 
             // remove unlisted, nonperms
             const permissionRequired = command.attributes.permission || 0;
-            const showUnlistedCommand = util.getPermissionLevel(message) >= 3 && args[0] === 'all';
-            if (util.getPermissionLevel(message) < permissionRequired) continue;
+            const showUnlistedCommand = util.getPermissionLevel() >= 3 && args[0] === 'all';
+            if (util.getPermissionLevel() < permissionRequired) continue;
             if (command.attributes.unlisted === true && !showUnlistedCommand) continue;
 
             // add this command to the list
@@ -137,16 +138,17 @@ class Command {
             return await this.handleSendingList(message, args, util);
 
         // we are explaining a command
-        const prefix = util.request("prefix");
-        const commands = util.request('commands');
+        const prefix = util.prefix;
+        const commands = util.commands;
+        const alias = util.alias;
         usingSlash = usingSlash === true;
 
         const embed = new discord.MessageEmbed();
         embed.setColor("#00c3ff");
 
         const commandName = args[0];
-        const command = commands[commandName];
-        if (!(commandName in commands) || util.getPermissionLevel(message) <= 0 && command.attributes.unlisted) {
+        const command = commands[commandName] || alias[commandName];
+        if (!command || util.getPermissionLevel() <= 0 && command.attributes.unlisted) {
             embed.setTitle("Command not found");
             embed.setDescription("The command either does not exist or is an admin-only command.");
             embed.setFooter({ text: `Run "${usingSlash ? '/' : prefix}help" on its own to view all commands.` });
@@ -154,10 +156,16 @@ class Command {
         }
 
         // show the info for this command
-        embed.setTitle(`How to use ${usingSlash ? '/' : prefix}${commandName}`);
+        embed.setTitle(`How to use ${usingSlash ? '/' : prefix}${command.name}`);
 
         const imagePath = command.exampleImage || (!command.example ? null : command.example.map(example => example.image ? `assets/examples/${example.image}` : null).at(0));
         embed.setDescription(stateFill(command.descriptionLong || command.description));
+        if (command.attributes.lockedToChannels) {
+            embed.addFields({
+                name: "Only usable in",
+                value: command.attributes.lockedToChannels.map(channelId => `<#${channelId}>`).join(", "),
+            });
+        }
         if (command.alias) {
             embed.addFields({
                 name: "Aliases",

@@ -1,6 +1,10 @@
-const Discord = require("discord.js");
+const discord = require("discord.js");
 
-const { createCanvas, loadImage } = require('canvas');
+const Canvas = require('skia-canvas');
+
+const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
 
 const templateText = [
     [7, 16, 260],
@@ -15,8 +19,9 @@ const templateText = [
     [0, 2, 224],
 ];
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "minion";
         this.description = "Uses a random minion meme with your own text.";
         this.attributes = {
@@ -30,9 +35,9 @@ class Command {
         const templateIdx = Math.round(Math.random() * (templateText.length - 1));
         const textPosition = templateText[templateIdx];
 
-        const minionTemplate = await loadImage(`assets/minions/template${`${templateIdx + 1}`.padStart(2, "0")}.png`);
+        const minionTemplate = await Canvas.loadImage(`assets/minions/template${`${templateIdx + 1}`.padStart(2, "0")}.png`);
 
-        const canvas = createCanvas(minionTemplate.width, minionTemplate.height);
+        const canvas = new Canvas.Canvas(minionTemplate.width, minionTemplate.height);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(minionTemplate, 0, 0, canvas.width, canvas.height);
 
@@ -40,9 +45,9 @@ class Command {
         ctx.font = 'italic 40px Times New Roman';
         ctx.fillStyle = '#000000';
         ctx.textAlign = 'left';
-        ctx.fillText(minionText, textPosition[0], textPosition[1] + 28, textPosition[2]);
+        SkiaCanvasUtil.fillTextWrapped(ctx, minionText, textPosition[0], textPosition[1] + 28, textPosition[2], 48);
         
-        const attachment = new Discord.MessageAttachment(canvas.toBuffer("image/png"), 'minion.png');
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'minion.png');
         message.reply({ files: [attachment] });
     }
 }

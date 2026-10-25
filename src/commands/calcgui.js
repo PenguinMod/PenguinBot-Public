@@ -1,10 +1,12 @@
-const { MessageActionRow, MessageButton } = require('discord.js');
+const discord = require('discord.js');
 
-const OptionType = require('../util/optiontype');
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 const { mathEvaluateRaw } = require("../util/math-evaluate.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "calcgui";
         this.description = "Use a calculator, on Discord.";
         this.attributes = {
@@ -24,111 +26,111 @@ class Command {
 
     async invoke(message) {
         const rows = [
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: 'clear',
                     style: 'DANGER',
                     label: "AC",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '(',
                     style: 'PRIMARY',
                     label: "(",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: ')',
                     style: 'PRIMARY',
                     label: ")",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '/',
                     style: 'PRIMARY',
                     label: "➗",
                 })
             ]),
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: '7',
                     style: 'SECONDARY',
                     label: "7",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '8',
                     style: 'SECONDARY',
                     label: "8",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '9',
                     style: 'SECONDARY',
                     label: "9",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '*',
                     style: 'PRIMARY',
                     label: "✖️",
                 })
             ]),
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: '4',
                     style: 'SECONDARY',
                     label: "4",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '5',
                     style: 'SECONDARY',
                     label: "5",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '6',
                     style: 'SECONDARY',
                     label: "6",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '-',
                     style: 'PRIMARY',
                     label: "➖",
                 })
             ]),
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: '1',
                     style: 'SECONDARY',
                     label: "1",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '2',
                     style: 'SECONDARY',
                     label: "2",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '3',
                     style: 'SECONDARY',
                     label: "3",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '+',
                     style: 'PRIMARY',
                     label: "➕",
                 })
             ]),
-            new MessageActionRow().addComponents([
-                new MessageButton({
+            new discord.MessageActionRow().addComponents([
+                new discord.MessageButton({
                     customId: 'backspace',
                     style: 'PRIMARY',
                     label: "⬅️",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '0',
                     style: 'SECONDARY',
                     label: "0",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: '.',
                     style: 'PRIMARY',
                     label: "⚫",
                 }),
-                new MessageButton({
+                new discord.MessageButton({
                     customId: 'result',
                     style: 'SUCCESS',
                     label: "=",
@@ -188,8 +190,8 @@ class Command {
 
         col.on('end', () => {
             msg.edit({
-                components: [new MessageActionRow().addComponents([
-                    new MessageButton({
+                components: [new discord.MessageActionRow().addComponents([
+                    new discord.MessageButton({
                         label: "This calculator is closed.",
                         disabled: true,
                         style: "DANGER",

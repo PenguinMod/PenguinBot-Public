@@ -1,5 +1,8 @@
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "pin";
         this.description = "Pins a message in your <#1181097377730400287>. Use \"remove\" as a parameter to remove a pin.";
         this.attributes = {
@@ -10,7 +13,7 @@ class Command {
     }
 
     async invoke(message, args, util) {
-        const reply = await util.getReply(message);
+        const reply = await util.getReply();
         if (!reply) return message.reply('You need to reply to a message to pin it.');
         if (reply.channel.id !== message.channel.id) return;
         if (args[0] === 'remove') {

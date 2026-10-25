@@ -1,13 +1,15 @@
-class Command {
-    constructor(client) {
+const OptionType = require("../../util/optiontype.js");
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "test";
         this.description = "poo poo";
         this.attributes = {
             unlisted: true,
             permission: 1,
         };
-
-        this.client = client;
     }
 
     invoke(message, args, util) {

@@ -1,7 +1,9 @@
-const OptionType = require('../util/optiontype');
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "id";
         this.description = "Get a user's Discord ID";
         this.attributes = {

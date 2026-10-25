@@ -1,6 +1,9 @@
-const { MessageAttachment, Message } = require('discord.js');
-const Canvas = require('canvas');
-const OptionType = require('../../util/optiontype');
+const discord = require('discord.js');
+
+const Canvas = require('skia-canvas');
+
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
 
 const rarities = [
     {
@@ -71,8 +74,9 @@ const qualities = [
     }
 ]
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "rng";
         this.description = "NOT roblox gambling, defenitely not";
         this.attributes = {
@@ -83,7 +87,7 @@ class Command {
     }
 
     /**
-     * @param {Message} message
+     * @param {discord.Message} message
      * @param {string[]} args
      */
     async invoke(message, args, util) {
@@ -105,7 +109,7 @@ class Command {
             rng *= quality.rng
         }
 
-        const canvas = Canvas.createCanvas(720, 240)
+        const canvas = new Canvas.Canvas(720, 240)
         const ctx = canvas.getContext('2d')
 
         ctx.fillStyle = rarity.bg || "#000"
@@ -143,7 +147,7 @@ class Command {
         let authorText = `@${message.author.username}`
         ctx.fillText(authorText, 708, 228)
 
-        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'quote.png')
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'quote.png')
 
         message.reply({ files: [attachment] })
     }

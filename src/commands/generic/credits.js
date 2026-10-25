@@ -1,7 +1,10 @@
 const discord = require("discord.js");
 
-class Command {
-    constructor(client) {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "credits";
         this.description = "View creation credits for the bot.";
         this.attributes = {
@@ -12,8 +15,6 @@ class Command {
         this.slash = {
             options: []
         };
-
-        this.client = client;
     }
 
     async invoke(message) {
@@ -23,21 +24,14 @@ class Command {
         
         embed.setDescription('Thanks to all the contributors & help on the creation of PenguinBot!');
         embed.addFields({
-            name: 'Created by',
-            value: `JeremyGamer13`,
+            name: 'Contributors',
+            value: `JeremyGamer13, MubiLop, godslayerakp, jwklong, ianyourgod, enhancedrock,`
+                + " " + `anonygoose, FreshPenguin112, enderhacker, PuzzlingGGG, 10000000_fireflies`,
             inline: false
         }, {
-            name: 'With extra commands & framework additions by',
-            value: `MubiLop\\*`,
+            name: 'PenguinMod',
+            value: `PenguinBot is developed and maintained by the developers of [PenguinMod](https://penguinmod.com/).`,
             inline: false
-        }, {
-            name: 'Extra Help on commands or systems',
-            value: `godslayerakp, jwklong, ianyourgod, enhancedrock`,
-            inline: false
-        });
-
-        embed.setFooter({
-            text: `* = No longer a developer`
         });
 
         message.reply({

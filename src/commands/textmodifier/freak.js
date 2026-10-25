@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 const mappings = {
     "A": "𝒜",
@@ -56,8 +56,8 @@ const mappings = {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "freak";
         this.description = "Turn your text 𝒻𝓇𝑒𝒶𝓀𝓎.";
         this.textDescription = "Text to convert from.";

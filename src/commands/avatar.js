@@ -1,8 +1,13 @@
-const { MessageEmbed, MessageActionRow, MessageButton, CommandInteraction } = require('discord.js');
-const OptionType = require('../util/optiontype');
+const discord = require('discord.js');
 
-class Command {
+const OptionType = require('../util/optiontype.js');
+const DiscordUtility = require("../util/utility-discord.js");
+
+const BaseCommand = require("../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = 'avatar';
         this.description = 'Get your avatar, or someone else\'s avatar.';
         this.attributes = {
@@ -34,7 +39,7 @@ class Command {
         let targetUser;
 
         // Check if the command is invoked via a slash command or a message
-        if (message instanceof CommandInteraction) { // Slash command
+        if (message instanceof discord.CommandInteraction) { // Slash command
             const userId = args[0];
             targetUser = await message.client.users.fetch(userId);
         } else { // Regular message command
@@ -49,22 +54,22 @@ class Command {
             let avatar;
             if (isGuildAvatar) {
                 const guildMember = await message.guild.members.fetch(targetUser.id);
-                avatar = guildMember.avatarURL({ dynamic: true, size: 1024 }) || targetUser.displayAvatarURL({ dynamic: true, size: 1024 });
+                avatar = DiscordUtility.avatarURL(guildMember, { dynamic: true, size: 1024 });
             } else {
-                avatar = targetUser.displayAvatarURL({ dynamic: true, size: 1024 });
+                avatar = DiscordUtility.avatarURL(targetUser, { dynamic: true, size: 1024 });
             }
 
-            const embed = new MessageEmbed()
+            const embed = new discord.MessageEmbed()
                 .setTitle(`${targetUser.username}'s ${isGuildAvatar ? 'Server' : 'Global'} Avatar`)
                 .setImage(avatar);
 
-            const row = new MessageActionRow()
+            const row = new discord.MessageActionRow()
                 .addComponents(
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setLabel(`View ${isGuildAvatar ? 'Global' : 'Server'} Avatar`)
                         .setStyle('PRIMARY')
                         .setCustomId(isGuildAvatar ? 'global_avatar' : 'guild_avatar'),
-                    new MessageButton()
+                    new discord.MessageButton()
                         .setLabel('View Avatar URL')
                         .setStyle('LINK')
                         .setURL(avatar)
@@ -77,7 +82,7 @@ class Command {
         const replyOptions = { ...messageContent };
 
         let sentMessage;
-        if (message instanceof CommandInteraction) {
+        if (message instanceof discord.CommandInteraction) {
             sentMessage = await message.reply({ ...replyOptions, ephemeral: true });
         } else {
             sentMessage = await message.reply(replyOptions);

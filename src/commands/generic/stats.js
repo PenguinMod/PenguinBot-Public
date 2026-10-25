@@ -1,70 +1,16 @@
 const path = require("path");
+
 const discord = require("discord.js");
 const systemInformation = require("systeminformation");
 
 const configuration = require("../../config.js");
 
-/** @param {NodeJS.Platform} platform */
-const getPlatformEmoji = (platform) => {
-    switch (platform) {
-        case 'win32':
-            return '🪟';
-        case 'darwin':
-            return '🍎';
-        case 'linux':
-            return '🐧';
-        case 'freebsd':
-            return '👹';
-        case 'openbsd':
-            return '🐡';
-        case 'aix':
-            return '🔷';
-        case 'sunos':
-            return '☀️';
-        case "android":
-            return '🤖';
-        case "cygwin":
-            return '🔧';
-        case "haiku":
-            return '🍃';
-        case "netbsd":
-            return '🚩';
-        default:
-            return '💻';
-    }
-}
-/** @param {NodeJS.Platform} platform */
-const getPlatformName = (platform) => {
-    switch (platform) {
-        case 'win32':
-            return 'Windows';
-        case 'darwin':
-            return 'Darwin';
-        case 'linux':
-            return 'Linux';
-        case 'freebsd':
-            return 'FreeBSD';
-        case 'openbsd':
-            return 'OpenBSD';
-        case 'aix':
-            return 'AIX';
-        case 'sunos':
-            return 'SunOS';
-        case "android":
-            return 'Android';
-        case "cygwin":
-            return 'Cygwin';
-        case "haiku":
-            return 'Haiku';
-        case "netbsd":
-            return 'NetBSD';
-        default:
-            return typeof platform === "string" ? platform : "(unspecified)";
-    }
-}
+const HostUtility = require("../../util/utility-host.js");
+const BaseCommand = require("../../classes/basecommand.js");
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "stats";
         this.description = "Get internal server details about the bot.";
         this.attributes = {
@@ -73,7 +19,6 @@ class Command {
             lockedToCommands: true,
         };
 
-        this.client = client;
         this.alias = ["specs", "spec"];
     }
 
@@ -134,7 +79,7 @@ class Command {
         // fill out info
         embed.addFields({
             name: 'Server Host Details',
-            value: `${getPlatformEmoji(process.platform)} ${getPlatformName(process.platform)} ${process.arch} on Node ${process.version}`,
+            value: `${HostUtility.getPlatformEmoji()} ${HostUtility.getPlatformName()} ${process.arch} on Node ${process.version}`,
             inline: false
         }, {
             name: 'CPU',

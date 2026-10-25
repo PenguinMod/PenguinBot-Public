@@ -1,6 +1,9 @@
 const discord = require("discord.js");
-const OptionType = require('../../util/optiontype');
+
 const { Jimp: jimp, JimpMime } = require('jimp');
+
+const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
 
 const listedToppings = [ // visual only for listings, validToppings includes actually usable toppings
     'pepperoni',
@@ -13,7 +16,7 @@ const listedToppings = [ // visual only for listings, validToppings includes act
     'olive',
     'pineapple',
 ];
-// this toppings list actually wasnt supposed to be public so people would manually figure it out... sorry about that 😬
+// NOTE: this toppings list actually wasnt supposed to be public so people would manually figure it out... sorry about that 😬
 const validToppings = [
     'sauce',
     'pepperoni',
@@ -116,8 +119,9 @@ const wait = (ms) => {
     });
 };
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "pizza";
         this.description = "Make a pizza with toppings.";
         this.attributes = {
@@ -138,8 +142,6 @@ class Command {
                 description: 'A list of toppings, seperated by commas. Type "list" to see toppings.'
             }]
         };
-
-        this.client = client;
     }
 
     convertSlashCommand(interaction) {
@@ -203,9 +205,6 @@ class Command {
             case 'pineapples':
                 return 'pineapple';
             case 'sausages':
-            case 'dick':
-            case 'penis':
-            case 'cock':
                 return 'sausage';
             case 'doritos':
                 return 'dorito';
@@ -260,6 +259,7 @@ class Command {
 
         // create the pizza
         // create our base image
+        // TODO: This is the only heavy image-gen command left in the bot that doesnt support multi-threading so the main thread can be blocked by large pizza gens
         /**
          * @type {import("jimp").JimpInstance}
          */

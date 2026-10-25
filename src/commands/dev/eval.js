@@ -1,17 +1,20 @@
 const nodeUtil = require('node:util');
 
-const configuration = require("../../config");
+const configuration = require("../../config.js");
 
-class Command {
-    constructor(client) {
+const env = require("../../util/env-util.js");
+const OptionType = require("../../util/optiontype.js");
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "eval";
         this.description = "admin";
         this.attributes = {
             unlisted: true,
             permission: 3,
         };
-
-        this.client = client;
     }
 
     reject(message) {
@@ -21,6 +24,8 @@ class Command {
     }
 
     async invoke(message, args, util) {
+        if (env.getBool("DISABLE_ARBITRARY_OS_LEVEL_CODE"))
+            return message.reply("Variable `DISABLE_ARBITRARY_OS_LEVEL_CODE` is set to true on this host.");
         if (!configuration.permissions.eval.includes(message.author.id))
             return this.reject(message);
 

@@ -1,7 +1,13 @@
-const { MessageEmbed } = require("discord.js");
-const { createCanvas, loadImage } = require('canvas');
 const crypto = require("crypto");
-const OptionType = require('../util/optiontype');
+
+const Canvas = require('skia-canvas');
+const discord = require("discord.js");
+
+const OptionType = require('../util/optiontype.js');
+const DiscordUtility = require("../util/utility-discord.js");
+const SkiaCanvasUtil = require("../util/canvas-util-skia.js");
+
+const BaseCommand = require("../classes/basecommand.js");
 
 const attackTexts = [
     'wins!',
@@ -29,8 +35,9 @@ const wait = time => new Promise(resolve => setTimeout(resolve, time));
 const randomNumber = (items) => crypto.randomInt(1, items);
 const activeBattles = [];
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "fight";
         this.description = "Fights another user.";
         this.attributes = {
@@ -56,7 +63,7 @@ class Command {
             }]
         };
 
-        this.client = client;
+        this.alias = ["deathbattle"];
     }
 
     convertSlashCommand(interaction, util) {
@@ -76,12 +83,6 @@ class Command {
         return [interaction, true, util];
     }
 
-    getUserAvatar(user) {
-        const options = {
-            format: 'png'
-        };
-        return user.avatarURL(options) ?? user.user.avatarURL(options);
-    }
     denyMustMention(message) {
         message.reply('You must mention 2 people to fight eachother.');
     }
@@ -95,12 +96,10 @@ class Command {
         const u2 = message.mentions.members.at(1) ?? message.member;
         if (!(u1 && u2)) return this.denyMustMention(message);
 
-        if (u1.id !== message.author.id && util.interactionsBlocked(u1)) {
+        if (!util.canInteract(u1))
             return message.reply('The user you mentioned has interactions disabled.');
-        }
-        if (u2.id !== message.author.id && util.interactionsBlocked(u2)) {
+        if (!util.canInteract(u2))
             return message.reply('The user you mentioned has interactions disabled.');
-        }
 
         if (activeBattles.length >= 2) {
             let list = activeBattles
@@ -134,7 +133,7 @@ class Command {
             }
         };
 
-        const embed = new MessageEmbed();
+        const embed = new discord.MessageEmbed();
         embed.setDescription('nuh uh :BLEH:'); // this only shows before an attack is dished out
         const u1Entry = {
             name: u1.displayName,
@@ -148,23 +147,23 @@ class Command {
         };
         embed.setFields(u1Entry, u2Entry);
 
-        const u1Avatar = await loadImage(this.getUserAvatar(u1) ?? './assets/pink_default.jpg');
-        const u2Avatar = await loadImage(this.getUserAvatar(u2) ?? './assets/pink_default.jpg');
-        const image = await loadImage('assets/deathbattle.png');
-        const loserImage = await loadImage('assets/deathbattle_loser.png');
-        const canvas = createCanvas(image.width, image.height);
+        const u1Avatar = await Canvas.loadImage(DiscordUtility.avatarURL(u1));
+        const u2Avatar = await Canvas.loadImage(DiscordUtility.avatarURL(u2));
+        const image = await Canvas.loadImage('assets/deathbattle.png');
+        const loserImage = await Canvas.loadImage('assets/deathbattle_loser.png');
+        const canvas = new Canvas.Canvas(image.width, image.height);
         const ctx = canvas.getContext('2d');
         ctx.drawImage(u1Avatar, 8, 66, 128, 128);
         ctx.drawImage(u2Avatar, 187, 66, 128, 128);
         ctx.drawImage(image, 0, 0);
         ctx.font = `13px Sans`; // this font loads faster on my laptop :3
         ctx.textAlign = "center";
-        ctx.fillText(u1.displayName, 70, 213, 130);
-        ctx.fillText(u2.displayName, 251, 213, 130);
+        SkiaCanvasUtil.fillText(ctx, u1.displayName, 70, 213, 130);
+        SkiaCanvasUtil.fillText(ctx, u2.displayName, 251, 213, 130);
         
         // handle slash command updating
         let _board = message.reply({
-            files: [canvas.toBuffer("image/png")],
+            files: [await canvas.toBuffer("image/png")],
             embeds: [embed]
         });
         if (!isSlash) {
@@ -174,7 +173,7 @@ class Command {
             _board = message;
         }
         const board = _board;
-        const updateInfo = () => {
+        const updateInfo = async () => {
             let battleState = "attack1";
             let lastAttack = '1';
             u1Entry.value = `${u1Health}/100`;
@@ -201,7 +200,7 @@ class Command {
                     }
                     lastAttack = user === 'u1' ? '1' : '2';
                     battleState = "win";
-                    return `<:gold_pengin:1158864673861537864> **${attacker}** wins!!!`;
+                    return `👑 **${attacker}** wins!!!`;
                 })
                 .join('\n');
 
@@ -227,7 +226,7 @@ class Command {
             if (battleState === 'win') {
                 // only edit files if we actually changed the canvas
                 board.edit({
-                    files: [canvas.toBuffer("image/png")],
+                    files: [await canvas.toBuffer("image/png")],
                     embeds: [embed]
                 });
             } else {
@@ -240,13 +239,13 @@ class Command {
             const u1Attack = randomNumber(attackTexts.length)
             const u2Attack = randomNumber(attackTexts.length)
             pushAttack('u1', u1Attack);
-            updateInfo();
+            await updateInfo();
             await wait(1350);
 
             if (u2Health === 0) break;
 
             pushAttack('u2', u2Attack);
-            updateInfo();
+            await updateInfo();
             await wait(1350);
 
             if (u1Health === 0) break;
@@ -255,7 +254,7 @@ class Command {
             ? 'u1'
             : 'u2';
         pushAttack(winner, 0);
-        updateInfo();
+        await updateInfo();
         activeBattles.pop();
     }
 }

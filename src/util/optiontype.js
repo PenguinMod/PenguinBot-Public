@@ -1,3 +1,4 @@
+// TODO: Deprecate this and replace it with jwklong's slash command arguments system from the scrapped bot rewrite (that would also resolve the todo for making slash commands first over text commands)
 /**
  * Types of slash command options
  * @enum {Number}

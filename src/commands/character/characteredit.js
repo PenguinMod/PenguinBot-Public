@@ -1,15 +1,17 @@
 const discord = require("discord.js");
-const Canvas = require("canvas");
+const Canvas = require("skia-canvas");
 const uuid = require("uuid");
 
 const configuration = require("../../config.js");
 
 const Lua = require("../../util/lua.js");
-const CommandUtility = require("../../util/utility.js");
+const BaseCommand = require("../../classes/basecommand.js");
+const DiscordUtility = require("../../util/utility-discord.js");
 const CharacterManager = require("../../util/character-manager.js");
 
-class Command {
-    constructor(client) {
+class Command extends BaseCommand {
+    constructor() {
+        super();
         this.name = "characteredit";
         this.description = "Create or modify a character for use with other character commands.";
         this.descriptionLong = "Create or modify a character for use with other character commands."
@@ -32,16 +34,16 @@ class Command {
         this.attributes = {
             exclusive: true,
             lockedToCommands: true,
+            unlisted: true, // TODO: Temp
             permission: 0,
         };
 
-        this.client = client;
         this.alias = ["editcharacter", "charedit", "editchar"];
     }
 
     async getFavoriteColor(imageBuffer) {
         // get their "favorite color" from the center of the image
-        const canvas = Canvas.createCanvas(4, 4);
+        const canvas = new Canvas.Canvas(4, 4);
         const canvasImage = await Canvas.loadImage(imageBuffer);
         const ctx = canvas.getContext("2d");
         ctx.imageSmoothingEnabled = false;
@@ -81,8 +83,8 @@ class Command {
             Lua.stringify(returnValue);
             // check if the return value is inappropriate
             if (
-                (typeof returnValue === "string" && !CommandUtility.automodAllows(returnValue))
-                || (typeof returnValue === "object" && !CommandUtility.automodAllows(JSON.stringify(returnValue)))
+                (typeof returnValue === "string" && !DiscordUtility.automodAllows(returnValue))
+                || (typeof returnValue === "object" && !DiscordUtility.automodAllows(JSON.stringify(returnValue)))
             ) throw new Error("Returned value contains automodded content");
 
             // check if its been too long
@@ -110,16 +112,16 @@ class Command {
                 // get char info
                 if (!characterId || characterId.length < 1 || characterId.length >= 64 || characterId.match(/[^a-z0-9]/i))
                     return message.reply('Please give your character a valid ID. It has to be 1 character minimum, and you must use characters A-Z and numbers 0-9.');
-                if (!util.automodAllows(characterId))
+                if (!DiscordUtility.automodAllows(characterId))
                     return message.reply("You can't use that character ID. Pick something else.");
                 if (CharacterManager.has(characterId)) return message.reply("Sorry, someone else owns that character ID.");
                 const characterName = args.join(" ").trim();
                 if (!characterName || characterName.length <= 0 || characterName.length >= 128 || characterName.includes("\n"))
                     return message.reply('Please give your character a valid name.');
-                if (!util.automodAllows(characterName))
+                if (!DiscordUtility.automodAllows(characterName))
                     return message.reply("No, you aren't allowed to call your character that. Pick something else.");
 
-                const [imageBuffer] = await util.getInputImagesForCommand(message);
+                const [imageBuffer] = await util.getInputImagesForCommand();
                 if (!imageBuffer) return;
 
                 const color = await this.getFavoriteColor(imageBuffer);
@@ -186,14 +188,14 @@ class Command {
             case "rename": {
                 const character = CharacterManager.get(characterId);
                 if (!character) return message.reply("I don't know anyone by that character ID.");
-                if (util.getPermissionLevel(message) < 2 && character.author !== message.author.id)
+                if (util.getPermissionLevel() < 2 && character.author !== message.author.id)
                     return message.reply("You don't own that character.");
 
                 // get the new name & set it
                 const characterName = args.join(" ").trim();
                 if (!characterName || characterName.length <= 0 || characterName.length >= 128 || characterName.includes("\n"))
                     return message.reply('Please give your character a valid name.');
-                if (!util.automodAllows(characterName))
+                if (!DiscordUtility.automodAllows(characterName))
                     return message.reply("No, you aren't allowed to call your character that. Pick something else.");
                 
                 CharacterManager.update(characterId, {
@@ -214,7 +216,7 @@ class Command {
                 if (!character) return message.reply("I don't know anyone by that character ID.");
                 if (character.author !== message.author.id) return message.reply("You don't own that character.");
 
-                const [imageBuffer] = await util.getInputImagesForCommand(message);
+                const [imageBuffer] = await util.getInputImagesForCommand();
                 if (!imageBuffer) return;
 
                 await CharacterManager.updateImage(characterId, imageBuffer);
@@ -231,7 +233,7 @@ class Command {
             case "delete": {
                 const character = CharacterManager.get(characterId);
                 if (!character) return message.reply("I don't know anyone by that character ID.");
-                if (util.getPermissionLevel(message) < 2 && character.author !== message.author.id)
+                if (util.getPermissionLevel() < 2 && character.author !== message.author.id)
                     return message.reply("You don't own that character.");
 
                 await CharacterManager.delete(characterId);
@@ -240,7 +242,7 @@ class Command {
             case "script": {
                 const character = CharacterManager.get(characterId);
                 if (!character) return message.reply("I don't know anyone by that character ID.");
-                if (util.getPermissionLevel(message) < 2 && character.author !== message.author.id)
+                if (util.getPermissionLevel() < 2 && character.author !== message.author.id)
                     return message.reply("You don't own that character.");
 
                 // check that the action has a corresponding command
@@ -248,8 +250,7 @@ class Command {
                 if (!actionName)
                     return message.reply("Specify an action to script."
                         + "\n" + "See `character(action)` commands seen in the help command for actions.");
-                const commandList = util.request("commands");
-                if (!Object.keys(commandList).includes(`character${actionName}`))
+                if (!Object.keys(util.commands).includes(`character${actionName}`))
                     return message.reply("There's no corresponding command for that action."
                         + "\n" + "See `character(action)` commands seen in the help command for actions.");
                 // these comands start with character, but dont actually represent an action.

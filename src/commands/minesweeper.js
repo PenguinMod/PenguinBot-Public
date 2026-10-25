@@ -1,132 +1,167 @@
 const discord = require("discord.js");
-const OptionType = require('../util/optiontype');
 
-let i;
-let j;
-let x;
-let y;
-let v;
-let w;
+const OptionType = require('../util/optiontype.js');
+const BaseCommand = require("../classes/basecommand.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "mine";
-        this.description = "Generate an Minesweeper Game.";
+        this.description = "Generate a Minesweeper game.";
+        this.descriptionLong = "Generate a Minesweeper game with spoiler tags for each square."
+            + "\n" + "Specify the column and row count for the grid, then the amount of mines to place.";
         this.attributes = {
             unlisted: false,
             permission: 0,
             lockedToCommands: true,
         };
+
+        this.alias = ["minesweeper"];
+        this.example = [
+            { text: "{{prefix}}mine 9 9 4"},
+            { text: "{{prefix}}mine 3 3 0"},
+            { text: "{{prefix}}mine 4 2 3"},
+        ];
     }
 
     invoke(message, args) {
-        let columns = args[0];
-        let rows = args[1];
-        let mines = args[2];
-
+        if (args.length === 0)
+            return message.reply("Usage: `<columns> <rows> <mines>`.");
+        
+        const columns = Number(args[0]);
+        const rows = Number(args[1]);
+        const mines = Number(args[2] || 0);
         try {
-            var result = generateBoard(Number(columns), Number(rows), Number(mines));
-            
-            // Define replacement rules
-            const replacementRules = {
-                'x': '||:boom:||',
-                '0': '||:zero:||',
-                '1': '||:one:||',
-                '2': '||:two:||',
-                '3': '||:three:||',
-                '4': '||:four:||',
-                '5': '||:five:||',
-                '6': '||:six:||',
-                '7': '||:seven:||',
-                '8': '||:eight:||',
-                '9': '||:nine:||'
-                // Add more rules as needed
-            };
+            const board = this.generateBoard(columns, rows, mines);
+            const emojiBoard = this.replaceEmojis(board);
 
-            // Apply replacements
-            result = replaceEmojis(result, replacementRules);
-            
-            const embed = new discord.MessageEmbed()
-                .setTitle("Minesweeper Game")
-                .setDescription(result)
-                .setColor("#00b0f4");
+            const embed = new discord.MessageEmbed();
+            embed.setTitle("Minesweeper Game");
+            embed.setDescription(emojiBoard);
+            embed.setColor("#00c3ff");
 
-            message.reply({ embeds: [embed] });
+            return message.reply({
+                embeds: [embed],
+            });
         } catch (error) {
-            message.reply(`Error: ${error}`);
+            return message.reply({
+                content: `${error.message || error}`,
+                allowedMentions: {
+                    parse: [],
+                    users: [],
+                    roles: [],
+                    repliedUser: true,
+                }
+            });
+        }
+    }
+
+    // DISCLOSURE: AI because the original was likely copied already (also i minesweeper is generic so)
+    generateBoard(columns, rows, mines) {
+        if (
+            !Number.isInteger(columns) ||
+            !Number.isInteger(rows) ||
+            !Number.isInteger(mines)
+        ) {
+            throw new Error("Columns, rows, and mines must be whole numbers.");
         }
 
-        function generateBoard(columns, rows, mines) {
-            if (columns <= 0 || rows <= 0) {
-                throw "Invalid size"
-            }
-            if (columns * rows > 512) {
-                throw "Board is too big"
-            }
-            if (mines > columns * rows) {
-                throw "Too many mines"
-            }
-            if (mines < 0) {
-                throw "Too little mines"
-            }
+        if (columns <= 0 || rows <= 0) {
+            throw new Error("The board must have a positive width and height.");
+        }
 
-            var array = Array(columns).fill("0")
-            for (i in array) {
-                array[i] = Array(rows).fill("0")
-            }
+        const boardSize = columns * rows;
 
-            //place mines
-            var placesGone = 0
-            for (i in array) {
-                for (j in array[i]) {
-                    if (Math.random() < mines / (columns * rows - placesGone)) {
-                        mines -= 1
-                        array[i][j] = "x"
+        if (boardSize > 256) {
+            throw new Error("The board is too big.");
+        }
+
+        if (mines < 0) {
+            throw new Error("The number of mines cannot be negative.");
+        }
+
+        if (mines > boardSize) {
+            throw new Error("There are too many mines for this board size.");
+        }
+
+        const board = Array.from(
+            { length: rows },
+            () => Array(columns).fill("0")
+        );
+
+        // Create a list of every board position.
+        const positions = [];
+
+        for (let row = 0; row < rows; row++) {
+            for (let column = 0; column < columns; column++) {
+                positions.push([row, column]);
+            }
+        }
+
+        // Shuffle the positions and use the first N for mines.
+        for (let i = positions.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [positions[i], positions[j]] = [positions[j], positions[i]];
+        }
+
+        for (let i = 0; i < mines; i++) {
+            const [row, column] = positions[i];
+            board[row][column] = "x";
+        }
+
+        // Calculate the numbers around each mine.
+        for (let row = 0; row < rows; row++) {
+            for (let column = 0; column < columns; column++) {
+                if (board[row][column] === "x") {
+                    continue;
+                }
+
+                let mineCount = 0;
+
+                for (let rowOffset = -1; rowOffset <= 1; rowOffset++) {
+                    for (let columnOffset = -1; columnOffset <= 1; columnOffset++) {
+                        if (rowOffset === 0 && columnOffset === 0) {
+                            continue;
+                        }
+
+                        const nearbyRow = row + rowOffset;
+                        const nearbyColumn = column + columnOffset;
+
+                        if (
+                            nearbyRow >= 0 &&
+                            nearbyRow < rows &&
+                            nearbyColumn >= 0 &&
+                            nearbyColumn < columns &&
+                            board[nearbyRow][nearbyColumn] === "x"
+                        ) {
+                            mineCount++;
+                        }
                     }
-                    placesGone += 1
                 }
-            }
 
-            //upd numbers
-            function check(i, j) {
-                return array[i] !== undefined && array[i][j] !== undefined && array[i][j] === "x"
+                board[row][column] = String(mineCount);
             }
-            for (x in array) {
-                i = Number(x)
-                for (y in array[i]) {
-                    j = Number(y)
-                    if (check(i, j)) continue
-                    var num = 0
-                    num += check(i+1, j)
-                    num += check(i+1, j+1)
-                    num += check(i, j+1)
-                    num += check(i-1, j+1)
-                    num += check(i-1, j)
-                    num += check(i-1, j-1)
-                    num += check(i, j-1)
-                    num += check(i+1, j-1)
-                    array[i][j] = String(num)
-                }
-            }
-
-            //stringify
-            var string = ""
-            for (v of array) {
-                for (w of v) {
-                    string += w
-                }
-                string += '\n'
-            }
-
-            return string;
         }
 
-        function replaceEmojis(input, rules) {
-            for (const [key, value] of Object.entries(rules)) {
-                input = input.replace(new RegExp(key, 'g'), value);
-            }
-            return input;
-        }
+        return board.map(row => row.join("")).join("\n");
+    }
+
+    replaceEmojis(board) {
+        const replacements = {
+            x: "||:boom:||",
+            0: "||:zero:||",
+            1: "||:one:||",
+            2: "||:two:||",
+            3: "||:three:||",
+            4: "||:four:||",
+            5: "||:five:||",
+            6: "||:six:||",
+            7: "||:seven:||",
+            8: "||:eight:||",
+            9: "||:nine:||",
+        };
+
+        return board.replace(/[x0-9]/g, character => replacements[character]);
     }
 }
 

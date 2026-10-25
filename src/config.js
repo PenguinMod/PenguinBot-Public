@@ -27,7 +27,11 @@ const configuration = {
         '1038261660164563044', // old-secret-penguin-chat
         '1161439112096665711', // one-minute-and-37-seconds
         '1139749855913316474', // penguinbot-test
+        "1551460701044867172", // dedicated penguinbot test server
     ],
+
+    // Role ID automatically given to members when they join the SERVER_ID. Toggled with ADD_MEMBER_ROLE_ON_JOIN
+    memberRole: "1449641544947597392",
 
     // Used to link to channels within the server. These IDs are the ones we use in PenguinMod.
     channels: {
@@ -54,6 +58,22 @@ const configuration = {
         spaces: "1181097377730400287",
         teamWanted: "1095867529169207416",
         spam: "1040077506029551647",
+
+        // PenguinMod guess-the-project event. This is the channel people can view for guessing.
+        guessTheProjectMembers: "1560874272929619999",
+        // PenguinMod guess-the-project event. This is the channel event managers receive guesses in.
+        guessTheProjectManager: "1560898144131096686",
+    },
+    
+    // Servers used for different environments (production, testing)
+    servers: {
+        production: [
+            env.get("SERVER_ID"),
+        ],
+        testing: [
+            "1551457087274618990", // penguinbot testing
+            "746156168560508950", // older penguinbot testing
+        ],
     },
 
     permissions: {
@@ -81,8 +101,12 @@ const configuration = {
             "1102050296265445436", // Server Booster
         ],
 
-        // Role ID automatically given to members when they join.
-        memberRole: "1127013285510787224",
+        // Role IDs considered event managers (for PenguinMod)
+        eventManagerRoles: [
+            "1361088428556419383", // Event Manager
+            "1559282557227376861", // Event Manager (testing)
+            "1033551639170273380", // Admin Permissions (PenguinMod)
+        ],
 
         // Channels checked for in the lockedToCommands property (excluding commands channel from above & threads within that channel)
         lockedToCommands: [
@@ -95,6 +119,7 @@ const configuration = {
             '1176024649390366780', // admin-chat
             '1176024748300443698', // admin-furry-rp
             '1126699478607470652', // mod-furry-rp
+            "1551460701044867172", // dedicated penguinbot test server
         ],
 
         // On top of the permission check, who can use pm!eval (run custom code)

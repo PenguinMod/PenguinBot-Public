@@ -4,11 +4,14 @@ const path = require('path');
 const uuid = require("uuid");
 const discord = require("discord.js");
 
-const CellularAutomataLifeLike = require("../../util/cellularAutomata/lifeLike.js");
+const botEmojis = require("../../util/bot-emojis.js");
 const runNewThread = require("../../util/multi-thread.js");
+const BaseCommand = require("../../classes/basecommand.js");
+const CellularAutomataLifeLike = require("../../util/cellularAutomata/lifeLike.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "califelike";
         this.description = "Simulates Life-like Cellular Automata (default, Conway's Game of Life)";
         this.attributes = {
@@ -29,11 +32,11 @@ class Command {
             return message.reply("That's not a valid rulestring. Use nothing for the default `B3/S23` or follow `B(born at neighbors)/S(survive at neighbors)`.");
         }
 
-        const [inputImage] = await util.getInputImagesForCommand(message);
+        const [inputImage] = await util.getInputImagesForCommand();
         if (!inputImage) return;
 
         // create the other thread
-        const loadingMessage = await message.reply('Creating GIF... <a:loading:1243400787980456006>');
+        const loadingMessage = await message.reply(`Creating GIF... ${botEmojis.loading}`);
 
         const requestId = uuid.v4();
         const tempDir = path.join(__dirname, `../../../temp/${requestId}/`);
@@ -64,7 +67,7 @@ class Command {
             });
         } catch (error) {
             console.error(error);
-            loadingMessage.edit({ content: `An error occurred while editing the GIF. <:no:1164832595478069299>\n${error}` });
+            loadingMessage.edit({ content: `An error occurred while editing the GIF. ❌\n${error}` });
         } finally {
             await fs.rm(tempDir, { recursive: true, force: true });
         }

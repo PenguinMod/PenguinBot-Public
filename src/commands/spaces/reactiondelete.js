@@ -1,11 +1,13 @@
 const Database = require('sync-json-database');
 const ReactionMessageDB = new Database('./databases/spaces-reactionmsg.json');
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
 
-const tryCatch = require('../../util/try-catch');
+const tryCatch = require('../../util/try-catch.js');
+const BaseCommand = require("../../classes/basecommand.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "reactiondelete";
         this.description = "Deletes a reaction role in your <#1181097377730400287>.";
         this.attributes = {

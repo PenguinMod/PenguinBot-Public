@@ -34,6 +34,7 @@ const mathEvaluateThread = async (expression) => {
         return mathEvaluateRaw(expression);
 
     // create a new thread
+    // NOTE: This is pretty expensive for calculating most expressions but it resolves main thread crashing due to inputs like "1:9999999" or deep recursive functions
     const workerPath = path.join(__dirname, "../resources/worker/math-evaluate.worker.js");
     const result = await runNewThread(workerPath, path.resolve(__dirname, __filename), { expression }, 30 * 1000);
     return Number(result);

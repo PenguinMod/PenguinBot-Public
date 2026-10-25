@@ -1,8 +1,10 @@
-const { mathEvaluateThread } = require("../util/math-evaluate.js");
 const OptionType = require('../util/optiontype');
+const BaseCommand = require("../classes/basecommand.js");
+const { mathEvaluateThread } = require("../util/math-evaluate.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "calc";
         this.description = "Evaluate a mathematical expression.";
         this.attributes = {

@@ -1,6 +1,6 @@
 // suggested by lily make thing
 // "It compiles the message by removing unnecessary vowels and wordsn"
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 const delay = (ms) => {
     return new Promise((resolve) => {
@@ -11,8 +11,8 @@ const delay = (ms) => {
 };
 
 class Command extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "compile";
         this.description = "Removes totally unnecessary junk from your English text.";
         this.textDescription = "Text to totally superly clean up.";

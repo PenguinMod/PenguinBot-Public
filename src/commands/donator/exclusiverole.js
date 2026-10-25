@@ -5,8 +5,11 @@ const DonatorRoleDB = new Database('./databases/donator-roles.json');
 
 const configuration = require("../../config.js");
 
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "exclusiverole";
         this.description = "Manage your custom role for supporting PenguinMod or boosting the server.";
         this.attributes = {
@@ -67,7 +70,7 @@ class Command {
                     return message.reply("You don't have an exclusive role!");
                 }
 
-                const [buffer] = await util.getInputImagesForCommand(message);
+                const [buffer] = await util.getInputImagesForCommand();
                 if (!buffer) return;
                 await role.setIcon(buffer, 'Updating exclusive role icon');
                 message.reply("Your role icon has been updated!");
@@ -118,14 +121,13 @@ class Command {
                 break;
             }
             case 'get': {
-                const prefix = util.request("prefix");
                 const roleID = DonatorRoleDB.get(String(message.member.id));
                 if (!roleID) {
-                    return message.reply(`You don't have an exclusive role!\nUse \`${prefix}exclusiverole create\` to make one.`);
+                    return message.reply(`You don't have an exclusive role!\nUse \`${util.prefix}exclusiverole create\` to make one.`);
                 }
                 const role = await message.guild.roles.fetch(roleID);
                 if (!role) {
-                    return message.reply(`You don't have an exclusive role!\nUse \`${prefix}exclusiverole create\` to make one.`);
+                    return message.reply(`You don't have an exclusive role!\nUse \`${util.prefix}exclusiverole create\` to make one.`);
                 }
                 const embed = new discord.MessageEmbed();
                 embed.setTitle(`${role.name}`);

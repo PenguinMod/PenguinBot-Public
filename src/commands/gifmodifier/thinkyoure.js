@@ -1,5 +1,7 @@
-const GifModifierCommand = require('../../basecommands/gifmodifier');
 const path = require("path");
+
+const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
+const GifModifierCommand = require('../../classes/gifmodifier.js');
 
 // frameSet should align with you-are-nuts-sheet.png
 const frameSet = [
@@ -137,7 +139,7 @@ class Command extends GifModifierCommand {
                 ctx.fillRect(118, 175, 134, 77);
 
                 ctx.fillStyle = "yellow";
-                ctx.fillText(memeText, 118, 175 + 38, 134);
+                SkiaCanvasUtil.fillText(ctx, memeText, 118, 175 + 38, 134);
             }
 
             encoder.addFrame(ctx);

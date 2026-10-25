@@ -1,11 +1,13 @@
-const synchronizeSlashCommands = require('@frostzzone/discord-sync-commands');
 const glob = require("glob");
+const synchronizeSlashCommands = require('@frostzzone/discord-sync-commands');
 
-const env = require("../../util/env-util");
-const envFill = require("../../util/env-fill");
-const configuration = require("../../config");
+const configuration = require("../../config.js");
 
-const ReactionMessageUtil = require("../../util/reaction-msg-util");
+const env = require("../../util/env-util.js");
+const envFill = require("../../util/env-fill.js");
+const FormatTime = require("../../util/format-time.js");
+const HostUtility = require("../../util/utility-host.js");
+const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
 
 class BotEvent {
     constructor(client) {
@@ -15,6 +17,10 @@ class BotEvent {
         this.client = client;
     }
 
+    /**
+     * @param {import("discord.js").Client} client 
+     * @param {*} state 
+     */
     async invoke(client, state) {
         const isInTestMode = state.isInTestMode;
 
@@ -45,7 +51,7 @@ class BotEvent {
                 // register all the commands in this file
                 for (const commandName in module) {
                     const commandClass = module[commandName];
-                    const command = new commandClass(client, state);
+                    const command = new commandClass();
 
                     // Register command in state.commands map
                     // check that this command name isnt taken by another command or an alias
@@ -110,29 +116,45 @@ class BotEvent {
             }]
         });
         
-        // log
+        // Log to discord with one big message containing all the last runtime's information (incase pm!restart) and any loading errors
         const mainChannel = await client.channels.cache.get(configuration.channels.botTestingChannel);
-        mainChannel.send({
-            content: isInTestMode ?
-                'Bot has restarted in test mode. Certain features will not be enabled.' :
-                'Bot has restarted.'
-        });
+        const mainDiscordLog = [];
+        mainDiscordLog.push(`Bot has restarted; took ${FormatTime.formatTime(Date.now() - HostUtility.startMilliseconds)} to load.`
+            + " " + `Running in \`${HostUtility.launchMode}\` mode${!isInTestMode ? "" : "; Certain features will not be enabled"}`);
 
-        // log when commands cant load
-        if (failed) {
-            mainChannel.send(`Some commands failed to load.\n\n${errors}`.substring(0, 2000));
-        }
-
-        // extra tasks
-        // spaces reaction messages
-        if (!isInTestMode) {
-            try {
-                await ReactionMessageUtil.handleStartup(client);
-            } catch (err) {
-                mainChannel.send(`Failed to handle ReactionMessageUtil.handleStartup(). Listing spaces that failed.\n\n${err}`.substring(0, 2000));
-                console.warn(err);
+        // All status information is meaningless if this is the first boot ever
+        if (HostUtility.lastState.created) {
+            switch (HostUtility.lastState.status) {
+                case "active":
+                    mainDiscordLog.push(`The bot seemed to restart unexpectedly. This can happen if the host rebooted or you are exiting via terminal.`);
+                    break;
+                default:
+                    mainDiscordLog.push(`The bot last shutdown due to: \`${HostUtility.lastState.status}\``);
+                    break;
             }
+            mainDiscordLog.push(`- The bot last started <t:${Math.round(HostUtility.lastState.started / 1000)}:R>`,
+                `- Information about the last bot state was updated <t:${Math.round(HostUtility.lastState.written / 1000)}:R>`);
+        } else {
+            mainDiscordLog.push("Hello! 👋 You've got PenguinBot setup for the first time! :)"
+                + "\n" + "You can configure my channels in `src/config.js`. I'm sending this log here because this is my `botTestingChannel`."
+                + "\n" + "You won't see this specific message again. I'll send future logs here about the last run & boot errors though.");
         }
+
+        if (failed) {
+            mainDiscordLog.push(`Some commands failed to load.`, `${errors}`);
+        }
+
+        // send our big log to the testing channel
+        console.log(mainDiscordLog.join("\n"));
+        mainChannel.send({
+            content: mainDiscordLog.join("\n").trim().substring(0, 2000),
+            allowedMentions: {
+                parse: [],
+                users: [],
+                roles: [],
+                repliedUser: false
+            }
+        });
     }
 }
 

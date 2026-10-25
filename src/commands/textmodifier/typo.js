@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../basecommands/textmodifier');
+const TextModifierCommand = require('../../classes/textmodifier');
 
 const shouldDoThing = (chance, thing) => {
     if (Math.round(Math.random() * chance) === 0) {
@@ -19,8 +19,8 @@ const isJoe = (idx, array) => {
 }
 
 class Command extends TextModifierCommand {
-    constructor(client) {
-        super(client);
+    constructor() {
+        super();
         this.name = "typo";
         this.description = "Give your text some typos.";
         this.textDescription = "Text to typo-ify.";

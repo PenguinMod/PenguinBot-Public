@@ -1,5 +1,8 @@
-class Command {
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "cause-error";
         this.description = "moyai emoji";
         this.attributes = {

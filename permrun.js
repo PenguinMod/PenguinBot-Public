@@ -15,11 +15,12 @@ const spawnProcess = () => {
     botProcess.stderr.on('data', (data) => {
         console.log(data.toString('utf8'));
     });
-    botProcess.once('close', (code) => {
+    botProcess.once('close', (code, signal) => {
         console.log('closed!', code);
         if (code === 50) {
             spawnProcess();
         } else {
+            console.error("CRASH! Not restarting the bot;", signal, code);
             process.exit(1);
         }
     });

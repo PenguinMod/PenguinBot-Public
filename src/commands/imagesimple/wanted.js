@@ -1,9 +1,16 @@
-const { MessageAttachment, MessageEmbed } = require('discord.js');
-const { createCanvas, loadImage } = require('canvas');
-const OptionType = require('../../util/optiontype');
+const discord = require('discord.js');
 
-class Command {
+const Canvas = require('skia-canvas');
+
+const OptionType = require('../../util/optiontype.js');
+const DiscordUtility = require("../../util/utility-discord.js");
+const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
+
+const BaseCommand = require("../../classes/basecommand.js");
+
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "wanted";
         this.description = "Wanted Poster on someone or you";
         this.attributes = {
@@ -14,21 +21,20 @@ class Command {
     }
 
     async invoke(message, _, util) {
-        const canvas = createCanvas(300, 400);
+        const canvas = new Canvas.Canvas(300, 400);
         const ctx = canvas.getContext('2d');
 
-        const posterTemplate = await loadImage('./assets/wanted.png');
+        const posterTemplate = await Canvas.loadImage('./assets/wanted.png');
         ctx.drawImage(posterTemplate, 0, 0, canvas.width, canvas.height);
 
         const userMention = message.mentions.users.first();
-        if (util.interactionsBlocked(userMention)) {
-            if (userMention.id !== message.author.id) return message.reply('The user you mentioned has interactions disabled.');
-        }
+        if (!util.canInteract(userMention))
+            return message.reply('The user you mentioned has interactions disabled.');
 
         const avatarURL = userMention ?
-            userMention.displayAvatarURL({ format: 'png', size: 128 })
-            : message.author.displayAvatarURL({ format: 'png', size: 128 });
-        const avatar = await loadImage(avatarURL ?? './assets/pink_default.jpg');
+            DiscordUtility.avatarURL(userMention, { format: 'png', size: 128 })
+            : DiscordUtility.avatarURL(message.author, { format: 'png', size: 128 });
+        const avatar = await Canvas.loadImage(avatarURL ?? './assets/pink_default.jpg');
 
         const centerX = (canvas.width - 128) / 2;
         const centerY = (canvas.height - 128) / 2;
@@ -39,16 +45,16 @@ class Command {
         ctx.textAlign = "center";
 
         if (userMention) {
-            ctx.fillText(capitalize(userMention.username), canvas.width / 2, 300);
+            SkiaCanvasUtil.fillText(ctx, capitalize(userMention.username), canvas.width / 2, 300);
         } else {
-            ctx.fillText(capitalize(message.author.username), canvas.width / 2, 300);
+            SkiaCanvasUtil.fillText(ctx, capitalize(message.author.username), canvas.width / 2, 300);
         }
 
-        const attachment = new MessageAttachment(canvas.toBuffer("image/png"), 'wanted-poster.png');
+        const attachment = new discord.MessageAttachment(await canvas.toBuffer("image/png"), 'wanted-poster.png');
 
         const title = userMention ? `${userMention.username}'s Wanted Poster` : "Your Wanted Poster";
 
-        const embed = new MessageEmbed()
+        const embed = new discord.MessageEmbed()
             .setTitle(title)
             .setImage('attachment://wanted-poster.png');
 

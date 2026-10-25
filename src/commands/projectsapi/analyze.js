@@ -2,11 +2,13 @@ const discord = require("discord.js");
 const { PenguinModAPIError } = require("penguinmod");
 
 const OptionType = require('../../util/optiontype.js');
+const BaseCommand = require("../../classes/basecommand.js");
 const PenguinModClient = require("../../util/penguinmod-client.js");
 const PenguinModAnalyze = require("../../util/penguinmod-analyze.js");
 
-class Command {
+class Command extends BaseCommand {
     constructor() {
+        super();
         this.name = "analyze";
         this.description = "Analyze a PenguinMod project by it's ID to get info about it's contents.";
         this.attributes = {

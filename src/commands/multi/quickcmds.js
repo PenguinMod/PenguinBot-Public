@@ -1,4 +1,4 @@
-const QuickReplyCommand = require("../../basecommands/quickreply");
+const QuickReplyCommand = require("../../classes/quickreply");
 
 class ScratchAuthCommand extends QuickReplyCommand {
     constructor() {
@@ -14,7 +14,7 @@ class DesktopCommand extends QuickReplyCommand {
         super();
         this.name = "desktop";
         this.description = "Desktop Quick Reply";
-        this.message = "The PenguinMod Desktop app is a planned project the PenguinMod developers want to make soon. It is not a thing yet.\nThe best third-party alternative for now is an unofficial PenguinMod Desktop app named \"Desk-Penguin\" made by TheShovel.\n<https://github.com/TheShovel/Desk-Penguin> (this is an unofficial project, not affiliated with PenguinMod.)";
+        this.message = "The PenguinMod Desktop app is a planned project the PenguinMod developers want to make soon. It is not a thing yet.\nThe best third-party alternative for now is an unofficial PenguinMod Desktop app made by SCsupercraft.\n<https://github.com/PenguinMod-Desktop/PenguinMod-Desktop> (this is an unofficial project, not affiliated with PenguinMod.)";
     }
 }
 class RankupCommand extends QuickReplyCommand {

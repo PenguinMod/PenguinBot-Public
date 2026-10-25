@@ -6,10 +6,11 @@
 const axios = require('axios');
 const JSZip = require('jszip');
 
-const Canvas = require('canvas');
+const Canvas = require('skia-canvas');
 const { Jimp, JimpMime } = require('jimp');
 
 const PenguinModClient = require("./penguinmod-client");
+const SkiaCanvasUtil = require("./canvas-util-skia.js");
 
 const EXTENSION_INFO = require("./penguinmod-analyze-extensions.js");
 
@@ -259,7 +260,7 @@ class PenguinModAnalyze {
         const background = await Canvas.loadImage(finalizedBackground);
 
         // create the canvas
-        const canvas = Canvas.createCanvas(640 * imageScale, 360 * imageScale);
+        const canvas = new Canvas.Canvas(640 * imageScale, 360 * imageScale);
         const ctx = canvas.getContext('2d');
         ctx.scale(imageScale, imageScale);
 
@@ -272,10 +273,10 @@ class PenguinModAnalyze {
         ctx.textAlign = 'center';
         ctx.font = '24px Helvetica Bold';
         ctx.fillStyle = 'white';
-        ctx.fillText(projectMeta.title, 320, 45, 600);
+        SkiaCanvasUtil.fillText(ctx, projectMeta.title, 320, 45, 600);
         ctx.font = '20px Helvetica Bold';
         ctx.textBaseline = "middle";
-        ctx.fillText('Blocks Used', 320, 345, 600);
+        SkiaCanvasUtil.fillText(ctx, 'Blocks Used', 320, 345, 600);
 
         // draw the labels for each statistic
         for (const idx in STAT_PROPS) {
@@ -289,14 +290,14 @@ class PenguinModAnalyze {
             ctx.font = '16px Helvetica';
             ctx.textBaseline = "alphabetic";
             ctx.fillStyle = "white";
-            ctx.fillText(name, cx, cy, 320);
+            SkiaCanvasUtil.fillText(ctx, name, cx, cy, 320);
 
             // draw the value
             const number = projectStats[prop];
             ctx.font = '24px Helvetica Bold';
             ctx.textBaseline = "middle";
             ctx.fillStyle = "#FFDD00";
-            ctx.fillText(number, cx, cy + 18, 320);
+            SkiaCanvasUtil.fillText(ctx, number, cx, cy + 18, 320);
         }
 
         // draw le extension garph
@@ -354,7 +355,7 @@ class PenguinModAnalyze {
                 ctx.fillStyle = `hsl(0, 0%, ${textLightness}%)`;
                 ctx.textBaseline = "top";
                 ctx.fillRect(lastX, 302, 1, 8);
-                ctx.fillText(name, lastX + 2, 302, width - 2);
+                SkiaCanvasUtil.fillText(ctx, name, lastX + 2, 302, width - 2);
                 lastTextEnd = 0;
             } else {
                 // swap sides 
@@ -374,7 +375,7 @@ class PenguinModAnalyze {
                 ctx.save();
                 ctx.translate(lastX, ty);
                 ctx.rotate(dir * Math.PI / 180);
-                ctx.fillText(name, 2, 2);
+                SkiaCanvasUtil.fillText(ctx, name, 2, 2);
                 ctx.restore();
 
                 // draw the label bit
@@ -386,7 +387,7 @@ class PenguinModAnalyze {
         }
 
         // return ArrayBuffer for web compat
-        const buffer = canvas.toBuffer("image/png");
+        const buffer = await canvas.toBuffer("image/png");
         const arrayBuffer = buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength);
         return arrayBuffer;
     }
