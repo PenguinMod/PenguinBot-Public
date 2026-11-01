@@ -1,7 +1,7 @@
 const discord = require('discord.js');
 
 const OptionType = require('../util/optiontype.js');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 const { mathEvaluateRaw } = require("../util/math-evaluate.js");
 
 class Command extends BaseCommand {
@@ -19,9 +19,9 @@ class Command extends BaseCommand {
         };
     }
 
-    convertSlashCommand(interaction) {
+    convertSlashCommand(interaction, util) {
         interaction.author = interaction.member.user;
-        return [interaction];
+        return [interaction, [], util];
     }
 
     async invoke(message) {

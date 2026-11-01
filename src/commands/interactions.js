@@ -2,7 +2,7 @@ const Database = require('sync-json-database');
 const DisabledInteractionsDB = new Database('./databases/disabled-interactions.json');
 
 const OptionType = require('../util/optiontype.js');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -29,10 +29,10 @@ class Command extends BaseCommand {
         this.alias = ["interaction"];
     }
 
-    convertSlashCommand(interaction) {
+    convertSlashCommand(interaction, util) {
         const action = interaction.options.getString('action');
         interaction.author = interaction.member.user;
-        return [interaction, [action]];
+        return [interaction, [action], util];
     }
     
     invoke(message, args) {

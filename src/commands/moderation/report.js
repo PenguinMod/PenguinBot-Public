@@ -1,7 +1,7 @@
 const configuration = require("../../config.js");
 
 const OptionType = require('../../util/optiontype.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -69,7 +69,7 @@ class Command extends BaseCommand {
             });
         }
 
-        const adminReportChannel = this.client.channels.cache.get(configuration.channels.userReports);
+        const adminReportChannel = await this.client.channels.fetch(configuration.channels.userReports);
         const user = message.options.getMember('user');
 
         const reason = message.options.getString('reason');

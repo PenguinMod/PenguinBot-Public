@@ -10,6 +10,15 @@ class BotState {
      */
     static active = false;
     /**
+     * Only true when all events and commands have initialized.
+     * Use BotEventEmitter.ready() to wait for this.
+     */
+    static initialized = false;
+    /**
+     * Only true when all events have initialized.
+     */
+    static initializedEvents = false;
+    /**
      * Whether or not we've entered graceful shutdown
      */
     static shuttingDown = false;
@@ -18,8 +27,11 @@ class BotState {
     static client = null;
     /** The HTTP server when a web panel is running. @type {import("http").Server} */
     static server = null;
-    /** Arbitrary values like loaded commands and flags. */
+    /** Arbitrary values like serialized data and flags. */
     static state = {};
+
+    /** If set, then this denotes that we have errors/warnings to display to users afterSetup. @type {string?} */
+    static afterSetupNote = null;
 
     /**
      * used as a cleaner way to access values in the main bot process

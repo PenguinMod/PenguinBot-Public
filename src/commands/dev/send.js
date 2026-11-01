@@ -1,6 +1,6 @@
 const discord = require('discord.js');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -18,7 +18,7 @@ class Command extends BaseCommand {
             return message.reply("no guild");
 
         const channelId = args.shift();
-        const channel = message.guild.channels.cache.get(channelId);
+        const channel = await message.guild.channels.fetch(channelId);
         if (!channel) return message.reply("no channel");
 
         const replyId = /^[0-9]+$/.test(args.at(-1)) ? args.pop() : '';

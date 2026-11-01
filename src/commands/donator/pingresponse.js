@@ -2,7 +2,7 @@ const Database = require('sync-json-database');
 const PingResponseDB = new Database('./databases/ping-responses.json');
 const PingResponseChannelsDB = new Database('./databases/ping-res-channels.json');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 const isChannel = /^<#\d+>$/;
 

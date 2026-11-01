@@ -1,4 +1,4 @@
-const QuickReplyCommand = require("../../classes/quickreply");
+const QuickReplyCommand = require("../../classes/quick-reply.js");
 
 class ScratchAuthCommand extends QuickReplyCommand {
     constructor() {

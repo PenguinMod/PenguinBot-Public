@@ -1,7 +1,7 @@
 const path = require("path");
 
 const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
-const GifModifierCommand = require('../../classes/gifmodifier.js');
+const GifModifierCommand = require('../../classes/gif-modifier.js');
 
 // frameSet should align with you-are-nuts-sheet.png
 const frameSet = [
@@ -43,7 +43,7 @@ const frameSet = [
 
 class Command extends GifModifierCommand {
     // NOTE: Constructor will be called as a new instance of this class is made when "initialize" happens.
-    // New instances are made by the "Editing video" thread to reduce performance impact when running videomodifier commands.
+    // New instances are made by the "Editing video" thread to reduce performance impact when running video-modifier commands.
     constructor() {
         super();
         this.name = "thinkyoure";

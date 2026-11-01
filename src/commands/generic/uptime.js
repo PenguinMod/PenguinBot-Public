@@ -2,7 +2,7 @@ const discord = require("discord.js");
 const systemInformation = require("systeminformation");
 
 const FormatTime = require('../../util/format-time.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -14,6 +14,14 @@ class Command extends BaseCommand {
             permission: 0,
             lockedToCommands: true,
         };
+        this.slash = {
+            options: []
+        };
+    }
+
+    convertSlashCommand(interaction, util) {
+        interaction.author = interaction.member.user;
+        return [interaction, [], util];
     }
 
     async invoke(message) {
@@ -36,7 +44,8 @@ class Command extends BaseCommand {
         });
 
         message.reply({
-            embeds: [embed]
+            embeds: [embed],
+            ephemeral: true,
         });
     }
 }

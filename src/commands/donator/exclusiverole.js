@@ -5,7 +5,7 @@ const DonatorRoleDB = new Database('./databases/donator-roles.json');
 
 const configuration = require("../../config.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

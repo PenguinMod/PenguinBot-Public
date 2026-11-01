@@ -1,7 +1,7 @@
 const discord = require("discord.js");
 
 const OptionType = require('../../util/optiontype.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const PenguinModClient = require("../../util/penguinmod-client.js");
 const PenguinModFormat = require("../../util/penguinmod-format.js");
 
@@ -19,8 +19,8 @@ class Command extends BaseCommand {
         };
     }
 
-    convertSlashCommand(interaction) {
-        return [interaction];
+    convertSlashCommand(interaction, util) {
+        return [interaction, [], util];
     }
 
     async invoke(message) {

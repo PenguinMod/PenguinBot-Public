@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const EventXP = require("../../util/event-xp.js");
 const DiscordUtility = require("../../util/utility-discord.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

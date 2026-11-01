@@ -5,7 +5,9 @@ const discord = require("discord.js");
 
 const stateFill = require("../../util/state-fill.js");
 const OptionType = require('../../util/optiontype.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const CommandRegistry = require("../../util/command-registry.js");
+
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -45,14 +47,13 @@ class Command extends BaseCommand {
         return "👤";
     }
     async handleSendingList(message, args, util) {
-        const commands = util.commands;
         const embed = new discord.MessageEmbed();
         embed.setColor("#00c3ff");
         embed.setTitle("Command List");
 
         const commandsListed = [];
-        for (const commandName of Object.keys(commands).sort()) {
-            const command = commands[commandName];
+        for (const commandName of Array.from(CommandRegistry.commands.keys()).sort()) {
+            const command = CommandRegistry.commands.get(commandName);
 
             // remove unlisted, nonperms
             const permissionRequired = command.attributes.permission || 0;
@@ -139,15 +140,13 @@ class Command extends BaseCommand {
 
         // we are explaining a command
         const prefix = util.prefix;
-        const commands = util.commands;
-        const alias = util.alias;
         usingSlash = usingSlash === true;
 
         const embed = new discord.MessageEmbed();
         embed.setColor("#00c3ff");
 
         const commandName = args[0];
-        const command = commands[commandName] || alias[commandName];
+        const command = CommandRegistry.commands.get(commandName) || CommandRegistry.alias.get(commandName);
         if (!command || util.getPermissionLevel() <= 0 && command.attributes.unlisted) {
             embed.setTitle("Command not found");
             embed.setDescription("The command either does not exist or is an admin-only command.");

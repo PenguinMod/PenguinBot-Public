@@ -1,6 +1,6 @@
 // suggested by lily make thing
 // "It compiles the message by removing unnecessary vowels and wordsn"
-const TextModifierCommand = require('../../classes/textmodifier');
+const TextModifierCommand = require('../../classes/text-modifier');
 
 const delay = (ms) => {
     return new Promise((resolve) => {

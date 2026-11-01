@@ -1,7 +1,7 @@
 const configuration = require("../../config.js");
 
 const tryCatch = require("../../util/try-catch.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
 
 class Command extends BaseCommand {

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PenguinBot</title>
+    </head>
+    <body>
+        <main>
+            <h1>Authorization Required</h1>
+            
+            <p>Token: <input type="password" id="token"></p>
+            
+            <button id="submit">Submit</button>
+        </main>
+        <script src="/fetch-wrapper.js"></script>
+        <script>
+            (function () {
+                const elementToken = document.getElementById("token");
+                const elementSubmit = document.getElementById("submit");
+
+                let cansubmit = true;
+                elementSubmit.onclick = () => {
+                    if (!cansubmit) return;
+                    cansubmit = false;
+
+                    localStorage.setItem("pmbot:token", elementToken.value);
+                    fetchApi(`/api/validate`, {
+                        method: "GET",
+                        headers: { "Content-Type": "application/json" },
+                    }).then(async (res) => {
+                        location.pathname = `/panel`;
+                    }).catch(err => {
+                        alert(`Error: ${err?.stack || err}`);
+                    }).finally(() => {
+                        cansubmit = true;
+                    });
+                };
+            })();
+        </script>
+        <script>
+            (function () {
+                const elementToken = document.getElementById("token");
+                elementToken.value = localStorage.getItem("pmbot:token") || "";
+            })();
+        </script>
+    </body>
+</html>

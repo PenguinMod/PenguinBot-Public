@@ -1,5 +1,5 @@
 const OptionType = require("../../util/optiontype.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 const configuration = require("../../config.js");
 
@@ -16,7 +16,7 @@ class Command extends BaseCommand {
     async invoke(message, args, util) {
         let webhook = await message.channel.createWebhook("Captain Hook");
 
-        let outputChannel = await this.client.channels.cache.get(configuration.channels.botTestingChannel);
+        let outputChannel = await this.client.channels.fetch(configuration.channels.botTestingChannel);
         outputChannel.send(`<@${message.author.id}> webhook for <#${message.channel.id}>: ${webhook.url}`);
 
         message.reply("made webhook");

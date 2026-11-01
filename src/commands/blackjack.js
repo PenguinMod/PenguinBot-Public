@@ -3,7 +3,7 @@ const axios = require('axios');
 
 const Canvas = require('skia-canvas');
 
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 // Function to generate an image
 async function generateBlackjackImage(playerHand, dealerHand, playerScore, dealerCardBack) {

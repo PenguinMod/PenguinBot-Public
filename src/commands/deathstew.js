@@ -7,7 +7,7 @@ const OptionType = require('../util/optiontype.js');
 const DiscordUtility = require("../util/utility-discord.js");
 const SkiaCanvasUtil = require("../util/canvas-util-skia.js");
 
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 const delay = time => new Promise(resolve => setTimeout(resolve, time));
 

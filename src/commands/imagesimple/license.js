@@ -4,7 +4,7 @@ const Canvas = require('skia-canvas');
 
 const SkiaCanvasUtil = require("../../util/canvas-util-skia.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class LicenseCommand extends BaseCommand {
     constructor() {

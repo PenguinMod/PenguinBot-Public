@@ -2,7 +2,7 @@ const childProcess = require("child_process");
 
 const env = require("../../util/env-util.js");
 const BotState = require("../../util/bot-state.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

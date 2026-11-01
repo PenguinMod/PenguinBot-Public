@@ -1,5 +1,5 @@
 const OptionType = require('../util/optiontype');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 const { mathEvaluateThread } = require("../util/math-evaluate.js");
 
 class Command extends BaseCommand {
@@ -21,9 +21,10 @@ class Command extends BaseCommand {
         };
     }
 
-    convertSlashCommand(interaction) {
+    convertSlashCommand(interaction, util) {
         const text = `${interaction.options.getString('expression')}`;
-        return [interaction, text.split(' ')];
+        interaction.author = interaction.member.user;
+        return [interaction, text.split(' '), util];
     }
 
     async invoke(message, args) {

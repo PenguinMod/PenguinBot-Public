@@ -5,7 +5,7 @@ const Canvas = require('skia-canvas');
 const OptionType = require('../../util/optiontype.js');
 const SkiaCanvasUtil = require('../../util/canvas-util-skia.js');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

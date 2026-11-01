@@ -3,14 +3,13 @@ const path = require("path");
 
 const discord = require("discord.js");
 
-const EventHandler = require('./handleEvents.js');
-
 const delay = require("./util/delay.js");
 const env = require("./util/env-util.js");
 const BotState = require("./util/bot-state.js");
 const FormatTime = require("./util/format-time.js");
 const HostUtility = require("./util/utility-host.js");
 const DiscordUtility = require("./util/utility-discord.js");
+const BotEventEmitter = require("./util/bot-event-emitter.js");
 
 /**
  * Life-cycle:
@@ -25,7 +24,11 @@ const DiscordUtility = require("./util/utility-discord.js");
  * - Setup, define the bot state and dump the information into BotState for commands to use
  * - Conect to discord
  *   - If this fails, its considered a truly critical error we cant recover from, so we actually abort running entirely
- * - Listen for events & run the rest of the bot
+ * - Listen for events ASAP, BotEventEmitter.ready() makes it so we can wait for the commands to load before responding to messages
+ *   - If any events fail to even initialize then we should abort running
+ * - Load commands. src/events/core/ready event is responsible for this.
+ *   - Commands themselves are allowed to fail loading and will just be logged
+ * - Mark BotState.initialized and resolve  BotEventEmitter.ready() so all the events we handled earlier can process
  * - .... (users can use the bot, etc)
  * - pm!restart switches the light switch (status === "restart") so when we shutdown, our next life will see that we restarted properly
  */
@@ -117,9 +120,6 @@ const DiscordUtility = require("./util/utility-discord.js");
     // add state stuff
     const prefix = isInTestMode ? env.get("PREFIX_TEST") : env.get("PREFIX");
     const state = {
-        commands: {},
-        slash: {},
-        alias: {},
         services: {}, // commands can add to this object themselves
         serialized: lastState.serialized || {}, // persists across reboots
         prefix,
@@ -176,5 +176,14 @@ const DiscordUtility = require("./util/utility-discord.js");
     }
 
     // bot's logged in so lets start setting up the rest of the shits
-    EventHandler.handleEvents(client, state);
+    try {
+        if (BotState.shuttingDown)
+            return console.log("Shutting down so not processing client any further");
+        // NOTE: src/events/core/ready event is responsible from this point on
+        await BotEventEmitter.initializeEvents();
+    } catch (err) {
+        console.error('Login Error;', err);
+        await HostUtility.abort(err);
+        return;
+    }
 })();

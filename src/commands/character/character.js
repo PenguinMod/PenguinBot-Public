@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const CharacterManager = require("../../util/character-manager.js");
 
 const getHsvFromRgb = hexCode => {

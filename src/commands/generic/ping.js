@@ -1,6 +1,6 @@
 const discord = require("discord.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -12,11 +12,20 @@ class Command extends BaseCommand {
             permission: 0,
             lockedToCommands: true,
         };
+        this.slash = {
+            options: []
+        };
+    }
+
+    convertSlashCommand(interaction, util) {
+        interaction.author = interaction.member.user;
+        return [interaction, [], util];
     }
 
     async invoke(message) {
         message.reply({
-            content: `Ping: ${this.client.ws.ping}ms`
+            content: `Ping: ${this.client.ws.ping}ms`,
+            ephemeral: true,
         });
     }
 }

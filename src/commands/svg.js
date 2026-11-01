@@ -1,6 +1,6 @@
 const svgRender = require("../util/svg-render");
 const svgRepair = require("../util/svg-repair");
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

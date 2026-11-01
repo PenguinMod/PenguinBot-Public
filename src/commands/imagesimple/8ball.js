@@ -5,7 +5,7 @@ const Canvas = require('skia-canvas');
 const OptionType = require('../../util/optiontype.js');
 const SkiaCanvasUtil = require('../../util/canvas-util-skia.js');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -27,10 +27,10 @@ class Command extends BaseCommand {
         };
     }
 
-    convertSlashCommand(interaction) {
+    convertSlashCommand(interaction, util) {
         const text = `${interaction.options.getString('text')}`;
         interaction.author = interaction.member.user;
-        return [interaction, text.split(' ')];
+        return [interaction, text.split(' '), util];
     }
 
     /**

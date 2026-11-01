@@ -5,8 +5,9 @@ const uuid = require("uuid");
 const configuration = require("../../config.js");
 
 const Lua = require("../../util/lua.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const DiscordUtility = require("../../util/utility-discord.js");
+const CommandRegistry = require("../../util/command-registry.js");
 const CharacterManager = require("../../util/character-manager.js");
 
 class Command extends BaseCommand {
@@ -250,7 +251,7 @@ class Command extends BaseCommand {
                 if (!actionName)
                     return message.reply("Specify an action to script."
                         + "\n" + "See `character(action)` commands seen in the help command for actions.");
-                if (!Object.keys(util.commands).includes(`character${actionName}`))
+                if (!CommandRegistry.commands.has(`character${actionName}`))
                     return message.reply("There's no corresponding command for that action."
                         + "\n" + "See `character(action)` commands seen in the help command for actions.");
                 // these comands start with character, but dont actually represent an action.

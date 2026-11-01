@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>PenguinBot - Panel</title>
+    </head>
+    <body>
+        <main>
+            <h1>Panel</h1>
+            <p>Send text message in test channel: <input type="text" id="input-sendmsg-text"></p>
+            <button id="action-sendmsg">Send</button>
+
+            <h2>State</h2>
+            <button id="action-restart">Restart Bot</button>
+        </main>
+        <script src="/fetch-wrapper.js"></script>
+        <script>
+            (function () {
+                // check that they are signed in before continuing
+                fetchApi(`/api/validate`, {
+                    method: "GET",
+                    headers: { "Content-Type": "application/json" },
+                }).catch(err => {
+                    if (err !== "Unauthorized") return;
+                    location.pathname = "/";
+                });
+            })();
+        </script>
+        <script>
+            (function () {
+                // handle actions
+                const elementSendMsg = document.getElementById("action-sendmsg");
+                const elementRestart = document.getElementById("action-restart");
+
+                elementSendMsg.onclick = async () => {
+                    const inputSendMsgText = document.getElementById("input-sendmsg-text");
+                    fetchApi(`/api/sendmsg`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            text: inputSendMsgText.value,
+                        }),
+                    })
+                        .then(() => alert("Sent!"))
+                        .catch(err => alert(`Error: ${err?.stack || err}`));
+                };
+                elementRestart.onclick = async () => {
+                    fetchApi(`/api/restart`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                    })
+                        .then(() => alert("Restarting!"))
+                        .catch(err => alert(`Error: ${err?.stack || err}`));
+                };
+            })();
+        </script>
+    </body>
+</html>

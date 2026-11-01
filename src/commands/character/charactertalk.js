@@ -2,7 +2,7 @@ const discord = require("discord.js");
 
 const Canvas = require("skia-canvas");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const CharacterManager = require("../../util/character-manager.js");
 
 class Command extends BaseCommand {

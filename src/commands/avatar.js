@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const OptionType = require('../util/optiontype.js');
 const DiscordUtility = require("../util/utility-discord.js");
 
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -29,10 +29,11 @@ class Command extends BaseCommand {
         };
     }
 
-    convertSlashCommand(interaction) {
+    convertSlashCommand(interaction, util) {
         const user = interaction.options.getUser('user') || interaction.user;
         const guild = interaction.options.getBoolean('server') || false;
-        return [interaction, [user.id, guild ? 'guild' : '']];
+        interaction.author = interaction.member.user;
+        return [interaction, [user.id, guild ? 'guild' : ''], util];
     }
 
     async invoke(message, args) {

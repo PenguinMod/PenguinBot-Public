@@ -1,4 +1,4 @@
-const GifModifierCommand = require('../../classes/gifmodifier');
+const GifModifierCommand = require('../../classes/gif-modifier.js');
 const path = require("path");
 
 // frameSet should align with redditgold_sheet.jpg
@@ -169,7 +169,7 @@ const drawImageWithBg = (ctx, image, x, y, w, h) => {
 
 class Command extends GifModifierCommand {
     // NOTE: Constructor will be called as a new instance of this class is made when "initialize" happens.
-    // New instances are made by the "Editing video" thread to reduce performance impact when running videomodifier commands.
+    // New instances are made by the "Editing video" thread to reduce performance impact when running video-modifier commands.
     constructor() {
         super();
         this.name = "winner";

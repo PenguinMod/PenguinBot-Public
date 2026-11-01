@@ -6,7 +6,7 @@ const env = require("../../util/env-util.js");
 const OptionType = require('../../util/optiontype.js');
 const DiscordUtility = require("../../util/utility-discord.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

@@ -98,7 +98,7 @@ class GuessTheProject {
             
             // post the submission
             let submissionText = `<@${user.id}> (${user.id}) thinks: ${projectDisplay}; https://projects.penguinmod.com/${projectId}`;
-            const projectSubmissionChannel = BotState.client.channels.cache.get(configuration.channels.guessTheProjectManager);
+            const projectSubmissionChannel = await BotState.client.channels.fetch(configuration.channels.guessTheProjectManager);
             await projectSubmissionChannel.send({
                 content: submissionText,
                 flags: discord.MessageFlags.FLAGS.SUPPRESS_EMBEDS,

@@ -4,7 +4,7 @@ const { Jimp, JimpMime } = require('jimp');
 
 const OptionType = require('../util/optiontype.js');
 const ProgressBar = require('../util/progress-bar.js');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 const DiscordUtility = require("../util/utility-discord.js");
 
 // define ratings from highest to smallest

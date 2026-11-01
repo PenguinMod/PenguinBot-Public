@@ -49,7 +49,7 @@ Check the Notes section for details on customizing PenguinBot to your liking.
 # Basic Commands Template
 ```js
 const OptionType = require('../util/optiontype.js');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

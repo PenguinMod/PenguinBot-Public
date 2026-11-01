@@ -4,7 +4,7 @@ const configuration = require("../../config.js");
 
 const env = require("../../util/env-util.js");
 const OptionType = require("../../util/optiontype.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

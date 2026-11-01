@@ -37,20 +37,6 @@ class CommandUtility {
     }
 
     /**
-     * The commands registered in the bot as of now.
-     * @type {object}
-     */
-    get commands() {
-        return BotState.request("commands");
-    }
-    /**
-     * Aliases for commands registered in the bot as of now.
-     * @type {object}
-     */
-    get alias() {
-        return BotState.request("alias");
-    }
-    /**
      * The current prefix of the bot.
      * @type {string}
      */
@@ -147,7 +133,7 @@ class CommandUtility {
     /**
      * Generic "cannot use this command" handler for use by text + slash commands. Returns true on blocked message.
      * Runs command.reject on block if available, otherwise runs message.reply
-     * @returns {boolean} Whether or not the command was blocked.
+     * @returns {Promise<boolean>} Whether or not the command was blocked.
      */
     async handleCommandBlock() {
         // NOTE: This is structured for higher priority checks first

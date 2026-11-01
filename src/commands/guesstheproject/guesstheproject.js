@@ -5,7 +5,7 @@ const configuration = require("../../config.js");
 const OptionType = require('../../util/optiontype.js');
 const GuessTheProject = require("../../util/guess-the-project.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

@@ -1,6 +1,6 @@
 const ToneMap = require('../util/ti-list.js');
 const OptionType = require('../util/optiontype.js');
-const BaseCommand = require("../classes/basecommand.js");
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -38,7 +38,7 @@ class Command extends BaseCommand {
         for (const split of text.split(' ')) {
             args.push(split);
         }
-        return [interaction, args];
+        return [interaction, args, util];
     }
 
     invoke(message, args) {

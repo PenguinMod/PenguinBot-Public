@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../classes/textmodifier');
+const TextModifierCommand = require('../../classes/text-modifier');
 
 class AhhCommand extends TextModifierCommand {
     constructor() {

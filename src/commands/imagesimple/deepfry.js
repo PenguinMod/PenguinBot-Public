@@ -2,7 +2,7 @@ const discord = require("discord.js");
 
 const { Jimp, JimpMime, BlendMode } = require("jimp");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

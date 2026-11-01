@@ -2,7 +2,7 @@ const discord = require("discord.js");
 
 const Canvas = require('skia-canvas');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class SigmaCommand extends BaseCommand {
     constructor() {

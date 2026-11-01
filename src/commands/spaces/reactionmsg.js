@@ -1,7 +1,7 @@
 const Database = require('sync-json-database');
 const ReactionMessageDB = new Database('./databases/spaces-reactionmsg.json');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const DiscordUtility = require("../../util/utility-discord.js");
 const ReactionMessageUtil = require("../../util/reaction-msg-util.js");
 

@@ -2,7 +2,7 @@ const discord = require("discord.js");
 const { PenguinModAPIError } = require("penguinmod");
 
 const OptionType = require('../../util/optiontype.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const PenguinModClient = require("../../util/penguinmod-client.js");
 const PenguinModAnalyze = require("../../util/penguinmod-analyze.js");
 
@@ -21,7 +21,7 @@ class Command extends BaseCommand {
         ];
         this.slash = {
             options: [{
-                type: OptionType.INTEGER,
+                type: OptionType.STRING,
                 name: 'project',
                 required: true,
                 description: 'A PenguinMod project ID.'
@@ -30,9 +30,9 @@ class Command extends BaseCommand {
     }
 
     convertSlashCommand(interaction) {
-        const id = interaction.options.getInteger('project');
-        interaction.deferReply()
-        interaction.reply = interaction.editReply
+        const id = interaction.options.getString('project');
+        interaction.deferReply();
+        interaction.reply = interaction.editReply;
         return [interaction, [id], true];
     }
 

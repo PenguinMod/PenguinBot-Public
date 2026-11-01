@@ -1,4 +1,4 @@
-const VideoModifierCommand = require('../../classes/videomodifier');
+const VideoModifierCommand = require('../../classes/video-modifier.js');
 const path = require("path");
 
 const interpolate = (time, a, b) => {
@@ -48,7 +48,7 @@ const back = (x, dir) => {
 
 class Command extends VideoModifierCommand {
     // NOTE: Constructor will be called as a new instance of this class is made when "initialize" happens.
-    // New instances are made by the "Editing video" thread to reduce performance impact when running videomodifier commands.
+    // New instances are made by the "Editing video" thread to reduce performance impact when running video-modifier commands.
     constructor() {
         super();
         this.name = "miku";

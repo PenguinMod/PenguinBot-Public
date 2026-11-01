@@ -1,8 +1,8 @@
 const discord = require('discord.js');
 
-const db = require('../util/sokobandb.js');
 const Sokoban = require('../util/sokoban.js');
-const BaseCommand = require("../classes/basecommand.js");
+const SokobanDB = require('../util/sokobandb.js');
+const BaseCommand = require("../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -22,14 +22,14 @@ class Command extends BaseCommand {
         const userId = message.author.id;
 
         if (command === 'start') {
-            const existingGameState = db.get(userId);
+            const existingGameState = SokobanDB.get(userId);
             if (existingGameState) {
-                const existingGameThread = db.get(`${userId}_threadId`);
+                const existingGameThread = SokobanDB.get(`${userId}_threadId`);
                 message.reply(`You already have a game running on <#${existingGameThread}>. Please delete your current game before starting a new one.`);
                 return;
             }
 
-            const customEmojis = db.get(`${userId}_emojis`) || {
+            const customEmojis = SokobanDB.get(`${userId}_emojis`) || {
                 wall: ':red_square:',
                 player: ':flushed:',
                 empty: '⬛',
@@ -37,7 +37,7 @@ class Command extends BaseCommand {
                 box: '📦'
             };
             const game = new Sokoban(null, customEmojis);
-            db.set(userId, game.serialize());
+            SokobanDB.set(userId, game.serialize());
             const response = game.getLevelWithEmojis();
 
             const embed = new discord.MessageEmbed()
@@ -106,9 +106,9 @@ class Command extends BaseCommand {
             });
 
             const gameMessage = await gameThread.send({ embeds: [embed], components: [row1, row2, row3] });
-            db.setLocal(`${userId}_gameMessageId`, gameMessage.id);
-            db.setLocal(`${userId}_threadId`, gameThread.id);
-            db.saveDataToFile();
+            SokobanDB.setLocal(`${userId}_gameMessageId`, gameMessage.id);
+            SokobanDB.setLocal(`${userId}_threadId`, gameThread.id);
+            SokobanDB.saveDataToFile();
 
             this.cleanUpNonCommands(gameThread, userId, util.prefix);
         } else if (command === 'config') {
@@ -118,7 +118,7 @@ class Command extends BaseCommand {
             await this.deleteGame(message, userId);
             return;
         } else {
-            const gameState = db.get(userId);
+            const gameState = SokobanDB.get(userId);
             if (!gameState) {
                 const prefix = util.prefix;
                 const embed = new discord.MessageEmbed()
@@ -192,9 +192,9 @@ class Command extends BaseCommand {
                 const emoji = response.content.trim();
                 const validEmoji = this.isValidEmoji(emoji) ? emoji : this.getDefaultEmoji(emojiType);
 
-                const customEmojis = db.get(`${userId}_emojis`) || {};
+                const customEmojis = SokobanDB.get(`${userId}_emojis`) || {};
                 customEmojis[emojiType] = validEmoji;
-                db.set(`${userId}_emojis`, customEmojis);
+                SokobanDB.set(`${userId}_emojis`, customEmojis);
 
                 await configMessage.edit({ content: `Emoji for ${emojiType} set to ${validEmoji}`, embeds: [embed], components: [row] });
                 response.delete();
@@ -205,7 +205,7 @@ class Command extends BaseCommand {
     }
 
     async deleteGame(message, userId) {
-        const threadId = db.get(`${userId}_threadId`);
+        const threadId = SokobanDB.get(`${userId}_threadId`);
         if (threadId) {
             try {
                 const gameThread = await message.guild.channels.fetch(threadId);
@@ -217,10 +217,10 @@ class Command extends BaseCommand {
                 message.reply('There was an error deleting your game thread.');
             }
         }
-        db.deleteLocal(userId);
-        db.deleteLocal(`${userId}_gameMessageId`);
-        db.deleteLocal(`${userId}_threadId`);
-        db.saveDataToFile();
+        SokobanDB.deleteLocal(userId);
+        SokobanDB.deleteLocal(`${userId}_gameMessageId`);
+        SokobanDB.deleteLocal(`${userId}_threadId`);
+        SokobanDB.saveDataToFile();
         message.reply('Your game has been deleted.');
     }
 

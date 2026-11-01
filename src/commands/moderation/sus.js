@@ -3,7 +3,7 @@ const discord = require("discord.js");
 const Database = require('sync-json-database');
 const SusDB = new Database('./databases/suspicious-users.json');
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

@@ -3,7 +3,7 @@ const discord = require("discord.js");
 const { Jimp: jimp, JimpMime } = require('jimp');
 
 const OptionType = require('../../util/optiontype.js');
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 const listedToppings = [ // visual only for listings, validToppings includes actually usable toppings
     'pepperoni',

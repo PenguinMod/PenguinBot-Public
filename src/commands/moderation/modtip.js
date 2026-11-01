@@ -6,7 +6,7 @@ const ModMailDB = new Database('./databases/anonymous-modmail-db.json');
 const env = require("../../util/env-util.js");
 const DiscordUtility = require("../../util/utility-discord.js");
 
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -73,7 +73,7 @@ class Command extends BaseCommand {
         
         embedForLog.setFooter({ text: `Sent by ${moderator.displayName} | ${canDMUser ? "Sent to user's DM" : "Could not be sent to the user!"}` });
 
-        const modTipReportChannel = this.client.channels.cache.get('1255097127600656484');
+        const modTipReportChannel = await this.client.channels.fetch('1255097127600656484');
         modTipReportChannel.send({
             embeds: [embedForLog],
             allowedMentions: {

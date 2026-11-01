@@ -5,7 +5,7 @@ const configuration = require("../../config.js");
 const env = require("../../util/env-util.js");
 const BotState = require("../../util/bot-state.js");
 const HostUtility = require("../../util/utility-host.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {

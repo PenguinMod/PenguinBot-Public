@@ -6,7 +6,7 @@ const systemInformation = require("systeminformation");
 const configuration = require("../../config.js");
 
 const HostUtility = require("../../util/utility-host.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 
 class Command extends BaseCommand {
     constructor() {
@@ -18,13 +18,24 @@ class Command extends BaseCommand {
             permission: 0,
             lockedToCommands: true,
         };
+        this.slash = {
+            options: []
+        };
 
         this.alias = ["specs", "spec"];
     }
 
-    async invoke(message) {
+    convertSlashCommand(interaction, util) {
+        interaction.author = interaction.member.user;
+        interaction.deferReply();
+        interaction.reply = interaction.editReply;
+        return [interaction, [], util, true];
+    }
+
+    async invoke(message, _, __, isSlash) {
         const startTime = Date.now();
-        message.channel.sendTyping();
+        if (!isSlash)
+            message.channel.sendTyping();
 
         const embed = new discord.MessageEmbed();
         embed.setColor("#00c3ff");
@@ -114,7 +125,8 @@ class Command extends BaseCommand {
         });
 
         message.reply({
-            embeds: [embed]
+            embeds: [embed],
+            ephemeral: true,
         });
     }
 }

@@ -6,7 +6,7 @@ const discord = require("discord.js");
 
 const botEmojis = require("../../util/bot-emojis.js");
 const runNewThread = require("../../util/multi-thread.js");
-const BaseCommand = require("../../classes/basecommand.js");
+const BaseCommand = require("../../classes/base-command.js");
 const CellularAutomataLifeLike = require("../../util/cellularAutomata/lifeLike.js");
 
 class Command extends BaseCommand {

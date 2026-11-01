@@ -1,4 +1,4 @@
-const TextModifierCommand = require('../../classes/textmodifier');
+const TextModifierCommand = require('../../classes/text-modifier');
 
 const shouldDoThing = (chance, thing) => {
     if (Math.round(Math.random() * chance) === 0) {
