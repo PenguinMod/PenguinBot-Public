@@ -53,4 +53,3 @@ scripts/*.bat
 src/commands/.dev/*
 desktop.ini
 .DS_Store
-src/util/aprilfools.js

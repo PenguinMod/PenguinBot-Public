@@ -22,12 +22,14 @@ const BotEventEmitter = require("./util/bot-event-emitter.js");
  * - Setup root folders in the bot
  * - Cleanup the temp folder for leftovers on random restarts
  * - Setup, define the bot state and dump the information into BotState for commands to use
+ * - Listen for events ASAP
+ *   - BotEventEmitter.eventsReady() lets us wait until all events have started listening on their emitters (not fired, just listening)
+ *   - BotEventEmitter.ready() makes it so we can wait for the commands to load before responding to messages
+ *   - If any events fail to even initialize then we should abort running
  * - Conect to discord
  *   - If this fails, its considered a truly critical error we cant recover from, so we actually abort running entirely
- * - Listen for events ASAP, BotEventEmitter.ready() makes it so we can wait for the commands to load before responding to messages
- *   - If any events fail to even initialize then we should abort running
- * - Load commands. src/events/core/ready event is responsible for this.
- *   - Commands themselves are allowed to fail loading and will just be logged
+ * - Load commands on login. src/events/core/ready event is responsible for this, it only fires on discord client login.
+ *   - Commands themselves are allowed to fail loading and will just be logged in console & discord later
  * - Mark BotState.initialized and resolve  BotEventEmitter.ready() so all the events we handled earlier can process
  * - .... (users can use the bot, etc)
  * - pm!restart switches the light switch (status === "restart") so when we shutdown, our next life will see that we restarted properly
@@ -162,6 +164,17 @@ const BotEventEmitter = require("./util/bot-event-emitter.js");
             return await HostUtility.abort(`Failed to reach ${urlToTest} after ${max} attempts`);
     }
 
+    // start setting up events in the bot
+    try {
+        if (BotState.shuttingDown)
+            return console.log("Shutting down so not processing client any further");
+        await BotEventEmitter.initializeEvents();
+    } catch (err) {
+        console.error('Event initialization error;', err);
+        await HostUtility.abort(err);
+        return;
+    }
+
     // login to bot
     const token = isInTestMode ? env.get("TOKEN_TEST") : env.get("TOKEN");
     try {
@@ -175,15 +188,6 @@ const BotEventEmitter = require("./util/bot-event-emitter.js");
         return;
     }
 
-    // bot's logged in so lets start setting up the rest of the shits
-    try {
-        if (BotState.shuttingDown)
-            return console.log("Shutting down so not processing client any further");
-        // NOTE: src/events/core/ready event is responsible from this point on
-        await BotEventEmitter.initializeEvents();
-    } catch (err) {
-        console.error('Login Error;', err);
-        await HostUtility.abort(err);
-        return;
-    }
+    // NOTE: src/events/core/ready event is responsible for the rest of the bot's lifecycle now 
+    console.log("Completed login");
 })();

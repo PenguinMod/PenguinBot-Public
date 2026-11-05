@@ -63,7 +63,18 @@ const configuration = {
         guessTheProjectMembers: "1560874272929619999",
         // PenguinMod guess-the-project event. This is the channel event managers receive guesses in.
         guessTheProjectManager: "1560898144131096686",
+        // PenguinMod starboard channel
+        starboard: '1300929191906119850',
+        // PenguinMod art channel
+        autoStars: '1185905625067180132'
     },
+
+    // list of emojis to use for starboard, top most one is displayed on starboard
+    starboardEmojis: [
+        '1259813221863526400',
+        '⭐'
+    ],
+    starboardAt: 5,
     
     // Servers used for different environments (production, testing)
     servers: {
